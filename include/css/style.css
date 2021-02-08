@@ -1,0 +1,91 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box; /*bestimmt worauf sich Abmessungen beziehen*/
+}
+
+.order-info{
+  font-size: 1rem;
+  font-family: Arial, serif;
+  padding: 2rem;
+  width: 100%;
+  display: grid;
+  grid-template-columns: 0.5fr 1fr 0.05fr;
+  grid-template-rows: 2em 2em 2em 2em 2em 2em 2em 2em 2em;
+  gap: 10px 20px;
+  grid-template-areas:
+    "name name-input img1"
+    "surname surname-input img2"
+    "tel tel-input img3"
+    "email email-input img4"
+    "dep dep-input ."
+    "status status-input ."
+    ". btn ."
+    "output output ."
+    ;
+}
+
+
+/*terms*/
+.name{grid-area:name}
+.surname{grid-area:surname}
+.dep{grid-area:dep}
+.phone{grid-area:tel}
+.email{grid-area:email}
+.status{grid-area:status}
+.btn{grid-area:btn}
+#output{grid-area:output;text-align: center;padding: 2rem;}
+h3{padding-left: 2rem;padding-top: 1rem;} /*title*/
+.instruction{padding-left:2rem;}
+
+
+
+/*inputs*/
+
+
+#name-input{grid-area:name-input}
+#surname-input{grid-area:surname-input}
+#phone-input{grid-area:tel-input}
+#email-input{grid-area:email-input}
+#department-input{grid-area:dep-input}
+#status-input{grid-area:status-input}
+#btn{grid-area:btn}
+
+.input{
+  border: 2px solid #eee;
+  border-radius: 10px;
+}
+
+select{
+  border: 2px solid #e2e2e2;
+  border-radius: 10px;
+  border-bottom-right-radius: unset;
+  border-top-right-radius: unset;
+}
+
+.send_btn{
+  border: 2px solid #eee;
+  border-radius: 10px;
+  transition: 0.3s;
+}
+.send_btn:hover{
+  border: 2px solid #817D7D;
+}
+
+.send_btn:active{
+  transition: unset;
+  background-color: #192139;
+  color: #eee;
+}
+
+/*green checkmarks*/
+.order-info img{
+  justify-items: center;
+  align-self: center;
+  width: 25px;
+}
+#img1{grid-area:img1}
+#img2{grid-area:img2}
+#img3{grid-area:img3}
+#img4{grid-area:img4}
+

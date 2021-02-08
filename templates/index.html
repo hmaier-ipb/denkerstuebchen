@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <link rel="stylesheet" href="include/css/style.css" type="text/css">
+  <script src="include/js/ajax.js"></script>
+  <script>document.addEventListener("DOMContentLoaded", function(){init()})</script>
+  <title><!--{$title}--></title>
+</head>
+<body>
+<h3><!--{$title}--></h3><br>
+<div class="instruction"><!--{$instruction}--></div>
+  <div class="order-info">
+
+    <span class="name"><!--{$name}-->:</span> <input placeholder="<!--{$name}-->" type="text" class="input" id="name-input">
+    <img class="img" style="display: none;" id="img1" src="include/media/green_check.png" alt="no pic">
+
+    <span class="surname"><!--{$surname}-->:</span> <input placeholder="<!--{$surname}-->"  type="text"  class="input" id="surname-input">
+    <img class="img" style="display: none;" id="img2" src="include/media/green_check.png" alt="no pic">
+
+    <span class="phone"><!--{$phone}-->:</span> <input placeholder="<!--{$phone}-->" type="text"  class="input" id="phone-input">
+    <img class="img" style="display: none;" id="img3" src="include/media/green_check.png" alt="no pic">
+
+    <span class="email"><!--{$email}-->:</span> <input type="text" class="input" id="email-input" value="@ipb-halle.de">
+    <img class="img" style="display: none;" id="img4" src="include/media/green_check.png" alt="no pic">
+
+    <span class="dep"><!--{$department}-->:</span>
+
+    <select id="department-input" name="department">
+
+      <!--{$departments}-->
+    </select>
+
+    <span class="status">Status:</span>
+
+    <button class="send_btn" id="btn"><b><!--{$button}--></b></button>
+
+    <div id="status-input">
+
+      <input type="radio" id="employee" name="status" value="employee" checked>
+      <label for="employee"><!--{$employee}--></label>
+      <br>
+
+      <input type="radio" id="guest" name="status" value="guest">
+      <label for="guest"><!--{$guest}--></label>
+      <br>
+
+    </div>
+
+    <div id="output" style="display:none"><!--{$output}--></div>
+
+
+
+  </div>
+  <div id="calender"><!--{$calender}--></div>
+  <div id="calender_option"><!--{$room_select}--><br><br><!--{$month_buttons}--></div>
+
+
+</body>
+</html>
