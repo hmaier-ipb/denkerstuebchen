@@ -84,11 +84,15 @@ class calender extends db_denkerstuebchen
       }
     }
 
-    $language == "de" ? $room = "Denkerstübchen" : $room = "Thinkersroom";
+    $language == "de" ? $room = "Denkerstübchen" : $room = "Thinkers-Room";
+    $monate = ["Januar","Februar","März","April","Mai","Juni","Juli","August","September","Oktober","November","Dezember"];
+    $language == "de" ? $displayed_month = $monate[date("n",$current_time)-1]: $displayed_month = date("F",$current_time);
+
+
     //**********************
     //STRING CREATION BEGINS
     //**********************
-    $calender_string = "<p>" . date("F",$current_time) . " " .date("Y",$current_time) . "</p>"; //current month
+    $calender_string = "<p>" . $displayed_month . " " .date("Y",$current_time) . "</p>"; //current month
     $calender_string .= "<p>" . $room . " " . $room_number . "</p>";
     $calender_string .= "<table class='calender'>"; // calender string which contains the HTML
 
