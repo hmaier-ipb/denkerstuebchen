@@ -234,7 +234,7 @@ function initEventListeners(){
     action = "room_select";
     params ="action="+action+"&room="+selected_room;
     send_info(params);
-    console.log("sended");
+
   })
 
   $("prev_month").addEventListener("click",e => {

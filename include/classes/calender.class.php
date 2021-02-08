@@ -43,7 +43,7 @@ class calender extends db_denkerstuebchen
   }
 
 
-  function create_calender($current_time,$language,$room_number=1): string
+  function create_calender($current_time,$language,$room_number): string
   {
 
 
@@ -62,15 +62,15 @@ class calender extends db_denkerstuebchen
     $last_weekday_month = $this->last_weekday_month($weekday_today,$monthday_today,$days_this_month);
 
     $weekday_count = 0;// detect when to create a new row
-    $weekdays_array = [
-      ["Monday", "Montag"],
-      ["Tuesday", "Dienstag"],
-      ["Wednesday","Mittwoch"],
-      ["Thursday","Donnerstag"],
-      ["Friday","Freitag"],
-      ["Saturday","Samstag"],
-      ["Sunday","Sonntag"]
-    ];
+      $weekdays_array = [
+          ["Monday", "Montag"],
+          ["Tuesday", "Dienstag"],
+          ["Wednesday","Mittwoch"],
+          ["Thursday","Donnerstag"],
+          ["Friday","Freitag"],
+          ["Saturday","Samstag"],
+          ["Sunday","Sonntag"]
+      ];
 
     $used_language = [];
 
@@ -121,9 +121,9 @@ class calender extends db_denkerstuebchen
     for($i=1;$i<=$days_this_month;$i++){
 
       //Formatting the string
-      $i<10?$iterated_date = "0".$i.".".$month.".".$year."":$iterated_date = "".$i.".".$month.".".$year.""; //string of iterated
+      $i<10?$iterated_date = "0".$i.".".$month.".".$year."":$iterated_date = "".$i.".".$month.".".$year.""; //string of iterated_date
 
-      error_log(json_encode($iterated_date));
+      //error_log(json_encode($iterated_date));
 
       if($weekday_count == 7){
         $weekday_count = 0;
@@ -137,8 +137,6 @@ class calender extends db_denkerstuebchen
       $weekday_count += 1;
       $calender_string .= "<td class='current_month' style='background-color: $color'>$i</td>";//table cells
 
-
-
     }
 
 
@@ -151,10 +149,7 @@ class calender extends db_denkerstuebchen
         $days_next_month +=1;
       }
       $calender_string .= "</tr>";//closing the table
-
     }
-
-
 
     $calender_string .= "</table>";
 
@@ -182,8 +177,8 @@ class calender extends db_denkerstuebchen
 
   function room_select($num_rooms,$lang){
 
-    $lang == "de" ? $room = "Denkerstübchen" : $room = "Thinkersroom";
-    $lang == "de" ? $choose = "Auswählen" : $choose = "choose";
+    $lang == "de" ? $room = "Denkerstübchen" : $room = "Thinkers-Room";
+    $lang == "de" ? $choose = "Auswählen" : $choose = "Choose";
 
     $output = "<select name='rooms' id='rooms' class='rooms'>";
     for($i = 1;$i<=$num_rooms;$i++){
@@ -195,6 +190,7 @@ class calender extends db_denkerstuebchen
   }
 
   function month_buttons($lang){
+    error_log($_SESSION["lang"]);
     $lang == "de" ? $prev = "Vorheriger Monat" : $prev = "Previous Month";
     $lang == "de" ? $current_month = "Aktueller Monat" : $current_month = "Current Month";
     $lang == "de" ? $next = "Nächster Monat" : $next = "Next Month";
