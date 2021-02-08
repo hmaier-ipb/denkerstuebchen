@@ -124,8 +124,8 @@ class calender extends db_denkerstuebchen
     //RED=OCCUPIED/GREEN=FREE COLOURING FOR THE CELLS
     for($i=1;$i<=$days_this_month;$i++){
 
-      //Formatting the string
-      $i<10?$iterated_date = "0".$i.".".$month.".".$year."":$iterated_date = "".$i.".".$month.".".$year.""; //string of iterated_date
+      if($i < 10){$i = "0" . $i;}
+      $iterated_date = "".$i.".".$month.".".$year.""; //string of iterated_date
 
       //error_log(json_encode($iterated_date));
 
@@ -139,7 +139,7 @@ class calender extends db_denkerstuebchen
       $color = $_SESSION["color"];
 
       $weekday_count += 1;
-      $calender_string .= "<td class='current_month' style='background-color: $color'>$i</td>";//table cells
+      $calender_string .= "<td class='current_month $i $month $year' style='background-color: $color'>$i</td>";//table cells
 
     }
 
@@ -149,8 +149,9 @@ class calender extends db_denkerstuebchen
     if($last_weekday_month !== 7){
       $days_next_month = 1; // helper-var to set days of next month
       for($i = $last_weekday_month;$i<7;$i++){
-        $calender_string .= "<td class='next_month' style='background-color: #666666'>$days_next_month</td>";//table cells
-        $days_next_month +=1;
+          if($days_next_month < 10){$days_next_month = "0" . $days_next_month;}
+          $calender_string .= "<td class='next_month' style='background-color: #666666'>$days_next_month</td>";//table cells
+          $days_next_month +=1;
       }
       $calender_string .= "</tr>";//closing the table
     }
@@ -162,8 +163,8 @@ class calender extends db_denkerstuebchen
 
   function set_color($date){
 
-    $start_date = "02.02.2021";// search in database
-    $end_date = "07.02.2021";// search in database
+    $start_date = "";// search in database
+    $end_date = "";// search in database
 
     if($_SESSION["end"] == true){
       $_SESSION["color"] = "green";
