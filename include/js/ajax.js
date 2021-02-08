@@ -20,6 +20,8 @@ var radio_buttons;
 var lang;
 var img;
 var selected_room;
+var calender;
+var month_days;
 
 
 function init(){
@@ -29,6 +31,8 @@ function init(){
   phone = $("phone-input");
   email = $("email-input");
   output = $("output");
+  calender = $$("calender")[0];
+  month_days = $$("current_month_days");
   action = "get-lang";
   send_info("action="+action);
   initEventListeners();
@@ -255,6 +259,12 @@ function initEventListeners(){
     send_info(params);
   })
 
+  for(var i = 0; i<month_days.length; i++){
+    month_days[i].addEventListener("click", e =>{
+      console.log(e.target.id);
+    })
+  }
+
 }
 
 
@@ -310,19 +320,19 @@ function setOutput() {
           break;
         case "room_select":
           action = "";
-          $("calender").innerHTML = json_response; // the DIV surrounding the calender
+          calender.innerHTML = json_response; // the DIV surrounding the calender
           break;
         case "prev_month":
           action = "";
-          $("calender").innerHTML = json_response; // the DIV surrounding the calender
+          calender.innerHTML = json_response; // the DIV surrounding the calender
           break;
         case "current_month":
           action = "";
-          $("calender").innerHTML = json_response; // the DIV surrounding the calender
+          calender.innerHTML = json_response; // the DIV surrounding the calender
           break;
         case "next_month":
           action = "";
-          $("calender").innerHTML = json_response; // the DIV surrounding the calender
+          calender.innerHTML = json_response; // the DIV surrounding the calender
           break;
         default:
           output.innerHTML = "INVALID ACTION";

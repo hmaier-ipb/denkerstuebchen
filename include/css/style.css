@@ -4,6 +4,16 @@
   box-sizing: border-box; /*bestimmt worauf sich Abmessungen beziehen*/
 }
 
+.calender_container{
+  display: grid;
+  grid-template-columns: 2fr 1fr 2fr;
+  grid-template-rows: 2fr 1fr;
+  gap: 0px 0px;
+  grid-template-areas:
+    ". calender ."
+    ".calender-option .";
+}
+
 .order-info{
   font-size: 1rem;
   font-family: Arial, serif;
@@ -11,9 +21,10 @@
   width: 100%;
   display: grid;
   grid-template-columns: 0.5fr 1fr 0.05fr;
-  grid-template-rows: 2em 2em 2em 2em 2em 2em 2em 2em 2em;
+  grid-template-rows: 2em 2em 2em 2em 2em 2em 2em 2em 2em 2em;
   gap: 10px 20px;
   grid-template-areas:
+
     "name name-input img1"
     "surname surname-input img2"
     "tel tel-input img3"
@@ -24,6 +35,10 @@
     "output output ."
     ;
 }
+
+/*calender*/
+.calender{grid-area: calender}
+.calender_option{grid-area: calender-option}
 
 
 /*terms*/

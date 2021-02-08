@@ -94,7 +94,7 @@ class calender extends db_denkerstuebchen
     //**********************
     $calender_string = "<p>" . $displayed_month . " " .date("Y",$current_time) . "</p>"; //current month
     $calender_string .= "<p>" . $room . " " . $room_number . "</p>";
-    $calender_string .= "<table class='calender'>"; // calender string which contains the HTML
+    $calender_string .= "<table id='calender_table'>"; // calender string which contains the HTML
 
     //WEEKDAYS HEADER
     $calender_string .= "<tr>";
@@ -139,7 +139,7 @@ class calender extends db_denkerstuebchen
       $color = $_SESSION["color"];
 
       $weekday_count += 1;
-      $calender_string .= "<td class='current_month $i $month $year' style='background-color: $color'>$i</td>";//table cells
+      $calender_string .= "<td class='current_month_days' id='$i.$month.$year' style='background-color: $color'>$i</td>";//table cells
 
     }
 
