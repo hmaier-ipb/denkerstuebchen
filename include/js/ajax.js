@@ -7,7 +7,8 @@ var ajaxObj;
 var action;
 var error_message;
 var url;
-var output;
+var output1;
+var output2;
 
 var send_btn;
 var firstname;
@@ -23,8 +24,7 @@ var selected_room;
 var calender;
 var start_date;
 var end_date;
-var start_day;
-var end_day;
+
 
 function init(){
   send_btn = $$("send_btn")[0];
@@ -32,8 +32,9 @@ function init(){
   surname = $("surname-input");
   phone = $("phone-input");
   email = $("email-input");
-  output = $("output");
+  output1 = $("output1");
   calender = $("calender");
+  output2 = $("output2");
   action = "get-lang";
   send_info("action="+action);
   initEventListeners();
@@ -69,7 +70,10 @@ function initEventListeners(){
       "&phone="+phone.value+
       "&email="+email.value+
       "&department="+department+
-      "&status="+status_input;
+      "&status="+status_input+
+      "&start_date="+start_date+
+      "&end_date="+end_date;
+
 
     //start date & end date
     //room number
@@ -94,104 +98,114 @@ function initEventListeners(){
       error.push($$("email")[0].innerHTML.replace(":",""));
     }
 
+
+
+
     if(error.length>0){
     switch(lang){ //choosing the error messages
       case "de":
         if(error.length <= 1){
-          output.innerHTML = "Das Feld <b>"+error[0]+"</b> wurde falsch/nicht ausgefüllt.";
+          output1.innerHTML = "Das Feld <b>"+error[0]+"</b> wurde falsch/nicht ausgefüllt.";
         }else{
-          output.innerHTML = "Die Felder ";
 
+          output1.innerHTML = "Die Felder ";
+          console.log(output1);
         for(let i = 0;i<error.length;i++) {
           if (i === error.length - 1) {
-            output.innerHTML += "and <b>" + error[i] + "</b>";
+            output1.innerHTML += "and <b>" + error[i] + "</b>";
           }
           if (i === error.length - 2) {
-            output.innerHTML += "<b>" + error[i] + "</b> ";
+            output1.innerHTML += "<b>" + error[i] + "</b> ";
           }
           if (i < error.length - 2) {
-            output.innerHTML += "<b>" + error[i] + "</b>, ";
+            output1.innerHTML += "<b>" + error[i] + "</b>, ";
           }
         }
-        output.innerHTML += " wurden nicht/falsch ausgefüllt."
+        output1.innerHTML += " wurden nicht/falsch ausgefüllt."
 
         }
-        output.style.display = "block";
+        output1.style.display = "block";
         break;
       case "en":
         if(error.length <= 1){
-          output.innerHTML = "The field <b>"+error[0]+"</b> has been filled out incorrectly";
+          output1.innerHTML = "The field <b>"+error[0]+"</b> has been filled out incorrectly";
         }else {
-          output.innerHTML = "The fields ";
+          output1.innerHTML = "The fields ";
           for (let i = 0; i < error.length; i++) {
 
             if (i === error.length - 1) {
-              output.innerHTML += "and <b>" + error[i] + "</b>";
+              output1.innerHTML += "and <b>" + error[i] + "</b>";
             }
             if (i === error.length - 2) {
-              output.innerHTML += "<b>" + error[i] + "</b> ";
+              output1.innerHTML += "<b>" + error[i] + "</b> ";
             }
             if (i < error.length - 2) {
-              output.innerHTML += "<b>" + error[i] + "</b>, ";
+              output1.innerHTML += "<b>" + error[i] + "</b>, ";
             }
           }
-          output.innerHTML += " have been filled out incorrectly."
+          output1.innerHTML += " have been filled out incorrectly."
 
         }
 
-        output.style.display = "block";
+        output1.style.display = "block";
         break;
       default:
         if(error.length <= 1){
-          output.innerHTML = "The field <b>"+error[0]+"</b> has been filled out incorrectly";
+          output1.innerHTML = "The field <b>"+error[0]+"</b> has been filled out incorrectly";
         }else {
-          output.innerHTML = "The fields ";
+          output1.innerHTML = "The fields ";
           for (let i = 0; i < error.length; i++) {
 
             if (i === error.length - 1) {
-              output.innerHTML += "and <b>" + error[i] + "</b>";
+              output1.innerHTML += "and <b>" + error[i] + "</b>";
             }
             if (i === error.length - 2) {
-              output.innerHTML += "<b>" + error[i] + "</b> ";
+              output1.innerHTML += "<b>" + error[i] + "</b> ";
             }
             if (i < error.length - 2) {
-              output.innerHTML += "<b>" + error[i] + "</b>, ";
+              output1.innerHTML += "<b>" + error[i] + "</b>, ";
             }
           }
-          output.innerHTML += " have been filled out incorrectly."
+          output1.innerHTML += " have been filled out incorrectly."
 
         }
 
-        output.style.display = "block";
+        output1.style.display = "block";
         break;
       }
+
+
       //changing color of send button
-      output.style.color = "#FF2635";
+      output1.style.color = "#FF2635";
     }else{
       switch(lang){
         case "de":
-          output.innerHTML = "<u>Ihre Anfrage wurde erfolgreich versendet.</u>";
+          output1.innerHTML = "<u>Ihre Anfrage wurde erfolgreich versendet.</u>";
           break;
         case "eng":
-          output.innerHTML = "<u>Your reservation has been send out successfully.</u>";
+          output1.innerHTML = "<u>Your reservation has been send out successfully.</u>";
           break;
         default:
-          output.innerHTML = "<u>Your reservation has been send out successfully.</u>";
+          output1.innerHTML = "<u>Your reservation has been send out successfully.</u>";
       }
       //****************************
       //SENDING OUT THE RESERVATION
       //****************************
       send_info(params);
-      output.style.color = "#277e34";
+      output1.style.color = "#277e34";
       img = $$("img");
       for(let i = 0;i<img.length;i++){
         img[i].style.display = "none";
       }
-      output.style.display = "block";
+      output1.style.display = "block";
       firstname.value = null;
       surname.value = null;
       phone.value = null;
       email.value = "@ipb-halle.de";
+      start_date = "";
+      $("start_date").innerHTML = "";
+      end_date = "";
+      $("end_date").innerHTML = "";
     }
   })
 
@@ -269,15 +283,17 @@ function initEventListeners(){
     params = "action="+action;
     send_info(params);
   })
+  td_listener();
+}
 
-  for(var i = 0;i<$$("current_month").length;i++){
+function td_listener(){ // EVENT LISTENER FOR SINGLE TABLE CELLS
+  for(var i = 0;i<$$("current_month").length;i++){ //current_month -> table cells this month
     $$("current_month")[i].addEventListener("click", send_date)
   }
-
 }
 
 function send_date(e){
-  
+
   if(typeof start_date === typeof undefined){
     start_date = e.target.id;
     switch (lang){
@@ -369,14 +385,17 @@ function setOutput() {
         case "prev_month":
           action = "";
           calender.innerHTML = json_response; // the DIV surrounding the calender
+          td_listener();
           break;
         case "current_month":
           action = "";
           calender.innerHTML = json_response; // the DIV surrounding the calender
+          td_listener();
           break;
         case "next_month":
           action = "";
           calender.innerHTML = json_response; // the DIV surrounding the calender
+          td_listener();
           break;
         case "submit_dates":
           action = "";
@@ -388,7 +407,7 @@ function setOutput() {
           }
           break;
         default:
-          output.innerHTML = "INVALID ACTION";
+          output1.innerHTML = "INVALID ACTION";
           break;
       }
 

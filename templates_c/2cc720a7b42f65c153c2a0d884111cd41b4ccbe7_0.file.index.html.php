@@ -1,18 +1,18 @@
 <?php
-/* Smarty version 3.1.34-dev-7, created on 2021-02-10 11:01:02
+/* Smarty version 3.1.34-dev-7, created on 2021-02-10 12:44:08
   from 'D:\inetpub\www\denkerstuebchen\templates\index.html' */
 
 /* @var Smarty_Internal_Template $_smarty_tpl */
 if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   'version' => '3.1.34-dev-7',
-  'unifunc' => 'content_6023bceea9d1a7_49215175',
+  'unifunc' => 'content_6023d518965486_76182946',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
     '2cc720a7b42f65c153c2a0d884111cd41b4ccbe7' => 
     array (
       0 => 'D:\\inetpub\\www\\denkerstuebchen\\templates\\index.html',
-      1 => 1612954860,
+      1 => 1612961047,
       2 => 'file',
     ),
   ),
@@ -20,7 +20,7 @@ if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   array (
   ),
 ),false)) {
-function content_6023bceea9d1a7_49215175 (Smarty_Internal_Template $_smarty_tpl) {
+function content_6023d518965486_76182946 (Smarty_Internal_Template $_smarty_tpl) {
 ?><!DOCTYPE html>
 <html lang="en">
 <head>
@@ -89,8 +89,9 @@ function content_6023bceea9d1a7_49215175 (Smarty_Internal_Template $_smarty_tpl)
 
     </div>
 
-    <div id="output" style="display:none"><?php echo $_smarty_tpl->tpl_vars['output']->value;?>
-</div>
+    <div id="output1" style="display:none"><?php echo $_smarty_tpl->tpl_vars['output']->value;?>
+</div><br>
+    <div id="output2" style="display:none"></div>
 
 
 
