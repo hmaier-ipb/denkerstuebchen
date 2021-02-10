@@ -72,9 +72,11 @@ class input_form
     $phone = $_POST["phone"];
     $email = $_POST["email"];
     $department = $_POST["department"];
+    //start date & end date
+    //room number
     $_POST["status"] == "guest"? $status = "Gast": $status = "Mitarbeiter";
-    //$receiver = "bibliothek@ipb-halle.de";
-    $receiver = "hmaier@ipb-halle.de";
+    //$receiver = "bibliothek@ipb-halle.de,$email";
+    $receiver = "hmaier@ipb-halle.de,$email";
     $subject = "Denkerstuebchen Reservierung";
 
     $m = "<html>";
@@ -145,6 +147,21 @@ class input_form
 
   }
 
+  function compare_dates($start,$end,$language){
+    $start = strtotime($start);
+    $end = strtotime($end);
+
+    error_log($start);
+    error_log($end);
+
+    if($start > $end){
+      $language == "de" ? $output = "Enddatum kann nicht kleiner als Startdatum sein.": $output = "End Date cannot be smaller than Start Date.";
+    }else{
+      $output = null;
+    }
+    error_log(json_encode($output));
+    return $output;
+  }
 
 
 

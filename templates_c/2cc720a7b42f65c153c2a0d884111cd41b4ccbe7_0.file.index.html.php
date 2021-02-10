@@ -1,18 +1,18 @@
 <?php
-/* Smarty version 3.1.34-dev-7, created on 2021-02-08 12:53:25
+/* Smarty version 3.1.34-dev-7, created on 2021-02-10 11:01:02
   from 'D:\inetpub\www\denkerstuebchen\templates\index.html' */
 
 /* @var Smarty_Internal_Template $_smarty_tpl */
 if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   'version' => '3.1.34-dev-7',
-  'unifunc' => 'content_602134451f2948_78810374',
+  'unifunc' => 'content_6023bceea9d1a7_49215175',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
     '2cc720a7b42f65c153c2a0d884111cd41b4ccbe7' => 
     array (
       0 => 'D:\\inetpub\\www\\denkerstuebchen\\templates\\index.html',
-      1 => 1612788660,
+      1 => 1612954860,
       2 => 'file',
     ),
   ),
@@ -20,7 +20,7 @@ if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   array (
   ),
 ),false)) {
-function content_602134451f2948_78810374 (Smarty_Internal_Template $_smarty_tpl) {
+function content_6023bceea9d1a7_49215175 (Smarty_Internal_Template $_smarty_tpl) {
 ?><!DOCTYPE html>
 <html lang="en">
 <head>
@@ -95,12 +95,18 @@ function content_602134451f2948_78810374 (Smarty_Internal_Template $_smarty_tpl)
 
 
   </div>
-  <div id="calender"><?php echo $_smarty_tpl->tpl_vars['calender']->value;?>
+
+  <div class="calender_container">
+    <div id="calender"><?php echo $_smarty_tpl->tpl_vars['calender']->value;?>
 </div>
-  <div id="calender_option"><?php echo $_smarty_tpl->tpl_vars['room_select']->value;?>
+    <div id="calender_option"><?php echo $_smarty_tpl->tpl_vars['room_select']->value;?>
 <br><br><?php echo $_smarty_tpl->tpl_vars['month_buttons']->value;?>
 </div>
+    <div id="start_date"></div><br>
+    <div id="end_date"></div><br>
+    <div id="date_error"></div>
 
+  </div>
 
 </body>
 </html><?php }

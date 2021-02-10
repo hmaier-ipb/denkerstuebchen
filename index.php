@@ -2,7 +2,7 @@
 //starting a session to save a the language form $_GET["lang"]
 session_start();
 
-require("D:/inetpub/Smarty/libs/Smarty.class.php");
+require("../Smarty/libs/Smarty.class.php");
 require("include/classes/input_form.php");
 require("include/classes/calender.class.php");
 global $vars;
@@ -10,7 +10,7 @@ global $vars;
 //namespaces
 
 
-//creating input_form, calender & smarty
+//creating content, calender & smarty
 $form = new input_form();
 $cal = new calender();
 $smarty_object = new Smarty();
@@ -20,11 +20,13 @@ $smarty_object->right_delimiter = '}-->';
 
 if (isset($_POST["action"])) {
   switch ($_POST["action"]) {
+
     case "form-data": //converting received form-data and send it to a receiver "bibliothek@ipb-halle.de"
       $form->send_email();
-      print("email send successfully");
+      print(json_encode("email send successfully"));
       break;
-    case "get-lang": //any $_GET["lang"] input else except "de" gives english output
+
+    case "get-lang": //choosing the language for the error messages
       $_SESSION["lang"] == "de" ? $output = "de" : $output = "en";
       print(json_encode($output));
       break;
@@ -42,32 +44,32 @@ if (isset($_POST["action"])) {
       break;
 
     case "next_month"://next month pressed
-        error_log($_SESSION["lang"]);
       $next_month = strtotime("+1 Month",$_SESSION["displayed_month"]);
       print(json_encode($cal->create_calender($next_month,$_SESSION["lang"],$_SESSION["room_number"])));
       $_SESSION["displayed_month"] = $next_month;//$setting a new current time
       break;
 
-    case "room_select":
+    case "room_select"://
       $room = $_POST["room"];
       $_SESSION["room_number"] = $room;
-      print(json_encode($cal->create_calender($_SESSION["displayed_month"],$_SESSION["lang"],$room)));
+      $output = json_encode($cal->create_calender($_SESSION["displayed_month"],$_SESSION["lang"],$room));
+      print($output);
       break;
-
+    case "submit_dates":
+      $start_date = $_POST["start_date"];
+      $end_date = $_POST["end_date"];
+      $message = $form->compare_dates($start_date,$end_date,$_SESSION["lang"]);
+      print(json_encode($message));
+      break;
     default:
       print("invalid action");
   }
 }
 
 
-
-if (isset($_GET["lang"])) { //gets executed when page is loaded
-
+if (isset($_GET["lang"])) {
   $_SESSION["lang"] = $_GET["lang"];
-
   $lang_array = $form->language($_SESSION["lang"]);
-
-  //error_log($_SESSION["lang"]);
 
   //**********************
   //CREATING THE CALENDER
@@ -77,7 +79,7 @@ if (isset($_GET["lang"])) { //gets executed when page is loaded
 
   $_SESSION["displayed_month"] = $current_time;
 
-  $cal_vars = $cal->create_calender($_SESSION["displayed_month"],$_SESSION["lang"],1); //passing the current unix time and the language into the calender function
+  $cal_vars = $cal->create_calender($_SESSION["displayed_month"],$_SESSION["lang"]); //passing the current unix time and the language into the calender function
 
   //***************************
   //CREATING CALENDER-SELECTION
@@ -109,5 +111,4 @@ if (isset($_GET["lang"])) { //gets executed when page is loaded
 
   $smarty_object->assign($vars);
   $smarty_object->display("index.html");
-  //error_log($_SESSION["lang"]);
 }

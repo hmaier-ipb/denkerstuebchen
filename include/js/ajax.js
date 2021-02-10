@@ -21,8 +21,10 @@ var lang;
 var img;
 var selected_room;
 var calender;
-var month_days;
-
+var start_date;
+var end_date;
+var start_day;
+var end_day;
 
 function init(){
   send_btn = $$("send_btn")[0];
@@ -31,8 +33,7 @@ function init(){
   phone = $("phone-input");
   email = $("email-input");
   output = $("output");
-  calender = $$("calender")[0];
-  month_days = $$("current_month_days");
+  calender = $("calender");
   action = "get-lang";
   send_info("action="+action);
   initEventListeners();
@@ -41,6 +42,11 @@ function init(){
 function validate(input,pattern){
   let reg = new RegExp(pattern);
   return reg.test(input.value);
+}
+
+
+function get_day(input,pattern){
+  return input.match(pattern);
 }
 
 function initEventListeners(){
@@ -65,6 +71,9 @@ function initEventListeners(){
       "&department="+department+
       "&status="+status_input;
 
+    //start date & end date
+    //room number
+
 
     //send_info() here for debugging the email
 
@@ -86,7 +95,7 @@ function initEventListeners(){
     }
 
     if(error.length>0){
-    switch(lang){
+    switch(lang){ //choosing the error messages
       case "de":
         if(error.length <= 1){
           output.innerHTML = "Das Feld <b>"+error[0]+"</b> wurde falsch/nicht ausgefüllt.";
@@ -169,6 +178,9 @@ function initEventListeners(){
         default:
           output.innerHTML = "<u>Your reservation has been send out successfully.</u>";
       }
+      //****************************
+      //SENDING OUT THE RESERVATION
+      //****************************
       send_info(params);
       output.style.color = "#277e34";
       img = $$("img");
@@ -238,7 +250,6 @@ function initEventListeners(){
     action = "room_select";
     params ="action="+action+"&room="+selected_room;
     send_info(params);
-
   })
 
   $("prev_month").addEventListener("click",e => {
@@ -259,15 +270,48 @@ function initEventListeners(){
     send_info(params);
   })
 
-  for(var i = 0; i<month_days.length; i++){
-    month_days[i].addEventListener("click", e =>{
-      console.log(e.target.id);
-    })
+  for(var i = 0;i<$$("current_month").length;i++){
+    $$("current_month")[i].addEventListener("click", send_date)
   }
 
 }
 
+function send_date(e){
+  
+  if(typeof start_date === typeof undefined){
+    start_date = e.target.id;
+    switch (lang){
+      case "de":
+        $("start_date").innerHTML = "Startdatum: ";
+        break;
+      default:
+        $("start_date").innerHTML = "Start Date: ";
+    }
 
+    $("date_error").innerHTML = "";
+    $("start_date").innerHTML += start_date;
+  }else{
+    end_date = e.target.id;
+    switch (lang){
+      case "de":
+        $("end_date").innerHTML = "Enddatum: ";
+        break;
+      default:
+        $("end_date").innerHTML = "End Date: ";
+    }
+
+    $("end_date").innerHTML += end_date;
+    action = "submit_dates";
+    params = "action="+action+"&start_date="+start_date+"&end_date="+end_date;
+    send_info(params);
+  }
+
+  if(typeof start_date !== typeof undefined && typeof end_date !== typeof undefined){ //when both vars are defined
+    start_date = undefined;
+    end_date = undefined;
+  }
+
+}
 
 
 
@@ -333,6 +377,15 @@ function setOutput() {
         case "next_month":
           action = "";
           calender.innerHTML = json_response; // the DIV surrounding the calender
+          break;
+        case "submit_dates":
+          action = "";
+
+          if(typeof json_response !== typeof null){
+            $("start_date").innerHTML = "";
+            $("end_date").innerHTML = "";
+            $("date_error").innerHTML = json_response;
+          }
           break;
         default:
           output.innerHTML = "INVALID ACTION";
