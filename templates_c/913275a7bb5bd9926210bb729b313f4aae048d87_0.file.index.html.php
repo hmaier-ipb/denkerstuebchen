@@ -1,18 +1,18 @@
 <?php
-/* Smarty version 3.1.36, created on 2021-02-08 17:29:00
+/* Smarty version 3.1.36, created on 2021-02-11 09:28:09
   from 'D:\inetpub\www\06\templates\index.html' */
 
 /* @var Smarty_Internal_Template $_smarty_tpl */
 if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   'version' => '3.1.36',
-  'unifunc' => 'content_602174dca5f1d2_03715605',
+  'unifunc' => 'content_6024f8a94ba143_55988568',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
     '913275a7bb5bd9926210bb729b313f4aae048d87' => 
     array (
       0 => 'D:\\inetpub\\www\\06\\templates\\index.html',
-      1 => 1612805339,
+      1 => 1613035682,
       2 => 'file',
     ),
   ),
@@ -20,7 +20,7 @@ if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   array (
   ),
 ),false)) {
-function content_602174dca5f1d2_03715605 (Smarty_Internal_Template $_smarty_tpl) {
+function content_6024f8a94ba143_55988568 (Smarty_Internal_Template $_smarty_tpl) {
 ?><!DOCTYPE html>
 <html lang="en">
 <head>
@@ -40,15 +40,6 @@ function content_602174dca5f1d2_03715605 (Smarty_Internal_Template $_smarty_tpl)
 </h3><br>
 <div class="instruction"><?php echo $_smarty_tpl->tpl_vars['instruction']->value;?>
 </div>
-
-  <div class="calender_container">
-    <div class="calender"><?php echo $_smarty_tpl->tpl_vars['calender']->value;?>
-</div>
-    <div class="calender_option"><?php echo $_smarty_tpl->tpl_vars['room_select']->value;?>
-<br><br><?php echo $_smarty_tpl->tpl_vars['month_buttons']->value;?>
-</div>
-  </div>
-
   <div class="order-info">
 
     <span class="name"><?php echo $_smarty_tpl->tpl_vars['name']->value;?>
@@ -97,15 +88,28 @@ function content_602174dca5f1d2_03715605 (Smarty_Internal_Template $_smarty_tpl)
       <br>
 
     </div>
+    <div class="selected_dates">
+      <div id="start_date"></div><br>
+      <div id="end_date"></div><br>
+      <div id="date_error"></div>
+    </div>
 
     <div id="output" style="display:none"><?php echo $_smarty_tpl->tpl_vars['output']->value;?>
+</div><br>
+
+
+  </div>
+
+  <div class="calender_container">
+    <div id="calender"><?php echo $_smarty_tpl->tpl_vars['calender']->value;?>
+</div>
+    <div id="calender_option"><?php echo $_smarty_tpl->tpl_vars['room_select']->value;?>
+<br><br><?php echo $_smarty_tpl->tpl_vars['month_buttons']->value;?>
 </div>
 
 
 
   </div>
-
-
 
 </body>
 </html><?php }

@@ -2,7 +2,7 @@
 //starting a session to save a the language form $_GET["lang"]
 session_start();
 
-require("../Smarty/libs/Smarty.class.php");
+require("D:/inetpub/Smarty/libs/Smarty.class.php");
 require("include/classes/input_form.php");
 require("include/classes/calender.class.php");
 global $vars;

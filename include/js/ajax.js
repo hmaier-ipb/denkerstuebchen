@@ -7,7 +7,7 @@ var ajaxObj;
 var action;
 var error_message;
 var url;
-var output1;
+var output;
 var output2;
 
 var send_btn;
@@ -32,7 +32,7 @@ function init(){
   surname = $("surname-input");
   phone = $("phone-input");
   email = $("email-input");
-  output1 = $("output1");
+  output = $("output");
   calender = $("calender");
   output2 = $("output2");
   action = "get-lang";
@@ -78,10 +78,6 @@ function initEventListeners(){
     //start date & end date
     //room number
 
-
-    //send_info() here for debugging the email
-
-
     let error = [];
     //get terms, where an error occurred, from the webpage
     // removing the colon from the end of each string
@@ -99,105 +95,103 @@ function initEventListeners(){
     }
 
 
-
-
     if(error.length>0){
     switch(lang){ //choosing the error messages
       case "de":
         if(error.length <= 1){
-          output1.innerHTML = "Das Feld <b>"+error[0]+"</b> wurde falsch/nicht ausgefüllt.";
+          output.innerHTML = "Das Feld <b>"+error[0]+"</b> wurde falsch/nicht ausgefüllt.";
         }else{
 
-          output1.innerHTML = "Die Felder ";
-          console.log(output1);
+          output.innerHTML = "Die Felder ";
+          console.log(output);
         for(let i = 0;i<error.length;i++) {
           if (i === error.length - 1) {
-            output1.innerHTML += "and <b>" + error[i] + "</b>";
+            output.innerHTML += "and <b>" + error[i] + "</b>";
           }
           if (i === error.length - 2) {
-            output1.innerHTML += "<b>" + error[i] + "</b> ";
+            output.innerHTML += "<b>" + error[i] + "</b> ";
           }
           if (i < error.length - 2) {
-            output1.innerHTML += "<b>" + error[i] + "</b>, ";
+            output.innerHTML += "<b>" + error[i] + "</b>, ";
           }
         }
-        output1.innerHTML += " wurden nicht/falsch ausgefüllt."
+        output.innerHTML += " wurden nicht/falsch ausgefüllt."
 
         }
-        output1.style.display = "block";
+        output.style.display = "block";
         break;
       case "en":
         if(error.length <= 1){
-          output1.innerHTML = "The field <b>"+error[0]+"</b> has been filled out incorrectly";
+          output.innerHTML = "The field <b>"+error[0]+"</b> has been filled out incorrectly";
         }else {
-          output1.innerHTML = "The fields ";
+          output.innerHTML = "The fields ";
           for (let i = 0; i < error.length; i++) {
 
             if (i === error.length - 1) {
-              output1.innerHTML += "and <b>" + error[i] + "</b>";
+              output.innerHTML += "and <b>" + error[i] + "</b>";
             }
             if (i === error.length - 2) {
-              output1.innerHTML += "<b>" + error[i] + "</b> ";
+              output.innerHTML += "<b>" + error[i] + "</b> ";
             }
             if (i < error.length - 2) {
-              output1.innerHTML += "<b>" + error[i] + "</b>, ";
+              output.innerHTML += "<b>" + error[i] + "</b>, ";
             }
           }
-          output1.innerHTML += " have been filled out incorrectly."
+          output.innerHTML += " have been filled out incorrectly."
 
         }
 
-        output1.style.display = "block";
+        output.style.display = "block";
         break;
       default:
         if(error.length <= 1){
-          output1.innerHTML = "The field <b>"+error[0]+"</b> has been filled out incorrectly";
+          output.innerHTML = "The field <b>"+error[0]+"</b> has been filled out incorrectly";
         }else {
-          output1.innerHTML = "The fields ";
+          output.innerHTML = "The fields ";
           for (let i = 0; i < error.length; i++) {
 
             if (i === error.length - 1) {
-              output1.innerHTML += "and <b>" + error[i] + "</b>";
+              output.innerHTML += "and <b>" + error[i] + "</b>";
             }
             if (i === error.length - 2) {
-              output1.innerHTML += "<b>" + error[i] + "</b> ";
+              output.innerHTML += "<b>" + error[i] + "</b> ";
             }
             if (i < error.length - 2) {
-              output1.innerHTML += "<b>" + error[i] + "</b>, ";
+              output.innerHTML += "<b>" + error[i] + "</b>, ";
             }
           }
-          output1.innerHTML += " have been filled out incorrectly."
+          output.innerHTML += " have been filled out incorrectly."
 
         }
 
-        output1.style.display = "block";
+        output.style.display = "block";
         break;
       }
 
 
       //changing color of send button
-      output1.style.color = "#FF2635";
+      output.style.color = "#FF2635";
     }else{
       switch(lang){
         case "de":
-          output1.innerHTML = "<u>Ihre Anfrage wurde erfolgreich versendet.</u>";
+          output.innerHTML = "<u>Ihre Anfrage wurde erfolgreich versendet.</u>";
           break;
         case "eng":
-          output1.innerHTML = "<u>Your reservation has been send out successfully.</u>";
+          output.innerHTML = "<u>Your reservation has been send out successfully.</u>";
           break;
         default:
-          output1.innerHTML = "<u>Your reservation has been send out successfully.</u>";
+          output.innerHTML = "<u>Your reservation has been send out successfully.</u>";
       }
       //****************************
       //SENDING OUT THE RESERVATION
       //****************************
       send_info(params);
-      output1.style.color = "#277e34";
+      output.style.color = "#277e34";
       img = $$("img");
       for(let i = 0;i<img.length;i++){
         img[i].style.display = "none";
       }
-      output1.style.display = "block";
+      output.style.display = "block";
       firstname.value = null;
       surname.value = null;
       phone.value = null;
@@ -407,7 +401,7 @@ function setOutput() {
           }
           break;
         default:
-          output1.innerHTML = "INVALID ACTION";
+          output.innerHTML = "INVALID ACTION";
           break;
       }
 
