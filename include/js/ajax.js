@@ -5,10 +5,9 @@ function $$ (class_name) {return document.getElementsByClassName(class_name);}
 var params;
 var ajaxObj;
 var action;
-var error_message;
 var url;
 var output;
-var output2;
+
 
 var send_btn;
 var firstname;
@@ -46,23 +45,14 @@ function validate(input,pattern){
 }
 
 
-function get_day(input,pattern){
-  return input.match(pattern);
-}
-
 function initEventListeners(){
 
   send_btn.addEventListener("click", function (){
-
     action = "form-data";
     department = $("department-input").value;
     radio_buttons = document.getElementsByName("status");
     //console.log(radio_buttons);
-    for(let i = 0;i<radio_buttons.length;i++){
-      if(radio_buttons[i].checked){
-        status_input = radio_buttons[i].value;
-      }
-    }
+    for(let i = 0;i<radio_buttons.length;i++){if(radio_buttons[i].checked){status_input = radio_buttons[i].value;}}
     params =
       "action="+action+
       "&name="+firstname.value+
@@ -74,134 +64,12 @@ function initEventListeners(){
       "&start_date="+start_date+
       "&end_date="+end_date;
 
-
-    //start date & end date
-    //room number
-
-    let error = [];
-    //get terms, where an error occurred, from the webpage
-    // removing the colon from the end of each string
-    if(validate(firstname,/^[A-Za-z]{2,}$/)===false){
-      error.push($$("name")[0].innerHTML.replace(":",""));
-    }
-    if(validate(surname,/^[A-Za-z]{3,}$/)===false){
-      error.push($$("surname")[0].innerHTML.replace(":",""));
-    }
-    if(validate(phone,/^\d{4,}$/g)===false){
-      error.push($$("phone")[0].innerHTML.replace(":",""));
-    }
-    if(validate(email,/(\w+|\w+.\w+){3,}@(ipb-halle.de)/)===false){
-      error.push($$("email")[0].innerHTML.replace(":",""));
-    }
-
-
-    if(error.length>0){
-    switch(lang){ //choosing the error messages
-      case "de":
-        if(error.length <= 1){
-          output.innerHTML = "Das Feld <b>"+error[0]+"</b> wurde falsch/nicht ausgefüllt.";
-        }else{
-
-          output.innerHTML = "Die Felder ";
-          console.log(output);
-        for(let i = 0;i<error.length;i++) {
-          if (i === error.length - 1) {
-            output.innerHTML += "and <b>" + error[i] + "</b>";
-          }
-          if (i === error.length - 2) {
-            output.innerHTML += "<b>" + error[i] + "</b> ";
-          }
-          if (i < error.length - 2) {
-            output.innerHTML += "<b>" + error[i] + "</b>, ";
-          }
-        }
-        output.innerHTML += " wurden nicht/falsch ausgefüllt."
-
-        }
-        output.style.display = "block";
-        break;
-      case "en":
-        if(error.length <= 1){
-          output.innerHTML = "The field <b>"+error[0]+"</b> has been filled out incorrectly";
-        }else {
-          output.innerHTML = "The fields ";
-          for (let i = 0; i < error.length; i++) {
-
-            if (i === error.length - 1) {
-              output.innerHTML += "and <b>" + error[i] + "</b>";
-            }
-            if (i === error.length - 2) {
-              output.innerHTML += "<b>" + error[i] + "</b> ";
-            }
-            if (i < error.length - 2) {
-              output.innerHTML += "<b>" + error[i] + "</b>, ";
-            }
-          }
-          output.innerHTML += " have been filled out incorrectly."
-
-        }
-
-        output.style.display = "block";
-        break;
-      default:
-        if(error.length <= 1){
-          output.innerHTML = "The field <b>"+error[0]+"</b> has been filled out incorrectly";
-        }else {
-          output.innerHTML = "The fields ";
-          for (let i = 0; i < error.length; i++) {
-
-            if (i === error.length - 1) {
-              output.innerHTML += "and <b>" + error[i] + "</b>";
-            }
-            if (i === error.length - 2) {
-              output.innerHTML += "<b>" + error[i] + "</b> ";
-            }
-            if (i < error.length - 2) {
-              output.innerHTML += "<b>" + error[i] + "</b>, ";
-            }
-          }
-          output.innerHTML += " have been filled out incorrectly."
-
-        }
-
-        output.style.display = "block";
-        break;
-      }
-
-
-      //changing color of send button
-      output.style.color = "#FF2635";
-    }else{
-      switch(lang){
-        case "de":
-          output.innerHTML = "<u>Ihre Anfrage wurde erfolgreich versendet.</u>";
-          break;
-        case "eng":
-          output.innerHTML = "<u>Your reservation has been send out successfully.</u>";
-          break;
-        default:
-          output.innerHTML = "<u>Your reservation has been send out successfully.</u>";
-      }
-      //****************************
-      //SENDING OUT THE RESERVATION
-      //****************************
-      send_info(params);
-      output.style.color = "#277e34";
-      img = $$("img");
-      for(let i = 0;i<img.length;i++){
-        img[i].style.display = "none";
-      }
-      output.style.display = "block";
-      firstname.value = null;
-      surname.value = null;
-      phone.value = null;
-      email.value = "@ipb-halle.de";
-      start_date = "";
-      $("start_date").innerHTML = "";
-      end_date = "";
-      $("end_date").innerHTML = "";
-    }
-  })
+    //****************************
+    //SENDING OUT THE RESERVATION
+    //****************************
+    send_info(params);
+    console.log("form data send to php");
+    })
 
 
   //checking the input of the firstname on keyup
@@ -282,11 +150,16 @@ function initEventListeners(){
 
 function td_listener(){ // EVENT LISTENER FOR SINGLE TABLE CELLS
   for(var i = 0;i<$$("current_month").length;i++){ //current_month -> table cells this month
-    $$("current_month")[i].addEventListener("click", send_date)
+    $$("current_month")[i].addEventListener("click", set_dates)
   }
 }
 
-function send_date(e){
+function set_dates(e){
+
+  if(typeof start_date !== typeof undefined && typeof end_date !== typeof undefined){ //when both vars are defined
+    start_date = undefined;
+    end_date = undefined;
+  }
 
   if(typeof start_date === typeof undefined){
     start_date = e.target.id;
@@ -300,6 +173,7 @@ function send_date(e){
 
     $("date_error").innerHTML = "";
     $("start_date").innerHTML += start_date;
+    $("end_date").innerHTML = "";
   }else{
     end_date = e.target.id;
     switch (lang){
@@ -309,18 +183,11 @@ function send_date(e){
       default:
         $("end_date").innerHTML = "End Date: ";
     }
-
     $("end_date").innerHTML += end_date;
     action = "submit_dates";
     params = "action="+action+"&start_date="+start_date+"&end_date="+end_date;
     send_info(params);
   }
-
-  if(typeof start_date !== typeof undefined && typeof end_date !== typeof undefined){ //when both vars are defined
-    start_date = undefined;
-    end_date = undefined;
-  }
-
 }
 
 
@@ -354,19 +221,37 @@ function send_info(parameters) {
 function setOutput() {
   //receiving output form php as json
   if (ajaxObj.readyState === 4) {
-    //console.log(ajaxObj.responseText);
+    console.log(ajaxObj.responseText);
     if (ajaxObj.status === 200) {
       try {
         json_response = JSON.parse(ajaxObj.responseText);
       } catch (e) {
-        //console.log("Ungültige Daten. Kein JSON String!");
-        //console.log(ajaxObj.responseText);
+        console.log("Ungültige Daten. Kein JSON String!");
+        console.log(ajaxObj.responseText);
         return false;
       }
       switch (action) {
         case "form-data":
+
+          console.log("form-data received from php")
           action = "";
-          $("output").innerText = json_response[0];
+          $("output").innerText = json_response;
+          output.style.color = "#277e34";
+          img = $$("img");
+          for(let i = 0;i<img.length;i++){img[i].style.display = "none";} // disappearing green checks
+          output.style.display = "block";
+          //resetting form values
+          firstname.value = null;
+          surname.value = null;
+          phone.value = null;
+          email.value = "@ipb-halle.de";
+          //resetting
+          start_date = "";
+          end_date = "";
+          $("start_date").innerHTML = "";
+          $("end_date").innerHTML = "";
+
+
           break;
         case "get-lang":
           lang = json_response;

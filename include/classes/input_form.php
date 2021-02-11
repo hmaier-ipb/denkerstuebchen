@@ -163,6 +163,10 @@ class input_form
     return $output;
   }
 
+  function validation(){
+
+  }
+
 
 
 

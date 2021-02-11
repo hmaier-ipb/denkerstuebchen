@@ -22,8 +22,10 @@ if (isset($_POST["action"])) {
   switch ($_POST["action"]) {
 
     case "form-data": //converting received form-data and send it to a receiver "bibliothek@ipb-halle.de"
-      $form->send_email();
-      print(json_encode("email send successfully"));
+      $form->validation();
+      print(json_encode("form-data"));
+      //$form->send_email();
+      //print(json_encode("email send successfully"));
       break;
 
     case "get-lang": //choosing the language for the error messages
