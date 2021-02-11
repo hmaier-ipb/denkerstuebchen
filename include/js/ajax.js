@@ -23,6 +23,8 @@ var selected_room;
 var calender;
 var start_date;
 var end_date;
+var start_date_output;
+var end_date_output;
 
 
 function init(){
@@ -33,7 +35,8 @@ function init(){
   email = $("email-input");
   output = $("output");
   calender = $("calender");
-  output2 = $("output2");
+  start_date_output = $("start_date");
+  end_date_output = $("end_date");
   action = "get-lang";
   send_info("action="+action);
   initEventListeners();
@@ -51,8 +54,8 @@ function initEventListeners(){
     action = "form-data";
     department = $("department-input").value;
     radio_buttons = document.getElementsByName("status");
-    //console.log(radio_buttons);
     for(let i = 0;i<radio_buttons.length;i++){if(radio_buttons[i].checked){status_input = radio_buttons[i].value;}}
+
     params =
       "action="+action+
       "&name="+firstname.value+
@@ -155,7 +158,9 @@ function td_listener(){ // EVENT LISTENER FOR SINGLE TABLE CELLS
 }
 
 function set_dates(e){
-
+  //if color is not red, execute the following code
+  //else date_error.innerHTML = "room is occupied"
+  //
   if(typeof start_date !== typeof undefined && typeof end_date !== typeof undefined){ //when both vars are defined
     start_date = undefined;
     end_date = undefined;
@@ -165,25 +170,25 @@ function set_dates(e){
     start_date = e.target.id;
     switch (lang){
       case "de":
-        $("start_date").innerHTML = "Startdatum: ";
+        start_date_output.innerHTML = "Startdatum: ";
         break;
       default:
-        $("start_date").innerHTML = "Start Date: ";
+        start_date_output.innerHTML = "Start Date: ";
     }
-
     $("date_error").innerHTML = "";
-    $("start_date").innerHTML += start_date;
-    $("end_date").innerHTML = "";
+    start_date_output.innerHTML += start_date;
+    end_date_output.innerHTML = "";
+
   }else{
     end_date = e.target.id;
     switch (lang){
       case "de":
-        $("end_date").innerHTML = "Enddatum: ";
+        end_date_output.innerHTML = "Enddatum: ";
         break;
       default:
-        $("end_date").innerHTML = "End Date: ";
+        end_date_output.innerHTML = "End Date: ";
     }
-    $("end_date").innerHTML += end_date;
+    end_date_output.innerHTML += end_date;
     action = "submit_dates";
     params = "action="+action+"&start_date="+start_date+"&end_date="+end_date;
     send_info(params);
@@ -260,6 +265,7 @@ function setOutput() {
         case "room_select":
           action = "";
           calender.innerHTML = json_response; // the DIV surrounding the calender
+          td_listener();
           break;
         case "prev_month":
           action = "";

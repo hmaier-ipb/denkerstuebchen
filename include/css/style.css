@@ -4,6 +4,10 @@
   box-sizing: border-box; /*bestimmt worauf sich Abmessungen beziehen*/
 }
 
+body{
+  padding: 2rem;
+}
+
 .order-info{
   font-size: 1rem;
   font-family: Arial, serif;
@@ -36,8 +40,8 @@
 .btn{grid-area:btn}
 .selected_dates{grid-area:selected-dates}
 #output{grid-area:output;text-align: center;padding: 2rem;}
-h3{padding-left: 2rem;padding-top: 1rem;} /*title*/
-.instruction{padding-left:2rem;}
+
+
 
 
 
@@ -89,4 +93,19 @@ select{
 #img2{grid-area:img2}
 #img3{grid-area:img3}
 #img4{grid-area:img4}
+
+
+/*calender styling*/
+.calender_container{
+  width: 100%;
+}
+#calender table{
+  width: 100%;
+}
+#calender table tr{
+  height: 2rem;
+}
+#calender table td{
+  text-align: center;
+}
 

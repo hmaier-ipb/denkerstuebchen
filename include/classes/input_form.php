@@ -151,19 +151,27 @@ class input_form
     $start = strtotime($start);
     $end = strtotime($end);
 
-    error_log($start);
-    error_log($end);
+    /*error_log($start);
+    error_log($end);*/
 
     if($start > $end){
       $language == "de" ? $output = "Enddatum kann nicht kleiner als Startdatum sein.": $output = "End Date cannot be smaller than Start Date.";
     }else{
       $output = null;
     }
-    error_log(json_encode($output));
+    //error_log(json_encode($output));
     return $output;
   }
 
   function validation(){
+    $name = $_POST["name"];
+    $surname = $_POST["surname"];
+    $phone = $_POST["phone"];
+    $email = $_POST["email"];
+    $dep = $_POST["department"];
+    $status = $_POST["status"];
+    $start_date = $_POST["start_date"];
+    $end_date = $_POST["end_date"];
 
   }
 
