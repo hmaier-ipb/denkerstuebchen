@@ -44,7 +44,7 @@ class calender extends db_denkerstuebchen
 
   function create_calender($current_time,$language,$room_number=1): string
   {
-
+    $_SESSION["room_number"] = $room_number;
     $prev_month = strtotime("-1 Month",$current_time); //unix timestamp for the previous month from today
     $next_month = strtotime("+1 Month",$current_time); //unix timestamp for the next month from today
 
@@ -94,7 +94,7 @@ class calender extends db_denkerstuebchen
     //**********************
     $calender_string = "<p>" . $current_month. " " .date("Y",$current_time) . "</p>"; //current month
     $calender_string .= "<p>" . $room . " " . $room_number . "</p>";
-    $calender_string .= "<table class='calender'>"; // calender string which contains the HTML
+    $calender_string .= "<table class='calender_table'>"; // calender string which contains the HTML
 
     //WEEKDAYS HEADER
     $calender_string .= "<tr>";
@@ -149,18 +149,17 @@ class calender extends db_denkerstuebchen
         $calender_string .= "<td class='next_month' style='background-color: #666666'>$days_next_month</td>";//table cells
         $days_next_month +=1;
       }
-      $calender_string .= "</tr>";//closing the table
-
+      $calender_string .= "</tr>";//closing the last row
     }
 
-
-
-    $calender_string .= "</table>";
+    $calender_string .= "</table>";//closing the table
 
     return $calender_string."<br>";
   }
 
   function set_color($date){
+
+    // TODO: LOADING THE DATABASE TO CHECK THE OCCUPATION STATE
 
     $db_start_date = "0";// search in database
     $db_end_date = "0";// search in database

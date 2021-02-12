@@ -1,14 +1,18 @@
 <?php
 
+require_once ("include/classes/db_denkerstuebchen.class.php");
 
-class input_form
+class input_form extends db_denkerstuebchen
 {
 
 
+  /**
+   * @var string[][]
+   */
+  public array $lang_array;
 
-  function language($l){
-    //array for english and german terms
-    $language = [
+  function __construct(){
+    $this->lang_array = [
       ["Gast","Guest"],
       ["Mitarbeiter", "Employee"],
       ["Vorname","Name"],
@@ -21,25 +25,21 @@ class input_form
       ["Geben Sie ihre Daten, ein um ein Denkerstübchen zu reservieren","Enter your credentials to reserve a thinkers-room"],
       ["Ungültige Eingabe", "Invalid Input!"],
       ["de","eng"]
-
     ];
+  }
+
+  function language($l){
+    //array for english and german terms
 
     $output = [];
-    $language_length = count($language)-1;
+    $language_length = count($this->lang_array)-1;
     switch($l){
       case "de":
-
-        for($i=0;$i<=$language_length;$i++){$output[] = $language[$i][0];}
-
-        break;
-      case "eng";
-
-        for($i=0;$i<=$language_length;$i++){$output[] = $language[$i][1];}
-
+        for($i=0;$i<=$language_length;$i++){$output[] = $this->lang_array[$i][0];}
         break;
       default:
         //returns english if no matching case is found
-        for($i=0;$i<=$language_length;$i++){$output[] = $language[$i][1];}
+        for($i=0;$i<=$language_length;$i++){$output[] = $this->lang_array[$i][1];}
 
     }
     //returns a language array which can be assigned for smarty
@@ -122,17 +122,14 @@ class input_form
     $m .= "</html>";
 
 
-
-
-
-    $message = "      
-      Name: " . $surname . "\r\n    
-      Vorame: " . $name . "\r\n
-      hausinterne Telefonnummer: " . $phone . "\r\n
-      hausinterne Email: " . $email . " \r\n
-      Abteilung: " . $department . "\r\n
-      Status: " . $status . "\r\n 
-      ";
+//    $message = "
+//      Name: " . $surname . "\r\n
+//      Vorame: " . $name . "\r\n
+//      hausinterne Telefonnummer: " . $phone . "\r\n
+//      hausinterne Email: " . $email . " \r\n
+//      Abteilung: " . $department . "\r\n
+//      Status: " . $status . "\r\n
+//      ";
 
     $headers = "From: " . "noreply@ipb-halle.de" . "\r\n";
     $headers .= "Reply-To: ". "hmaier@ipb-halle.de" . "\r\n";
@@ -150,11 +147,10 @@ class input_form
   function compare_dates($start,$end,$language){
     $start = strtotime($start);
     $end = strtotime($end);
+    // error_log(json_encode("Start Date ".$start));
+    // error_log(json_encode("End Date ".intval($end)));
 
-    /*error_log($start);
-    error_log($end);*/
-
-    if($start > $end){
+    if($start > $end && intval($end) !== 0){
       $language == "de" ? $output = "Enddatum kann nicht kleiner als Startdatum sein.": $output = "End Date cannot be smaller than Start Date.";
     }else{
       $output = null;
@@ -164,14 +160,125 @@ class input_form
   }
 
   function validation(){
+    $message = "";
+    $response = [];
+    $error = [];
+
     $name = $_POST["name"];
     $surname = $_POST["surname"];
     $phone = $_POST["phone"];
     $email = $_POST["email"];
-    $dep = $_POST["department"];
-    $status = $_POST["status"];
     $start_date = $_POST["start_date"];
     $end_date = $_POST["end_date"];
+
+    error_log(json_encode($start_date));
+    error_log(json_encode($end_date));
+
+    switch ($_SESSION["lang"]){
+      case "de":
+        for($i=2;$i<6;$i++){$used_lang[]= $this->lang_array[$i][0];}
+        $used_lang[] = "Start Datum";
+        $used_lang[] = "End Datum";
+        break;
+      default:
+        for($i=2;$i<6;$i++){$used_lang[]= $this->lang_array[$i][1];}
+        $used_lang[] = "Start Date";
+        $used_lang[] = "End Date";
+        break;
+    }
+
+    if(preg_match("/^[A-Za-z]{2,}$/",$name) == false){
+      $error[] = $used_lang[0];
+    }
+    if(preg_match("/^[A-Za-z]{2,}$/",$surname) == false){
+      $error[] = $used_lang[1];
+    }
+    if(preg_match("/^\d{4,}$/",$phone) == false){
+      $error[] = $used_lang[2];
+    }
+    if(preg_match("/(\w+|\w+.\w+){3,}@(ipb-halle.de)/",$email) == false){
+      $error[] = $used_lang[3];
+    }
+    if($start_date == "undefined"){
+      $error[] = $used_lang[4];
+    }
+    if($end_date == "undefined"){
+      $error[] = $used_lang[5];
+    }
+
+    $error_length = count($error);
+
+    if($error_length == 0){
+      switch ($_SESSION["lang"]){
+        case "de":
+          $message .= "Anfrage war erfolgreich!";
+          break;
+        default:
+          $message .= "Query has been successfully!";
+          break;
+      }
+      $response[] = $message;
+      $response[] = True;
+      $this->db_query();
+
+    }else{
+    //generating error message
+    switch ($_SESSION["lang"]){//choosing the language
+      case "de"://german
+
+        switch ($error_length){//building response depending number of error
+          case 1:
+            $message .= "Der Punkt <b>". $error[0]."</b> wurde nicht/falsch angegeben.";
+            break;
+          case 2:
+            $message .= "Die Punkte <b>". $error[0]. "</b> und <b>". $error[1] . "</b> wurden nicht/falsch angegeben.";
+            break;
+          default:// 3 or more errors
+            $message .= "Die Punkte ";
+            for($i=0;$i<$error_length;$i++){
+              if($i==$error_length-1){
+                $message .= "und <b>".$error[$i]."</b>";
+              }else{
+                $message .= "<b>". $error[$i] . "</b>, ";
+              }
+            }
+            $message .= " wurden nicht/falsch angegeben.";
+            break;
+        }
+      break;//closing german case
+        default:// opening english case
+          switch ($error_length){//building response depending number of error
+            case 1:
+              $message .= "The points <b>". $error[0]."</b> has not/falsely been specified.";
+              break;
+            case 2:
+              $message .= "The points <b>". $error[0]. "</b> and <b>". $error[1] . "</b> has not/falsely been specified.";
+              break;
+            default:// 3 or more errors
+              $message .= "The points ";
+              for($i=0;$i<$error_length;$i++){
+                if($i==$error_length-1){
+                  $message .= "and <b>".$error[$i]."</b>";
+                }else{
+                  $message .= "<b>". $error[$i] . "</b>, ";
+                }
+              }
+              $message .= " has not/falsely been specified.";
+              break;
+          }
+        break;//closing english case
+      }
+      $response[] = $message;
+      $response[] = False;
+    }
+
+    return $response;
+  }
+
+  //inserting values into the database
+
+  function db_query(){
+    // TODO: INSERTING THE GIVEN VALUES INTO THE DATABASE
 
   }
 

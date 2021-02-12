@@ -98,7 +98,7 @@ function initEventListeners(){
  //checking the input of the phone number
   $("phone-input").addEventListener("keyup", function(){
     //phone
-    if(validate(phone,/^\d{4,}$/g)){
+    if(validate(phone,/^\d{4,}$/)){
       $("img3").style.display = "flex";
     }else{
       $("img3").style.display = "none";
@@ -135,18 +135,21 @@ function initEventListeners(){
     action = "prev_month";
     params = "action="+action;
     send_info(params);
+    //console.log("prev_month pressed")
   })
 
   $("current_month").addEventListener("click",e => {
     action = "current_month";
     params = "action="+action;
     send_info(params);
+    //console.log("current_month pressed")
   })
 
   $("next_month").addEventListener("click",e => {
     action = "next_month";
     params = "action="+action;
     send_info(params);
+    //console.log("next_month pressed")
   })
   td_listener();
 }
@@ -179,6 +182,7 @@ function set_dates(e){
     start_date_output.innerHTML += start_date;
     end_date_output.innerHTML = "";
 
+
   }else{
     end_date = e.target.id;
     switch (lang){
@@ -189,12 +193,28 @@ function set_dates(e){
         end_date_output.innerHTML = "End Date: ";
     }
     end_date_output.innerHTML += end_date;
-    action = "submit_dates";
-    params = "action="+action+"&start_date="+start_date+"&end_date="+end_date;
-    send_info(params);
+
   }
+  // console.log("Start Date "+start_date);
+  // console.log("End Date "+end_date);
+  action = "submit_dates";
+  params = "action="+action+"&start_date="+start_date+"&end_date="+end_date;
+  send_info(params);
 }
 
+function reset_input_values(){
+  img = $$("img");
+  for(let i = 0;i<img.length;i++){img[i].style.display = "none";} // disappearing green checks
+  firstname.value = null;
+  surname.value = null;
+  phone.value = null;
+  email.value = "@ipb-halle.de";
+  //resetting
+  start_date = "";
+  end_date = "";
+  $("start_date").innerHTML = "";
+  $("end_date").innerHTML = "";
+}
 
 
 
@@ -226,7 +246,7 @@ function send_info(parameters) {
 function setOutput() {
   //receiving output form php as json
   if (ajaxObj.readyState === 4) {
-    console.log(ajaxObj.responseText);
+    //console.log(ajaxObj.responseText);
     if (ajaxObj.status === 200) {
       try {
         json_response = JSON.parse(ajaxObj.responseText);
@@ -237,26 +257,17 @@ function setOutput() {
       }
       switch (action) {
         case "form-data":
-
-          console.log("form-data received from php")
+          //console.log("form-data received from php")
+          //console.log(json_response);
           action = "";
-          $("output").innerText = json_response;
-          output.style.color = "#277e34";
-          img = $$("img");
-          for(let i = 0;i<img.length;i++){img[i].style.display = "none";} // disappearing green checks
+          if(json_response[1] === false){// validation found errors
+            output.style.color = "#DF171E";
+            $("output").innerHTML = json_response[0];
+          }else{                        // validation found no errors
+            output.style.color = "#277e34";
+            $("output").innerHTML = json_response[0];
+          }
           output.style.display = "block";
-          //resetting form values
-          firstname.value = null;
-          surname.value = null;
-          phone.value = null;
-          email.value = "@ipb-halle.de";
-          //resetting
-          start_date = "";
-          end_date = "";
-          $("start_date").innerHTML = "";
-          $("end_date").innerHTML = "";
-
-
           break;
         case "get-lang":
           lang = json_response;
@@ -284,7 +295,6 @@ function setOutput() {
           break;
         case "submit_dates":
           action = "";
-
           if(typeof json_response !== typeof null){
             $("start_date").innerHTML = "";
             $("end_date").innerHTML = "";

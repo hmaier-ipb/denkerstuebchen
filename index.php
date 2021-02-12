@@ -2,7 +2,7 @@
 //starting a session to save a the language form $_GET["lang"]
 session_start();
 
-require("D:/inetpub/Smarty/libs/Smarty.class.php");
+require("../Smarty/libs/Smarty.class.php");
 require("include/classes/input_form.php");
 require("include/classes/calender.class.php");
 global $vars;
@@ -22,8 +22,8 @@ if (isset($_POST["action"])) {
   switch ($_POST["action"]) {
 
     case "form-data": //converting received form-data and send it to a receiver "bibliothek@ipb-halle.de"
-      $form->validation();
-      print(json_encode("form-data"));
+      $response = $form->validation();
+      print(json_encode($response));
       //$form->send_email();
       //print(json_encode("email send successfully"));
       break;
@@ -34,6 +34,7 @@ if (isset($_POST["action"])) {
       break;
 
     case "prev_month": //prev month pressed
+      error_log("Prev month");
       $prev_month = strtotime("-1 Month",$_SESSION["displayed_month"]);
       print(json_encode($cal->create_calender($prev_month,$_SESSION["lang"],$_SESSION["room_number"])));
       $_SESSION["displayed_month"] = $prev_month;// setting a new current time
@@ -81,7 +82,7 @@ if (isset($_GET["lang"])) {
 
   $_SESSION["displayed_month"] = $current_time;
 
-  $cal_vars = $cal->create_calender($_SESSION["displayed_month"],$_SESSION["lang"]); //passing the current unix time and the language into the calender function
+  $cal_vars = $cal->create_calender($_SESSION["displayed_month"],$_SESSION["lang"],1); //passing the current unix time and the language into the calender function
 
   //***************************
   //CREATING CALENDER-SELECTION
