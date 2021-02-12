@@ -1,0 +1,47 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box; /*bestimmt worauf sich Abmessungen beziehen*/
+}
+
+
+.calender_container{
+    width: 100%;
+}
+#calender table{
+    width: 100%;
+}
+#calender table tr{
+    height: 2rem;
+}
+#calender table td{
+    text-align: center;
+}
+
+
+/*INTERNAL CALENDER STYLING*/
+#calender{
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr;
+    grid-template-rows:  0.5fr 2.5fr;
+    gap: 5px 5px;
+    grid-template-areas:
+    ". . room-month-year room-option . ."
+    "cal-table cal-table cal-table cal-table cal-table cal-table"
+    "prev-btn prev-btn  curr-btn curr-btn next-btn next-btn";
+
+}
+#calender{grid-area:calender}/*displayed calender month*/
+#prev_month{grid-area:prev-btn}/*previous month button*/
+#current_month{grid-area:curr-btn}/*current month button*/
+#next_month{grid-area:next-btn}/*next month button*/
+
+#room_selection_div{
+    grid-area:room-option;
+    text-align: center;
+}
+#room_month_year{
+    grid-area:room-month-year;
+    text-align: center;
+}
+#calender_table{grid-area: cal-table}

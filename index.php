@@ -2,13 +2,10 @@
 //starting a session to save a the language form $_GET["lang"]
 session_start();
 
-require("../Smarty/libs/Smarty.class.php");
+//require("../Smarty/libs/Smarty.class.php");
+require("D:/inetpub/Smarty/libs/Smarty.class.php");
 require("include/classes/input_form.php");
 require("include/classes/calender.class.php");
-global $vars;
-
-//namespaces
-
 
 //creating content, calender & smarty
 $form = new input_form();
@@ -20,7 +17,6 @@ $smarty_object->right_delimiter = '}-->';
 
 if (isset($_POST["action"])) {
   switch ($_POST["action"]) {
-
     case "form-data": //converting received form-data and send it to a receiver "bibliothek@ipb-halle.de"
       $response = $form->validation();
       print(json_encode($response));
@@ -34,7 +30,6 @@ if (isset($_POST["action"])) {
       break;
 
     case "prev_month": //prev month pressed
-      error_log("Prev month");
       $prev_month = strtotime("-1 Month",$_SESSION["displayed_month"]);
       print(json_encode($cal->create_calender($prev_month,$_SESSION["lang"],$_SESSION["room_number"])));
       $_SESSION["displayed_month"] = $prev_month;// setting a new current time
@@ -54,11 +49,11 @@ if (isset($_POST["action"])) {
 
     case "room_select"://
       $room = $_POST["room"];
-
       $_SESSION["room_number"] = $room;
       $output = json_encode($cal->create_calender($_SESSION["displayed_month"],$_SESSION["lang"],$_SESSION["room_number"]));
       print($output);
       break;
+
     case "submit_dates":
       $start_date = $_POST["start_date"];
       $end_date = $_POST["end_date"];
@@ -66,6 +61,7 @@ if (isset($_POST["action"])) {
       //TODO: CHECKING IF DATES ARE OCCUPIED
       print(json_encode($message));
       break;
+
     default:
       print("invalid action");
   }
@@ -86,13 +82,6 @@ if (isset($_GET["lang"])) {
 
   $cal_vars = $cal->create_calender($_SESSION["displayed_month"],$_SESSION["lang"],1); //passing the current unix time and the language into the calender function
 
-  //***************************
-  //CREATING CALENDER-SELECTION
-  //***************************
-
-
-  $month_button = $cal->month_buttons($_SESSION["lang"]);
-
   $vars = [
     "guest" => $lang_array[0],
     "employee" => $lang_array[1],
@@ -107,8 +96,7 @@ if (isset($_GET["lang"])) {
     "instruction" => $lang_array[9],
     "output" => $lang_array[10],
     "lang" => $lang_array[11],
-    "calender" => $cal_vars,
-    "month_buttons" => $month_button
+    "calender" => $cal_vars
 
   ];
 

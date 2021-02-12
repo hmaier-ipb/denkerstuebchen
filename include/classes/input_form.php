@@ -30,7 +30,6 @@ class input_form extends db_denkerstuebchen
 
   function language($l){
     //array for english and german terms
-
     $output = [];
     $language_length = count($this->lang_array)-1;
     switch($l){

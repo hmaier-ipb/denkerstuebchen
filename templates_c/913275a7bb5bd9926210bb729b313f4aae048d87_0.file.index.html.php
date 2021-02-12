@@ -1,18 +1,18 @@
 <?php
-/* Smarty version 3.1.36, created on 2021-02-11 11:36:45
+/* Smarty version 3.1.36, created on 2021-02-12 20:20:23
   from 'D:\inetpub\www\06\templates\index.html' */
 
 /* @var Smarty_Internal_Template $_smarty_tpl */
 if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   'version' => '3.1.36',
-  'unifunc' => 'content_602516cd0e1ee0_10937110',
+  'unifunc' => 'content_6026e307872c66_02512306',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
     '913275a7bb5bd9926210bb729b313f4aae048d87' => 
     array (
       0 => 'D:\\inetpub\\www\\06\\templates\\index.html',
-      1 => 1613043403,
+      1 => 1613160877,
       2 => 'file',
     ),
   ),
@@ -20,12 +20,13 @@ if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   array (
   ),
 ),false)) {
-function content_602516cd0e1ee0_10937110 (Smarty_Internal_Template $_smarty_tpl) {
+function content_6026e307872c66_02512306 (Smarty_Internal_Template $_smarty_tpl) {
 ?><!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <link rel="stylesheet" href="include/css/style.css" type="text/css">
+  <link rel="stylesheet" href="include/css/order_info_style.css" type="text/css">
+  <link rel="stylesheet" href="include/css/calender_container_style.css" type="text/css">
   <?php echo '<script'; ?>
  src="include/js/ajax.js"><?php echo '</script'; ?>
 >
@@ -42,11 +43,10 @@ function content_602516cd0e1ee0_10937110 (Smarty_Internal_Template $_smarty_tpl)
 </div>
 
   <div class="calender_container">
-    <div id="calender"><?php echo $_smarty_tpl->tpl_vars['calender']->value;?>
-</div>
-    <div id="calender_option"><?php echo $_smarty_tpl->tpl_vars['room_select']->value;?>
-<br><br><?php echo $_smarty_tpl->tpl_vars['month_buttons']->value;?>
-</div>
+    <div id="calender">
+      <?php echo $_smarty_tpl->tpl_vars['calender']->value;?>
+
+    </div>
   </div>
 
   <div class="order-info">
@@ -74,14 +74,13 @@ function content_602516cd0e1ee0_10937110 (Smarty_Internal_Template $_smarty_tpl)
 :</span>
 
     <select id="department-input" name="department">
-
       <?php echo $_smarty_tpl->tpl_vars['departments']->value;?>
 
     </select>
 
     <span class="status">Status:</span>
 
-    <button class="send_btn" id="btn"><b><?php echo $_smarty_tpl->tpl_vars['button']->value;?>
+    <button class="send_btn btn" id="btn"><b><?php echo $_smarty_tpl->tpl_vars['button']->value;?>
 </b></button>
 
     <div id="status-input">

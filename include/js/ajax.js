@@ -7,6 +7,7 @@ var ajaxObj;
 var action;
 var url;
 var output;
+var json_response;
 
 
 var send_btn;

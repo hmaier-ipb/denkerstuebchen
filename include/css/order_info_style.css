@@ -1,0 +1,97 @@
+
+
+body{
+  padding: 0 2rem 0 2rem;
+}
+
+.order-info{
+  font-size: 1rem;
+  font-family: Arial, serif;
+  padding-top: 2rem;
+  width: 100%;
+  display: grid;
+  grid-template-columns: 0.5fr 1fr 0.05fr;
+  grid-template-rows: 2em 2em 2em 2em 2em 2em 2em 2em 2em;
+  gap: 10px 20px;
+  grid-template-areas:
+    "name name-input img1"
+    "surname surname-input img2"
+    "tel tel-input img3"
+    "email email-input img4"
+    "dep dep-input ."
+    "status status-input ."
+    "selected-dates btn ."
+    ". output ."
+    ;
+}
+
+
+/*terms*/
+.name{grid-area:name}
+.surname{grid-area:surname}
+.dep{grid-area:dep}
+.phone{grid-area:tel}
+.email{grid-area:email}
+.status{grid-area:status}
+.btn{grid-area:btn}
+.selected_dates{grid-area:selected-dates}
+#output{grid-area:output;text-align: center;padding: 2rem;}
+
+
+/*inputs*/
+#name-input{grid-area:name-input}
+#surname-input{grid-area:surname-input}
+#phone-input{grid-area:tel-input}
+#email-input{grid-area:email-input}
+#department-input{grid-area:dep-input}
+#status-input{grid-area:status-input}
+#btn{grid-area:btn}
+
+.input{
+  border: 2px solid #eee;
+  border-radius: 10px;
+}
+
+select{
+  border: 2px solid #e2e2e2;
+  /*border-radius: 10px;*/
+  /*border-bottom-right-radius: unset;*/
+  /*border-top-right-radius: unset;*/
+  border-radius: 10px 0 0 10px;
+}
+
+.btn{
+  border: 2px solid #eee;
+  border-radius: 10px;
+  transition: 0.3s;
+}
+.btn:hover{
+  border: 2px solid #817D7D;
+}
+
+.btn:active{
+  transition: unset;
+  background-color: #192139;
+  color: #eee;
+}
+
+/*green checkmarks*/
+.order-info img{
+  justify-items: center;
+  align-self: center;
+  width: 25px;
+}
+#img1{grid-area:img1}
+#img2{grid-area:img2}
+#img3{grid-area:img3}
+#img4{grid-area:img4}
+
+
+
+/*CALENDER*/
+
+
+
+
+
+
