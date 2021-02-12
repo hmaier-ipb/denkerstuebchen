@@ -144,18 +144,20 @@ class input_form extends db_denkerstuebchen
 
   }
 
-  function compare_dates($start,$end,$language){
+  function check_dates($start,$end,$language){
+    $room = $_SESSION["room_number"];
     $start = strtotime($start);
     $end = strtotime($end);
     // error_log(json_encode("Start Date ".$start));
     // error_log(json_encode("End Date ".intval($end)));
+    //TODO: ASKING THE DATABASE IF DATE IS OCCUPIED
+    //TODO: ASKING THE DATABASE IF TIME-PERIOD BETWEEN TWO DATES IS OCCUPIED
 
-    if($start > $end && intval($end) !== 0){
+    if($start > $end && intval($end) !== 0){ // checking if start date is higher than end date
       $language == "de" ? $output = "Enddatum kann nicht kleiner als Startdatum sein.": $output = "End Date cannot be smaller than Start Date.";
     }else{
       $output = null;
     }
-    //error_log(json_encode($output));
     return $output;
   }
 

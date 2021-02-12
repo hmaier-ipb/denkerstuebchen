@@ -54,14 +54,16 @@ if (isset($_POST["action"])) {
 
     case "room_select"://
       $room = $_POST["room"];
+
       $_SESSION["room_number"] = $room;
-      $output = json_encode($cal->create_calender($_SESSION["displayed_month"],$_SESSION["lang"],$room));
+      $output = json_encode($cal->create_calender($_SESSION["displayed_month"],$_SESSION["lang"],$_SESSION["room_number"]));
       print($output);
       break;
     case "submit_dates":
       $start_date = $_POST["start_date"];
       $end_date = $_POST["end_date"];
-      $message = $form->compare_dates($start_date,$end_date,$_SESSION["lang"]);
+      $message = $form->check_dates($start_date,$end_date,$_SESSION["lang"]);
+      //TODO: CHECKING IF DATES ARE OCCUPIED
       print(json_encode($message));
       break;
     default:
@@ -88,7 +90,6 @@ if (isset($_GET["lang"])) {
   //CREATING CALENDER-SELECTION
   //***************************
 
-  $select_html = $cal->room_select(5,$_SESSION["lang"]); //generating the room selection
 
   $month_button = $cal->month_buttons($_SESSION["lang"]);
 
@@ -98,6 +99,7 @@ if (isset($_GET["lang"])) {
     "name" => $lang_array[2],
     "surname" => $lang_array[3],
     "department" => $lang_array[4],
+    "departments" => $form->departments(),
     "phone" => $lang_array[5],
     "email" => $lang_array[6],
     "button" => $lang_array[7],
@@ -106,11 +108,11 @@ if (isset($_GET["lang"])) {
     "output" => $lang_array[10],
     "lang" => $lang_array[11],
     "calender" => $cal_vars,
-    "room_select" => $select_html,
     "month_buttons" => $month_button
+
   ];
 
-  $vars["departments"] = $form->departments();
+
 
   $smarty_object->assign($vars);
   $smarty_object->display("index.html");

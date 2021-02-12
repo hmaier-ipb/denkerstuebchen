@@ -5,7 +5,7 @@
 }
 
 body{
-  padding-left: 2rem;
+  padding: 0 2rem 0 2rem;
 }
 
 .order-info{
@@ -42,12 +42,7 @@ body{
 #output{grid-area:output;text-align: center;padding: 2rem;}
 
 
-
-
-
 /*inputs*/
-
-
 #name-input{grid-area:name-input}
 #surname-input{grid-area:surname-input}
 #phone-input{grid-area:tel-input}
@@ -63,21 +58,22 @@ body{
 
 select{
   border: 2px solid #e2e2e2;
-  border-radius: 10px;
-  border-bottom-right-radius: unset;
-  border-top-right-radius: unset;
+  /*border-radius: 10px;*/
+  /*border-bottom-right-radius: unset;*/
+  /*border-top-right-radius: unset;*/
+  border-radius: 10px 0 0 10px;
 }
 
-.send_btn{
+.btn{
   border: 2px solid #eee;
   border-radius: 10px;
   transition: 0.3s;
 }
-.send_btn:hover{
+.btn:hover{
   border: 2px solid #817D7D;
 }
 
-.send_btn:active{
+.btn:active{
   transition: unset;
   background-color: #192139;
   color: #eee;
@@ -95,6 +91,27 @@ select{
 #img4{grid-area:img4}
 
 
+
+/*CALENDER*/
+.calender_container{
+  height: 50%;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr ;
+  grid-template-rows: 4fr 0.5fr;
+  gap: 0px 0px;
+  grid-template-areas:
+    "calender calender calender "
+    "prev-btn curr-btn next-btn ";
+}
+/*********************/
+/*CALENDER COMPONENTS*/
+/*********************/
+#calender{grid-area:calender}/*displayed calender month*/
+#prev_month{grid-area:prev-btn}/*previous month button*/
+#current_month{grid-area:curr-btn}/*current month button*/
+#next_month{grid-area:next-btn}/*next month button*/
+
+
 /*calender styling*/
 .calender_container{
   width: 100%;
@@ -108,4 +125,29 @@ select{
 #calender table td{
   text-align: center;
 }
+.calender_btn{}
+
+/*INTERNAL CALENDER STYLING*/
+#calender{
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-rows:  0.5fr 2.5fr;
+  gap: 0px 0px;
+  grid-template-areas:
+    "room-selection room-month-year ."
+    "cal-table cal-table cal-table";
+}
+#room_selection_div{
+  grid-area:room-selection;
+  text-align: center;
+}
+#room_month_year{
+  grid-area:room-month-year;
+  text-align: center;
+}
+.calender_table{grid-area: cal-table}
+
+
+
+
 

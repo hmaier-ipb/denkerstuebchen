@@ -83,7 +83,7 @@ class calender extends db_denkerstuebchen
       }
     }
 
-    $language == "de" ? $room = "Denkerstübchen" : $room = "Thinkersroom";
+    $language == "de" ? $room_name = "Denkerstübchen" : $room_name = "Thinkersroom";
 
     $monate = ["Januar", "Februar","März","April","Mai","Juni","Juli","August","September","Oktober","November","Dezember"];
 
@@ -92,8 +92,8 @@ class calender extends db_denkerstuebchen
     //**********************
     //STRING CREATION BEGINS
     //**********************
-    $calender_string = "<p>" . $current_month. " " .date("Y",$current_time) . "</p>"; //current month
-    $calender_string .= "<p>" . $room . " " . $room_number . "</p>";
+    $calender_string = "<p id='room_month_year'>" . $room_name . " " . $room_number . " " . $current_month. " " .date("Y",$current_time) . "</p> "; //current month
+    $calender_string .= $this->room_select($_SESSION["lang"]);
     $calender_string .= "<table class='calender_table'>"; // calender string which contains the HTML
 
     //WEEKDAYS HEADER
@@ -159,7 +159,8 @@ class calender extends db_denkerstuebchen
 
   function set_color($date){
 
-    // TODO: LOADING THE DATABASE TO CHECK THE OCCUPATION STATE
+    // TODO: LOADING THE DATABASE TO CHECK THE OCCUPATION STATE OF A CERTAIN ROOM
+
 
     $db_start_date = "0";// search in database
     $db_end_date = "0";// search in database
@@ -178,17 +179,18 @@ class calender extends db_denkerstuebchen
 
   }
 
-  function room_select($num_rooms,$lang){
-
+  function room_select($lang){
+    $num_rooms = 5;
     $lang == "de" ? $room = "Denkerstübchen" : $room = "Thinkersroom";
     $lang == "de" ? $choose = "Auswählen" : $choose = "choose";
-
-    $output = "<select name='rooms' id='rooms' class='rooms'>";
+    $output = "<div id='room_selection_div'>";
+    $output .= "<select name='rooms' id='room_selection' class='room_selection'>";
     for($i = 1;$i<=$num_rooms;$i++){
       $output .= "<option value='$i'>$room $i</option>";
     }
     $output .= "</select>";
-    $output .= "<button id='select_room'>$choose</button>";
+    $output .= "<button id='btn_select_room' class='btn'>$choose</button>";
+    $output .= "</div>";
     return $output;
   }
 
@@ -197,9 +199,9 @@ class calender extends db_denkerstuebchen
     $lang == "de" ? $current_month = "Aktueller Monat" : $current_month = "Current Month";
     $lang == "de" ? $next = "Nächster Monat" : $next = "Next Month";
 
-    $output = "<button id='prev_month'>$prev</button><br>";
-    $output .= "<button id='current_month'>$current_month</button><br>";
-    $output .= "<button id='next_month'>$next</button>";
+    $output = "<button id='prev_month' class='btn calender_btn'>$prev</button><br>";
+    $output .= "<button id='current_month' class='btn calender_btn'>$current_month</button><br>";
+    $output .= "<button id='next_month' class='btn calender_btn'>$next</button>";
 
     return $output;
   }

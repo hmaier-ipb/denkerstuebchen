@@ -123,14 +123,26 @@ function initEventListeners(){
       input.setSelectionRange(0,0);
     }
   })
+  td_listener();
+  room_selection_listener();
+  month_buttons_listener();
+}
 
-  $("select_room").addEventListener("click", e => {
-    selected_room = $("rooms").value;
+function td_listener(){ // EVENT LISTENER FOR SINGLE TABLE CELLS
+  for(var i = 0;i<$$("current_month").length;i++){ //current_month -> table cells this month
+    $$("current_month")[i].addEventListener("click", set_dates)
+  }
+}
+function room_selection_listener(){
+  $("btn_select_room").addEventListener("click", e => {
+    selected_room = $("room_selection").value;
     action = "room_select";
     params ="action="+action+"&room="+selected_room;
     send_info(params);
   })
+}
 
+function month_buttons_listener(){
   $("prev_month").addEventListener("click",e => {
     action = "prev_month";
     params = "action="+action;
@@ -151,13 +163,7 @@ function initEventListeners(){
     send_info(params);
     //console.log("next_month pressed")
   })
-  td_listener();
-}
 
-function td_listener(){ // EVENT LISTENER FOR SINGLE TABLE CELLS
-  for(var i = 0;i<$$("current_month").length;i++){ //current_month -> table cells this month
-    $$("current_month")[i].addEventListener("click", set_dates)
-  }
 }
 
 function set_dates(e){
@@ -173,10 +179,10 @@ function set_dates(e){
     start_date = e.target.id;
     switch (lang){
       case "de":
-        start_date_output.innerHTML = "Startdatum: ";
+        start_date_output.innerHTML = "Ausgewähltes Startdatum: ";
         break;
       default:
-        start_date_output.innerHTML = "Start Date: ";
+        start_date_output.innerHTML = "Selected Start Date: ";
     }
     $("date_error").innerHTML = "";
     start_date_output.innerHTML += start_date;
@@ -187,10 +193,10 @@ function set_dates(e){
     end_date = e.target.id;
     switch (lang){
       case "de":
-        end_date_output.innerHTML = "Enddatum: ";
+        end_date_output.innerHTML = "Ausgewähltes Enddatum: ";
         break;
       default:
-        end_date_output.innerHTML = "End Date: ";
+        end_date_output.innerHTML = "Selected End Date: ";
     }
     end_date_output.innerHTML += end_date;
 
@@ -264,6 +270,7 @@ function setOutput() {
             output.style.color = "#DF171E";
             $("output").innerHTML = json_response[0];
           }else{                        // validation found no errors
+            reset_input_values();
             output.style.color = "#277e34";
             $("output").innerHTML = json_response[0];
           }
@@ -277,21 +284,26 @@ function setOutput() {
           action = "";
           calender.innerHTML = json_response; // the DIV surrounding the calender
           td_listener();
+          room_selection_listener();
+          month_buttons_listener();
           break;
         case "prev_month":
           action = "";
           calender.innerHTML = json_response; // the DIV surrounding the calender
           td_listener();
+          month_buttons_listener();
           break;
         case "current_month":
           action = "";
           calender.innerHTML = json_response; // the DIV surrounding the calender
           td_listener();
+          month_buttons_listener();
           break;
         case "next_month":
           action = "";
           calender.innerHTML = json_response; // the DIV surrounding the calender
           td_listener();
+          month_buttons_listener();
           break;
         case "submit_dates":
           action = "";

@@ -1,18 +1,18 @@
 <?php
-/* Smarty version 3.1.34-dev-7, created on 2021-02-12 09:25:40
+/* Smarty version 3.1.34-dev-7, created on 2021-02-12 12:54:26
   from 'D:\inetpub\www\denkerstuebchen\templates\index.html' */
 
 /* @var Smarty_Internal_Template $_smarty_tpl */
 if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   'version' => '3.1.34-dev-7',
-  'unifunc' => 'content_602649943387f6_72752651',
+  'unifunc' => 'content_60267a82b73627_55281763',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
     '2cc720a7b42f65c153c2a0d884111cd41b4ccbe7' => 
     array (
       0 => 'D:\\inetpub\\www\\denkerstuebchen\\templates\\index.html',
-      1 => 1613121939,
+      1 => 1613134461,
       2 => 'file',
     ),
   ),
@@ -20,7 +20,7 @@ if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   array (
   ),
 ),false)) {
-function content_602649943387f6_72752651 (Smarty_Internal_Template $_smarty_tpl) {
+function content_60267a82b73627_55281763 (Smarty_Internal_Template $_smarty_tpl) {
 ?><!DOCTYPE html>
 <html lang="en">
 <head>
@@ -42,11 +42,12 @@ function content_602649943387f6_72752651 (Smarty_Internal_Template $_smarty_tpl)
 </div>
 
   <div class="calender_container">
-    <div id="calender"><?php echo $_smarty_tpl->tpl_vars['calender']->value;?>
-</div>
-    <div id="calender_option"><?php echo $_smarty_tpl->tpl_vars['room_select']->value;?>
-<br><br><?php echo $_smarty_tpl->tpl_vars['month_buttons']->value;?>
-</div>
+    <div id="calender">
+      <?php echo $_smarty_tpl->tpl_vars['calender']->value;?>
+
+    </div>
+    <?php echo $_smarty_tpl->tpl_vars['month_buttons']->value;?>
+
   </div>
 
   <div class="order-info">
@@ -80,7 +81,7 @@ function content_602649943387f6_72752651 (Smarty_Internal_Template $_smarty_tpl)
 
     <span class="status">Status:</span>
 
-    <button class="send_btn" id="btn"><b><?php echo $_smarty_tpl->tpl_vars['button']->value;?>
+    <button class="send_btn btn" id="btn"><b><?php echo $_smarty_tpl->tpl_vars['button']->value;?>
 </b></button>
 
     <div id="status-input">
