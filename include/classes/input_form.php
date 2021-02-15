@@ -1,6 +1,6 @@
 <?php
 
-require_once ("include/classes/db_denkerstuebchen.class.php");
+include ("D:/inetpub/www/03/db_op.class.php");
 
 class input_form extends db_denkerstuebchen
 {
@@ -143,22 +143,7 @@ class input_form extends db_denkerstuebchen
 
   }
 
-  function check_dates($start,$end,$language){
-    $room = $_SESSION["room_number"];
-    $start = strtotime($start);
-    $end = strtotime($end);
-    // error_log(json_encode("Start Date ".$start));
-    // error_log(json_encode("End Date ".intval($end)));
-    //TODO: ASKING THE DATABASE IF DATE IS OCCUPIED
-    //TODO: ASKING THE DATABASE IF TIME-PERIOD BETWEEN TWO DATES IS OCCUPIED
 
-    if($start > $end && intval($end) !== 0){ // checking if start date is higher than end date
-      $language == "de" ? $output = "Enddatum kann nicht kleiner als Startdatum sein.": $output = "End Date cannot be smaller than Start Date.";
-    }else{
-      $output = null;
-    }
-    return $output;
-  }
 
   function validation(){
     $message = "";
@@ -280,7 +265,34 @@ class input_form extends db_denkerstuebchen
 
   function db_query(){
     // TODO: INSERTING THE GIVEN VALUES INTO THE DATABASE
+  }
 
+  function check_dates($start,$end,$language){
+    $room = $_SESSION["room_number"];
+    $start = strtotime($start);
+    $end = strtotime($end);
+    // error_log(json_encode("Start Date ".$start));
+    // error_log(json_encode("End Date ".intval($end)));
+    //TODO: ASKING THE DATABASE IF DATE IS OCCUPIED
+    //TODO: ASKING THE DATABASE IF TIME-PERIOD BETWEEN TWO DATES IS OCCUPIED
+
+    if($start > $end && intval($end) !== 0){ // checking if start date is higher than end date
+      $language == "de" ? $output = "Enddatum kann nicht kleiner als Startdatum sein.": $output = "End Date cannot be smaller than Start Date.";
+    }else{
+      $output = null;
+    }
+    return $output;
+  }
+
+  function is_in_between($start_date,$end_date,$date){
+    $ts_start = strtotime($start_date);
+    $ts_end = strtotime($end_date);
+    $ts_date = strtotime($date);
+    if($ts_start<=$ts_date && $ts_end >= $ts_date){
+      return True; //is in between
+    }else{
+      return False; //is not in between
+    }
   }
 
 

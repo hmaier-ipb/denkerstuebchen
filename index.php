@@ -14,7 +14,41 @@ $smarty_object = new Smarty();
 $smarty_object->left_delimiter = '<!--{';
 $smarty_object->right_delimiter = '}-->';
 
+//PAGE GETS LOADED FOR THE FIRST TIME
+if (isset($_GET["lang"])) {
+  $_SESSION["lang"] = $_GET["lang"];
+  $lang_array = $form->language($_SESSION["lang"]);
 
+  //**********************
+  //CREATING THE CALENDER
+  //**********************
+
+  $current_time = time();
+  $_SESSION["displayed_month"] = $current_time;
+  $cal_vars = $cal->create_calender($_SESSION["displayed_month"],$_SESSION["lang"],1); //passing the current unix time and the language into the calender function
+
+  $vars = [
+    "guest" => $lang_array[0],
+    "employee" => $lang_array[1],
+    "name" => $lang_array[2],
+    "surname" => $lang_array[3],
+    "department" => $lang_array[4],
+    "departments" => $form->departments(),
+    "phone" => $lang_array[5],
+    "email" => $lang_array[6],
+    "button" => $lang_array[7],
+    "title" => $lang_array[8],
+    "instruction" => $lang_array[9],
+    "output" => $lang_array[10],
+    "lang" => $lang_array[11],
+    "calender" => $cal_vars
+
+  ];
+  $smarty_object->assign($vars);
+  $smarty_object->display("index.html");
+}
+
+//AJAX REQUESTS
 if (isset($_POST["action"])) {
   switch ($_POST["action"]) {
     case "form-data": //converting received form-data and send it to a receiver "bibliothek@ipb-halle.de"
@@ -67,41 +101,3 @@ if (isset($_POST["action"])) {
   }
 }
 
-
-if (isset($_GET["lang"])) {
-  $_SESSION["lang"] = $_GET["lang"];
-  $lang_array = $form->language($_SESSION["lang"]);
-
-  //**********************
-  //CREATING THE CALENDER
-  //**********************
-
-  $current_time = time();
-
-  $_SESSION["displayed_month"] = $current_time;
-
-  $cal_vars = $cal->create_calender($_SESSION["displayed_month"],$_SESSION["lang"],1); //passing the current unix time and the language into the calender function
-
-  $vars = [
-    "guest" => $lang_array[0],
-    "employee" => $lang_array[1],
-    "name" => $lang_array[2],
-    "surname" => $lang_array[3],
-    "department" => $lang_array[4],
-    "departments" => $form->departments(),
-    "phone" => $lang_array[5],
-    "email" => $lang_array[6],
-    "button" => $lang_array[7],
-    "title" => $lang_array[8],
-    "instruction" => $lang_array[9],
-    "output" => $lang_array[10],
-    "lang" => $lang_array[11],
-    "calender" => $cal_vars
-
-  ];
-
-
-
-  $smarty_object->assign($vars);
-  $smarty_object->display("index.html");
-}

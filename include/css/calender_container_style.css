@@ -23,7 +23,7 @@
 #calender{
     display: grid;
     grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr;
-    grid-template-rows:  0.5fr 2.5fr;
+    grid-template-rows:  0.5fr 2.5fr 0.5fr;
     gap: 5px 5px;
     grid-template-areas:
     ". . room-month-year room-option . ."
@@ -31,7 +31,7 @@
     "prev-btn prev-btn  curr-btn curr-btn next-btn next-btn";
 
 }
-#calender{grid-area:calender}/*displayed calender month*/
+
 #prev_month{grid-area:prev-btn}/*previous month button*/
 #current_month{grid-area:curr-btn}/*current month button*/
 #next_month{grid-area:next-btn}/*next month button*/

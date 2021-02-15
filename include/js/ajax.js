@@ -164,7 +164,7 @@ function month_buttons_listener(){
     send_info(params);
     //console.log("next_month pressed")
   })
-
+  room_selection_listener();
 }
 
 function set_dates(e){

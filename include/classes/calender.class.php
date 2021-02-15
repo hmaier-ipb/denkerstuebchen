@@ -1,7 +1,12 @@
 <?php
 
 
-require_once ("D:/inetpub/www/06/include/classes/db_denkerstuebchen.class.php");
+/**
+ * THIS CLASS CREATES THE CALENDER
+ * INCLUDING THE MONTH BUTTONS AND THE ROOM SELECTION
+ */
+
+include ("D:/inetpub/www/03/db_op.class.php");
 //require_once ("include/classes/db_denkerstuebchen.class.php");
 
 class calender extends db_denkerstuebchen
@@ -167,7 +172,6 @@ class calender extends db_denkerstuebchen
   function set_color($date){
 
     // TODO: LOADING THE DATABASE TO CHECK THE OCCUPATION STATE OF A CERTAIN ROOM
-
 
     $db_start_date = "0";// search in database
     $db_end_date = "0";// search in database
