@@ -26,6 +26,8 @@ var start_date;
 var end_date;
 var start_date_output;
 var end_date_output;
+var room_selection;
+var room_number;
 
 
 function init(){
@@ -38,6 +40,7 @@ function init(){
   calender = $("calender");
   start_date_output = $("start_date");
   end_date_output = $("end_date");
+  room_selection = $("room_selection");
   action = "get-lang";
   send_info("action="+action);
   initEventListeners();
@@ -54,6 +57,7 @@ function initEventListeners(){
   send_btn.addEventListener("click", function (){
     action = "form-data";
     department = $("department-input").value;
+    room_number = room_selection.options[room_selection.selectedIndex].value;
     radio_buttons = document.getElementsByName("status");
     for(let i = 0;i<radio_buttons.length;i++){if(radio_buttons[i].checked){status_input = radio_buttons[i].value;}}
 
@@ -66,13 +70,15 @@ function initEventListeners(){
       "&department="+department+
       "&status="+status_input+
       "&start_date="+start_date+
-      "&end_date="+end_date;
+      "&end_date="+end_date+
+      "&room_number="+room_number;
 
     //****************************
     //SENDING OUT THE RESERVATION
     //****************************
     send_info(params);
     console.log("form data send to php");
+    console.log(params);
     })
 
 
@@ -89,7 +95,7 @@ function initEventListeners(){
   //checking the input of the surname on keyup
   $("surname-input").addEventListener("keyup",function () {
     //name
-    if(validate(surname,/^[A-Za-z]{3,}$/)){
+    if(validate(surname,/^[A-Za-z]{2,}$/)){
       $("img2").style.display = "flex";
     }else{
       $("img2").style.display = "none";
@@ -178,6 +184,7 @@ function set_dates(e){
 
   if(typeof start_date === typeof undefined){
     start_date = e.target.id;
+
     switch (lang){
       case "de":
         start_date_output.innerHTML = "Ausgewähltes Startdatum: ";
@@ -187,11 +194,13 @@ function set_dates(e){
     }
     $("date_error").innerHTML = "";
     start_date_output.innerHTML += start_date;
+
     end_date_output.innerHTML = "";
 
 
   }else{
     end_date = e.target.id;
+
     switch (lang){
       case "de":
         end_date_output.innerHTML = "Ausgewähltes Enddatum: ";
@@ -202,11 +211,10 @@ function set_dates(e){
     end_date_output.innerHTML += end_date;
 
   }
-  // console.log("Start Date "+start_date);
-  // console.log("End Date "+end_date);
+
   action = "submit_dates";
   params = "action="+action+"&start_date="+start_date+"&end_date="+end_date;
-  send_info(params);
+  send_info(params);//is start_date > end_date?
 }
 
 function reset_input_values(){

@@ -2,21 +2,19 @@
 
 
 /**
- * THIS CLASS CREATES THE CALENDER
- * INCLUDING THE MONTH BUTTONS AND THE ROOM SELECTION
+ * Builds Calender
  */
 
-include ("D:/inetpub/www/03/db_op.class.php");
-//require_once ("include/classes/db_denkerstuebchen.class.php");
 
-class calender extends db_denkerstuebchen
+
+
+class calender
 {
   public array $weekdays_array;
   public array $monate;
 
   function __construct(){
-    $_SESSION["end"] = false;
-    $_SESSION["color"] = "green";
+
     $this->weekdays_array = [
       ["Monday", "Montag"],
       ["Tuesday", "Dienstag"],
@@ -70,9 +68,10 @@ class calender extends db_denkerstuebchen
   }
 
 
-  function create_calender($current_time,$language,$room_number=1): string
+  function create_calender($current_time,$language): string
   {
-    $_SESSION["room_number"] = $room_number;
+    $room_number = $_SESSION["room_number"];
+
     $prev_month = strtotime("-1 Month",$current_time); //unix timestamp for the previous month from today
     $next_month = strtotime("+1 Month",$current_time); //unix timestamp for the next month from today
 
@@ -87,9 +86,7 @@ class calender extends db_denkerstuebchen
     $first_weekday_month = $this->first_weekday_month($weekday_today,$monthday_today);
     $last_weekday_month = $this->last_weekday_month($weekday_today,$monthday_today,$days_this_month);
 
-
     $weekday_count = 0;// detect when to create a new row
-
 
     $used_language = [];
 
@@ -110,8 +107,7 @@ class calender extends db_denkerstuebchen
     //**********************
     //STRING CREATION BEGINS
     //**********************
-    $calender_string = "<p id='room_month_year'>" . $room_name . " " . $room_number . " " . $current_month. " " .date("Y",$current_time) . "</p> "; //current month
-    $calender_string .= $this->room_select($_SESSION["lang"]);
+    $calender_string = "<p id='room_month_year'><b>" . $room_name . " " . $room_number . " </b> <i> " . $current_month. " " .date("Y",$current_time) . "</i></p> "; //current month
     $calender_string .= "<table id='calender_table'>"; // calender string which contains the HTML
 
     //WEEKDAYS HEADER
@@ -146,8 +142,7 @@ class calender extends db_denkerstuebchen
         $calender_string .= "</tr>";//close a row
         $calender_string .= "<tr>"; //open a row
       }
-      $this->set_color($iterated_date);
-      $color = $_SESSION["color"];
+      $color = "#12B323";
       $weekday_count += 1;
       $calender_string .= "<td class='current_month' id='$iterated_date' style='background-color: $color'>$i</td>";//table cells
 
@@ -169,41 +164,7 @@ class calender extends db_denkerstuebchen
     return $calender_string."<br>";
   }
 
-  function set_color($date){
 
-    // TODO: LOADING THE DATABASE TO CHECK THE OCCUPATION STATE OF A CERTAIN ROOM
-
-    $db_start_date = "0";// search in database
-    $db_end_date = "0";// search in database
-
-    if($_SESSION["end"] == true){
-      $_SESSION["color"] = "green";
-    }
-
-    if($date == $db_start_date){
-      $_SESSION["end"] = false;
-      $_SESSION["color"] = "red";
-    }
-    if($date == $db_end_date){
-      $_SESSION["end"] = true; //setting $_SESSION["end"] so the next iteration will be green again
-    }
-
-  }
-
-  function room_select($lang){
-    $num_rooms = 5;
-    $lang == "de" ? $room = "Denkerstübchen" : $room = "Thinkersroom";
-    $lang == "de" ? $choose = "Auswählen" : $choose = "Choose";
-    $output = "<div id='room_selection_div'>";
-    $output .= "<select name='rooms' id='room_selection' class='room_selection'>";
-    for($i = 1;$i<=$num_rooms;$i++){
-      $output .= "<option value='$i'>$room $i</option>";
-    }
-    $output .= "</select>";
-    $output .= "<button id='btn_select_room' class='btn'>$choose</button>";
-    $output .= "</div>";
-    return $output;
-  }
 
   function month_buttons($lang){
     $lang == "de" ? $prev = "Vorheriger Monat" : $prev = "Previous Month";

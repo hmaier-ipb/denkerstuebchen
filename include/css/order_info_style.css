@@ -10,7 +10,7 @@ body{
   padding-top: 2rem;
   width: 100%;
   display: grid;
-  grid-template-columns: 0.5fr 1fr 0.05fr;
+  grid-template-columns: 1fr 1.95fr 0.05fr;
   grid-template-rows: 2em 2em 2em 2em 2em 2em 2em 2em 2em;
   gap: 10px 20px;
   grid-template-areas:
@@ -47,6 +47,7 @@ body{
 #status-input{grid-area:status-input}
 #btn{grid-area:btn}
 
+
 .input{
   border: 2px solid #eee;
   border-radius: 10px;
@@ -61,7 +62,7 @@ select{
 }
 
 .btn{
-  border: 2px solid #eee;
+  border: 2px solid #eeeeee;
   border-radius: 10px;
   transition: 0.3s;
 }
@@ -86,9 +87,11 @@ select{
 #img3{grid-area:img3}
 #img4{grid-area:img4}
 
+.send_btn{
+  background-color: #45928e;
+}
 
 
-/*CALENDER*/
 
 
 

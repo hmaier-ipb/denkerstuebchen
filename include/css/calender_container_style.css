@@ -14,27 +14,34 @@
 #calender table tr{
     height: 2rem;
 }
+/*styling table cells*/
 #calender table td{
     text-align: center;
+    transition: opacity 0.3s;
+}
+#calender table td:hover{
+    opacity: 0.7;
+    font-size: 1.3rem;
 }
 
 
 /*INTERNAL CALENDER STYLING*/
 #calender{
     display: grid;
+    padding-top: 1rem;
     grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr;
-    grid-template-rows:  0.5fr 2.5fr 0.5fr;
+    grid-template-rows:  0.5fr 3fr  0.5fr;
     gap: 5px 5px;
     grid-template-areas:
-    ". . room-month-year room-option . ."
-    "cal-table cal-table cal-table cal-table cal-table cal-table"
-    "prev-btn prev-btn  curr-btn curr-btn next-btn next-btn";
-
+    " . . room-month-year room-month-year . ."
+    " cal-table cal-table cal-table cal-table cal-table cal-table"
+    " prev-btn prev-btn  curr-btn curr-btn next-btn next-btn";
 }
 
 #prev_month{grid-area:prev-btn}/*previous month button*/
 #current_month{grid-area:curr-btn}/*current month button*/
 #next_month{grid-area:next-btn}/*next month button*/
+.selected_dates{grid-area: selected-dates}
 
 #room_selection_div{
     grid-area:room-option;
@@ -45,3 +52,11 @@
     text-align: center;
 }
 #calender_table{grid-area: cal-table}
+
+.calender_btn{
+    background-color: #45928e;
+}
+
+#btn_select_room{
+    width: 10%;
+}

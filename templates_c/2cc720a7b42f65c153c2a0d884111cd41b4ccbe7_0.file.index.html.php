@@ -1,18 +1,18 @@
 <?php
-/* Smarty version 3.1.34-dev-7, created on 2021-02-12 12:54:26
+/* Smarty version 3.1.34-dev-7, created on 2021-02-16 10:58:01
   from 'D:\inetpub\www\denkerstuebchen\templates\index.html' */
 
 /* @var Smarty_Internal_Template $_smarty_tpl */
 if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   'version' => '3.1.34-dev-7',
-  'unifunc' => 'content_60267a82b73627_55281763',
+  'unifunc' => 'content_602ba539269735_37659924',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
     '2cc720a7b42f65c153c2a0d884111cd41b4ccbe7' => 
     array (
       0 => 'D:\\inetpub\\www\\denkerstuebchen\\templates\\index.html',
-      1 => 1613134461,
+      1 => 1613473061,
       2 => 'file',
     ),
   ),
@@ -20,12 +20,13 @@ if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   array (
   ),
 ),false)) {
-function content_60267a82b73627_55281763 (Smarty_Internal_Template $_smarty_tpl) {
+function content_602ba539269735_37659924 (Smarty_Internal_Template $_smarty_tpl) {
 ?><!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <link rel="stylesheet" href="include/css/style.css" type="text/css">
+  <link rel="stylesheet" href="include/css/order_info_style.css" type="text/css">
+  <link rel="stylesheet" href="include/css/calender_container_style.css" type="text/css">
   <?php echo '<script'; ?>
  src="include/js/ajax.js"><?php echo '</script'; ?>
 >
@@ -40,14 +41,14 @@ function content_60267a82b73627_55281763 (Smarty_Internal_Template $_smarty_tpl)
 </h3><br>
   <div class="instruction"><?php echo $_smarty_tpl->tpl_vars['instruction']->value;?>
 </div>
+  <?php echo $_smarty_tpl->tpl_vars['room_selection']->value;?>
+
 
   <div class="calender_container">
     <div id="calender">
       <?php echo $_smarty_tpl->tpl_vars['calender']->value;?>
 
     </div>
-    <?php echo $_smarty_tpl->tpl_vars['month_buttons']->value;?>
-
   </div>
 
   <div class="order-info">
@@ -97,6 +98,7 @@ function content_60267a82b73627_55281763 (Smarty_Internal_Template $_smarty_tpl)
       <br>
 
     </div>
+
     <div class="selected_dates">
       <div id="start_date"></div><br>
       <div id="end_date"></div><br>
