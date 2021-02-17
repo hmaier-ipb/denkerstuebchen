@@ -44,19 +44,19 @@ class language_distribution
 
   function language($l){
     //array for english and german terms
-    $output = [];
+    $used_lang = [];
     $language_length = count($this->lang_array)-1;
     switch($l){
       case "de":
-        for($i=0;$i<=$language_length;$i++){$output[] = $this->lang_array[$i][0];}
+        for($i=0;$i<=$language_length;$i++){$used_lang[] = $this->lang_array[$i][0];}
         break;
       default:
         //returns english if no matching case is found
-        for($i=0;$i<=$language_length;$i++){$output[] = $this->lang_array[$i][1];}
+        for($i=0;$i<=$language_length;$i++){$used_lang[] = $this->lang_array[$i][1];}
 
     }
     //returns a language array which can be assigned for smarty
-    return $output;
+    return $used_lang;
   }
 
   function departments(){
@@ -94,7 +94,7 @@ class language_distribution
 
     $m = "<html>";
     $m .= "<head>";
-    $m .= "<style> tr,td{border: solid 2px #666;border-collapse: collapse}</style>";
+    $m .= "<style> tr,td{border: solid 2px #666666;border-collapse: collapse}</style>";
     $m .= "</head>";
     $m .= "<body>";
     $m .= "<table  style='border: solid 2px #666;' >";
@@ -179,8 +179,6 @@ class language_distribution
     foreach($form_data_validation as $value){$error[] = $used_lang[$value];}
     $error_length = count($error);
 
-    //avoiding regex for debugging
-    $error_length = 0;
 
     if($error_length == 0){//regex is ok, data can be send to the database
 
@@ -265,18 +263,34 @@ class language_distribution
   }
 
   function database_response(){
-    if($this->control_db->new_reservation() == True){//calling database validation
+    //error_log("Database called!");
+    $db_call = $this->control_db->new_reservation();
+    //error_log($db_call);
+    if($db_call == "success"){//calling database validation
       $_SESSION["lang"] == "de" ? $response[] = "Anfrage erfolgreich!" : $response[]= "Sucessful query!" ;
       $response[] = True;
     }else{
-      //TODO: processing the errors from database
-      $_SESSION["lang"] == "de" ? $response[] = "Anfrage nicht erfolgreich! :-(": $response[] = "Unsucessful query! :-(";
+      //$_SESSION["lang"] == "de" ? $response[] = "Anfrage nicht erfolgreich! :-(": $response[] = "Unsucessful query! :-(";
       //$response[] = $this->control_db->new_reservation();
-      $response[] = false;
+      $response[] = $this->process_db_errors($db_call);
+      $response[] = False;
     }
     return $response;
   }
 
+  function process_db_errors($db_response){
+    switch($db_response[0]){
+      case "already_exists_in_user":
+        return $_SESSION["lang"] == "de" ? "Benutzer schon bekannt." : "User already know.";
+      case "existing_reservation":
+        $start_date = $db_response[1]["start_date"];
+        $end_date = $db_response[1]["end_date"];
+        return $_SESSION["lang"] == "de" ? "Eine Reservierung vom Denkerstübchen $db_response[2] ab dem $start_date bis zum $end_date ist schon vorhanden. " : "A reservation for thinkers-room $db_response[2] from the $start_date to the $end_date is already existing .";
+      default:
+        return $_SESSION["lang"] == "de" ? "Etwas seltsames ist geschehen..." : "Something weird happened...";
+    }
+
+  }
 
 
 

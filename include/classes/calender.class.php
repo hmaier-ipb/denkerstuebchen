@@ -5,8 +5,8 @@
  * Builds Calender
  */
 
-
-
+require ("include/classes/control_db.class.php");
+use control_denkerstuebchen_db\control_db;
 
 class calender
 {
@@ -70,6 +70,8 @@ class calender
 
   function create_calender($current_time,$language): string
   {
+    $control_db = new control_db();
+
     $room_number = $_SESSION["room_number"];
 
     $prev_month = strtotime("-1 Month",$current_time); //unix timestamp for the previous month from today
@@ -132,6 +134,8 @@ class calender
 
     //CURRENT DISPLAYED MONTH
     //RED=OCCUPIED/GREEN=FREE COLOURING FOR THE CELLS
+    //using control_db
+
     for($i=1;$i<=$days_this_month;$i++){
 
       //Formatting day
@@ -142,6 +146,12 @@ class calender
         $calender_string .= "</tr>";//close a row
         $calender_string .= "<tr>"; //open a row
       }
+
+      /*if($control_db->is_occupied($iterated_date) == true){
+        //red colored, class "occupied"
+      }else{
+        //green colored, class "free"
+      }*/
       $color = "#12B323";
       $weekday_count += 1;
       $calender_string .= "<td class='current_month' id='$iterated_date' style='background-color: $color'>$i</td>";//table cells
