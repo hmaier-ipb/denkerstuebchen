@@ -1,18 +1,20 @@
 <?php
 //starting a session to save a the language form $_GET["lang"]
-
+define("INCLUDE_DIR", "include/classes/");
 
 session_start();
 
-require_once("../Smarty/libs/Smarty.class.php");
-//require("D:/inetpub/Smarty/libs/Smarty.class.php");
-require_once("include/classes/language_distribution.php");
-require_once("include/classes/calender.class.php");
+include("../Smarty/libs/Smarty.class.php");
 
-
+function __autoloadMyClasses($className) {
+  require_once(INCLUDE_DIR . $className . ".class.php");
+}
+spl_autoload_register('__autoloadMyClasses');
 $lang_dist = new language_distribution();
 $cal = new calender();
-
+spl_autoload_unregister('__autoloadMyClasses');
+#include("include/classes/language_distribution.class.php");
+#include("include/classes/calender.class.php");
 //PAGE GETS LOADED FOR THE FIRST TIME
 if (isset($_GET["lang"])) {
   $smarty_object = new Smarty();
@@ -60,6 +62,8 @@ if (isset($_POST["action"])) {
     case "form-data": //converting received form-data and send it to a receiver "bibliothek@ipb-halle.de"
       //error_log(json_encode($_POST));
       $response = $lang_dist->input_response();
+      $response[] = $cal->create_calender($_SESSION["displayed_month"],$_SESSION["lang"]);
+      error_log(json_encode($response));
       print(json_encode($response));
       break;
 

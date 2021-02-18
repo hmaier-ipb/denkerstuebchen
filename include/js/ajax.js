@@ -273,7 +273,7 @@ function setOutput() {
       switch (action) {
         case "form-data":
           //console.log("form-data received from php")
-          //console.log(json_response);
+          console.log(json_response);
           action = "";
           if(json_response[1] === false){// validation found errors
             output.style.color = "#DF171E";
@@ -282,7 +282,9 @@ function setOutput() {
             reset_input_values();
             output.style.color = "#277e34";
             $("output").innerHTML = json_response[0];
+            calender.innerHTML = json_response[2];
           }
+
           output.style.display = "block";
           break;
         case "get-lang":

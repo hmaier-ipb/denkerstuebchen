@@ -5,40 +5,12 @@
  * Builds Calender
  */
 
-require ("include/classes/control_db.class.php");
-use control_denkerstuebchen_db\control_db;
+//require("control_db.class.php");
 
-class calender
+class calender extends control_db
 {
   public array $weekdays_array;
   public array $monate;
-
-  function __construct(){
-
-    $this->weekdays_array = [
-      ["Monday", "Montag"],
-      ["Tuesday", "Dienstag"],
-      ["Wednesday","Mittwoch"],
-      ["Thursday","Donnerstag"],
-      ["Friday","Freitag"],
-      ["Saturday","Samstag"],
-      ["Sunday","Sonntag"]
-    ];
-    $this->monate = [
-      "Januar",
-      "Februar",
-      "März",
-      "April",
-      "Mai",
-      "Juni",
-      "Juli",
-      "August",
-      "September",
-      "Oktober",
-      "November",
-      "Dezember"
-    ];
-  }
 
 
   function first_weekday_month($weekday_today, $monthday_today): int
@@ -70,9 +42,13 @@ class calender
 
   function create_calender($current_time,$language): string
   {
-    $control_db = new control_db();
-
     $room_number = $_SESSION["room_number"];
+
+    $control_db = new control_db();
+    $validate = new validation();
+    $occupied_days = $control_db->get_occupied_dates("tr_$room_number");
+    //error_log(json_encode($occupied_days));
+
 
     $prev_month = strtotime("-1 Month",$current_time); //unix timestamp for the previous month from today
     $next_month = strtotime("+1 Month",$current_time); //unix timestamp for the next month from today
@@ -89,6 +65,30 @@ class calender
     $last_weekday_month = $this->last_weekday_month($weekday_today,$monthday_today,$days_this_month);
 
     $weekday_count = 0;// detect when to create a new row
+
+    $this->weekdays_array = [
+      ["Monday", "Montag"],
+      ["Tuesday", "Dienstag"],
+      ["Wednesday","Mittwoch"],
+      ["Thursday","Donnerstag"],
+      ["Friday","Freitag"],
+      ["Saturday","Samstag"],
+      ["Sunday","Sonntag"]
+    ];
+    $this->monate = [
+      "Januar",
+      "Februar",
+      "März",
+      "April",
+      "Mai",
+      "Juni",
+      "Juli",
+      "August",
+      "September",
+      "Oktober",
+      "November",
+      "Dezember"
+    ];
 
     $used_language = [];
 
@@ -147,14 +147,20 @@ class calender
         $calender_string .= "<tr>"; //open a row
       }
 
-      /*if($control_db->is_occupied($iterated_date) == true){
+
+       if($validate->is_occupied($iterated_date,$occupied_days) == true){
         //red colored, class "occupied"
+         $color = "#FF2635";
+         $calender_string .= "<td class='current_month occupied' id='$iterated_date' style='background-color: $color'>$i</td>";
       }else{
         //green colored, class "free"
-      }*/
-      $color = "#12B323";
+         $color = "#12B323";
+         $calender_string .= "<td class='current_month free' id='$iterated_date' style='background-color: $color'>$i</td>";
+      }
       $weekday_count += 1;
-      $calender_string .= "<td class='current_month' id='$iterated_date' style='background-color: $color'>$i</td>";//table cells
+//      $color = "#12B323";
+//      $calender_string .= "<td class='current_month free' id='$iterated_date' style='background-color: $color'>$i</td>";
+      //table cells
 
     }
 

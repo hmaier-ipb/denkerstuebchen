@@ -56,5 +56,16 @@ class validation
     }
   }
 
+  function is_occupied($date, $occupied_dates){
+    //$occupied_dates -> [[start,end],[start,end]]
+    foreach ($occupied_dates as $value){
+      $start_date = $value[0];
+      $end_date = $value[1];
+      if($this->is_in_between($start_date,$end_date,$date)==true){
+        return true;
+      }
+    }
+    return false;
+  }
 
 }

@@ -1,10 +1,14 @@
 <?php
-namespace control_denkerstuebchen_db;
-require ("include/classes/easy_pdo_db.class.php");
-use db_denkerstuebchen\pdo;
 
-class control_db extends pdo\easy_pdo_db
+require_once("easy_pdo_db.class.php");
+require_once("validation.class.php");
+
+class control_db extends easy_pdo_db
 {
+  function __construct()
+  {
+    parent::__construct();
+  }
   //MAIN FUNCTION
   function new_reservation()
   {
@@ -65,8 +69,20 @@ class control_db extends pdo\easy_pdo_db
     $this->insert_into("tr_$room_number",$cols_string,$vars);
   }
 
-  function is_occupied($date){
-
+  function get_occupied_dates($table)
+  {
+    $num_rows = $this->count_rows($table);
+    error_log($num_rows);
+    if($num_rows !== 0){
+    for($x=1;$x<=$num_rows;$x++){
+      $row = $this->get_row_by_id($table,$x);
+      error_log(json_encode($row));
+      $occupied_dates[] = [$row["start_date"],$row["end_date"]];
+    }
+    }else{
+      $occupied_dates = [[0,0]];
+    }
+    return $occupied_dates;
   }
 
 

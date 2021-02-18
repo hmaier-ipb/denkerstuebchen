@@ -1,6 +1,5 @@
 <?php
 
-namespace db_denkerstuebchen\pdo;
 
 class easy_pdo_db
 {
@@ -77,5 +76,30 @@ class easy_pdo_db
     }
     return $result;
   }
+
+  function get_columns($table,$cols_string){
+    $query = "SELECT $cols_string FROM $table";
+    try{
+      $statement = $this->pdo->prepare($query);
+      $statement->execute();
+      $result = $statement->fetch();
+    }catch (\Exception $e){
+      error_log(json_encode($e));
+    }
+    return $result; //$col_value =  $result["colum"]
+  }
+
+  function count_rows($table){
+    $query = "SELECT COUNT(*) FROM $table";
+    try{
+      $statement = $this->pdo->prepare($query);
+      $statement->execute();
+      $result = $statement->fetch();
+    }catch (\Exception $e){
+      error_log(json_encode($e));
+    }
+    return $result["COUNT(*)"];
+  }
+
 
 }
