@@ -283,6 +283,9 @@ function setOutput() {
             output.style.color = "#277e34";
             $("output").innerHTML = json_response[0];
             calender.innerHTML = json_response[2];
+            td_listener();
+            room_selection_listener();
+            month_buttons_listener();
           }
 
           output.style.display = "block";

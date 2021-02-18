@@ -284,6 +284,8 @@ class language_distribution
         $start_date = $db_response[1]["start_date"];
         $end_date = $db_response[1]["end_date"];
         return $_SESSION["lang"] == "de" ? "Eine Reservierung vom Denkerstübchen $db_response[2] ab dem $start_date bis zum $end_date ist schon vorhanden. " : "A reservation for thinkers-room $db_response[2] from the $start_date to the $end_date is already existing .";
+      case "occupation_in_period":
+        return $_SESSION["lang"] == "de" ? "Belegung im ausgewählten Zeitraum, bitte wählen Sie einen anderen Raum/Zeitraum für Ihre Reservierung." : "Occupation in selected period, please choose a different room/period for your reservation";
       default:
         return $_SESSION["lang"] == "de" ? "Etwas seltsames ist geschehen..." : "Something weird happened...";
     }

@@ -35,8 +35,7 @@ class control_db extends easy_pdo_db
     if($reservation_status[0] !== 0){
       $response = $reservation_status;
     }else{
-      $this->make_reservation($user_id,$start_date,$end_date,$room_number);
-      $response = "success";
+      $response = $this->make_reservation($user_id,$start_date,$end_date,$room_number);
     }
 
     return $response;
@@ -64,19 +63,33 @@ class control_db extends easy_pdo_db
   }
 
   function make_reservation($user_id,$start_date,$end_date,$room_number){
-    $cols_string = "user_id, start_date, end_date";
-    $vars = [$user_id,$start_date,$end_date];
-    $this->insert_into("tr_$room_number",$cols_string,$vars);
+    $occupied_dates = $this->get_occupied_dates("tr_$room_number");
+    //todo: use function from validate here
+    foreach($occupied_dates as $value){
+      $start_db = $value[0];
+      $end_db = $value[1];
+      if($start_date < $start_db && $end_date > $end_db){
+        $response = ["occupation_in_period"];
+      }
+    }
+    if($response[0] !== "occupation_in_period"){
+      $cols_string = "user_id, start_date, end_date";
+      $vars = [$user_id,$start_date,$end_date];
+      $this->insert_into("tr_$room_number",$cols_string,$vars);
+      $response = "success";
+    }
+
+    return $response;
   }
 
   function get_occupied_dates($table)
   {
     $num_rows = $this->count_rows($table);
-    error_log($num_rows);
+    //error_log($num_rows);
     if($num_rows !== 0){
     for($x=1;$x<=$num_rows;$x++){
       $row = $this->get_row_by_id($table,$x);
-      error_log(json_encode($row));
+      //error_log(json_encode($row));
       $occupied_dates[] = [$row["start_date"],$row["end_date"]];
     }
     }else{
