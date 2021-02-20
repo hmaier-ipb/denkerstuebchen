@@ -28,10 +28,10 @@ var start_date_output;
 var end_date_output;
 var room_selection;
 var room_number;
-
+var room_month_year;
 
 function init(){
-  send_btn = $$("send_btn")[0];
+  send_btn = $$("send_btn");
   firstname = $("name-input");
   surname = $("surname-input");
   phone = $("phone-input");
@@ -41,6 +41,7 @@ function init(){
   start_date_output = $("start_date");
   end_date_output = $("end_date");
   room_selection = $("room_selection");
+  room_month_year = $("room_month_year");
   action = "get-lang";
   send_info("action="+action);
   initEventListeners();
@@ -54,7 +55,7 @@ function validate(input,pattern){
 
 function initEventListeners(){
 
-  send_btn.addEventListener("click", function (){
+  send_btn[0].addEventListener("click", function (){
     action = "form-data";
     department = $("department-input").value;
     room_number = room_selection.options[room_selection.selectedIndex].value;
@@ -141,14 +142,13 @@ function td_listener(){ // EVENT LISTENER FOR SINGLE TABLE CELLS
   }
 }
 function room_selection_listener(){
-  $("btn_select_room").addEventListener("click", e => {
+  $("room_selection").addEventListener("click", e => {
     selected_room = $("room_selection").value;
     action = "room_select";
     params ="action="+action+"&room="+selected_room;
     send_info(params);
   })
 }
-
 function month_buttons_listener(){
   $("prev_month").addEventListener("click",e => {
     action = "prev_month";
@@ -157,26 +157,29 @@ function month_buttons_listener(){
     //console.log("prev_month pressed")
   })
 
-  $("current_month").addEventListener("click",e => {
-    action = "current_month";
-    params = "action="+action;
-    send_info(params);
-    //console.log("current_month pressed")
-  })
-
   $("next_month").addEventListener("click",e => {
     action = "next_month";
     params = "action="+action;
     send_info(params);
     //console.log("next_month pressed")
   })
+
+ /* $("current_month").addEventListener("click",e => {
+    action = "current_month";
+    params = "action="+action;
+    send_info(params);
+    //console.log("current_month pressed")
+  })*/
+
   room_selection_listener();
 }
 
+function load_calender_listeners(){
+  td_listener();
+
+}
+
 function set_dates(e){
-  //if color is not red, execute the following code
-  //else date_error.innerHTML = "room is occupied"
-  //
   if(typeof start_date !== typeof undefined && typeof end_date !== typeof undefined){ //when both vars are defined
     start_date = undefined;
     end_date = undefined;
@@ -211,10 +214,11 @@ function set_dates(e){
     end_date_output.innerHTML += end_date;
 
   }
-
   action = "submit_dates";
   params = "action="+action+"&start_date="+start_date+"&end_date="+end_date;
   send_info(params);//is start_date > end_date?
+
+
 }
 
 function reset_input_values(){
@@ -283,9 +287,8 @@ function setOutput() {
             output.style.color = "#277e34";
             $("output").innerHTML = json_response[0];
             calender.innerHTML = json_response[2];
-            td_listener();
+            load_calender_listeners();
             room_selection_listener();
-            month_buttons_listener();
           }
 
           output.style.display = "block";
@@ -296,36 +299,36 @@ function setOutput() {
           break;
         case "room_select":
           action = "";
-          calender.innerHTML = json_response; // the DIV surrounding the calender
-          td_listener();
+          room_month_year.innerHTML = json_response[0]
+          calender.innerHTML = json_response[1]; // the DIV surrounding the calender
+          load_calender_listeners();
           room_selection_listener();
-          month_buttons_listener();
           break;
         case "prev_month":
           action = "";
-          calender.innerHTML = json_response; // the DIV surrounding the calender
-          td_listener();
-          month_buttons_listener();
+          room_month_year.innerHTML = json_response[0];
+          calender.innerHTML = json_response[1]; // the DIV surrounding the calender
+          load_calender_listeners();
           break;
-        case "current_month":
+       /* case "current_month":
           action = "";
           calender.innerHTML = json_response; // the DIV surrounding the calender
-          td_listener();
-          month_buttons_listener();
-          break;
+          load_calender_listeners();
+          break;*/
         case "next_month":
           action = "";
-          calender.innerHTML = json_response; // the DIV surrounding the calender
-          td_listener();
-          month_buttons_listener();
+          room_month_year.innerHTML = json_response[0];
+          calender.innerHTML = json_response[1]; // the DIV surrounding the calender
+          load_calender_listeners();
           break;
         case "submit_dates":
           action = "";
-          if(typeof json_response !== typeof null){
+          calender.innerHTML = json_response[0];
+          if(typeof json_response[1] !== typeof null){
             $("start_date").innerHTML = "";
             $("end_date").innerHTML = "";
-            $("date_error").innerHTML = json_response;
           }
+          load_calender_listeners();
           break;
         default:
           output.innerHTML = "INVALID ACTION";

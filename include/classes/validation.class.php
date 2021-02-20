@@ -33,14 +33,14 @@ class validation
     return $response;
   }
 
-  function start_smaller_end($start,$end){
+  function compare_dates($start,$end){
     $start = strtotime($start);
     $end = strtotime($end);
 
     if($start > $end && intval($end) !== 0){ // checking if start date is higher than end date
       $response = False;
     }else{
-      $response = True;
+      $response = null;
     }
     return $response;
   }
@@ -56,7 +56,7 @@ class validation
     }
   }
 
-  function is_occupied($date, $occupied_dates){
+  function is_date_occupied($date, $occupied_dates){
     //$occupied_dates -> [[start,end],[start,end]]
     foreach ($occupied_dates as $value){
       $start_date = $value[0];
@@ -67,6 +67,21 @@ class validation
     }
     return false;
   }
+
+  function is_period_occupied($start_date,$end_date,$occupied_dates){
+    $response = [0];
+    foreach($occupied_dates as $value){
+      $start_db = $value[0];
+      $end_db = $value[1];
+      if($start_date < $start_db && $end_date > $end_db){
+        $response = ["occupation_in_period"];
+
+      }
+    }
+    error_log(json_encode($response));
+    return $response;
+  }
+
 
 
 }

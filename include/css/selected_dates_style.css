@@ -1,0 +1,18 @@
+
+
+/*not linked to html*/
+.selected_dates{
+    display: grid;
+    height: 5rem;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-rows: 1fr;
+    gap: 0px 0px;
+    grid-template-areas:
+    "start_date end_date date_error";
+    text-align: center;
+    align-items: center;
+}
+
+#start_date{grid-area: start_date}
+#end_date{grid-area: end_date}
+#date_error{grid-area: date_error}

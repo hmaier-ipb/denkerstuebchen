@@ -64,19 +64,21 @@ class control_db extends easy_pdo_db
 
   function make_reservation($user_id,$start_date,$end_date,$room_number){
     $occupied_dates = $this->get_occupied_dates("tr_$room_number");
+    $validate = new validation();
+    $response = $validate->is_period_occupied($start_date,$end_date,$occupied_dates);
     //todo: use function from validate here
-    foreach($occupied_dates as $value){
+    /*foreach($occupied_dates as $value){
       $start_db = $value[0];
       $end_db = $value[1];
       if($start_date < $start_db && $end_date > $end_db){
         $response = ["occupation_in_period"];
       }
-    }
+    }*/
     if($response[0] !== "occupation_in_period"){
       $cols_string = "user_id, start_date, end_date";
       $vars = [$user_id,$start_date,$end_date];
       $this->insert_into("tr_$room_number",$cols_string,$vars);
-      $response = "success";
+      $response = ["success"];
     }
 
     return $response;

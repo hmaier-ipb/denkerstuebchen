@@ -29,9 +29,9 @@ class language_distribution
       ["Mitarbeiter", "Employee"],
       ["Vorname","Name"],
       ["Nachname","Surname"],
-      ["Abteilung","Department"],
       ["hausinterne Telefonnummer","in-house Telephone Number"],
-      ["hausinterne Email","in-house Email"],
+      ["hausinterne Email (die kurze)","in-house Email (the short one)"],
+      ["Abteilung","Department"],
       ["Abschicken","Send"],
       ["Denkerstübchen Reservierung", "Thinkers-Room Reservation"],
       ["Geben Sie ihre Daten, ein um ein Denkerstübchen zu reservieren","Enter your credentials to reserve a thinkers-room"],
@@ -235,27 +235,28 @@ class language_distribution
     }
   }
 
-  function compare_dates($start_date,$end_date){
-    $func = $this->validate->start_smaller_end($start_date,$end_date);
-    if($func == False){
-    $_SESSION["lang"] == "de" ? $output = "Enddatum kann nicht kleiner als Startdatum sein.": $output = "End Date cannot be smaller than Start Date.";
+/*  function compare_dates($start_date,$end_date){
+    $vali = $this->validate->start_smaller_end($start_date,$end_date);
+    if($vali == False){
+    //$_SESSION["lang"] == "de" ? $output = "Enddatum kann nicht kleiner als Startdatum sein.": $output = "End Date cannot be smaller than Start Date.";
+      $output = "error";
     }else{
       $output = null;
     }
     return $output;
-  }
+  }*/
 
   function room_select(){
     $num_rooms = 5;
     $_SESSION["lang"] == "de" ? $room = "Denkerstübchen" : $room = "Thinkersroom";
-    $_SESSION["lang"] == "de" ? $choose = "Auswählen" : $choose = "Choose";
+    //$_SESSION["lang"] == "de" ? $choose = "Auswählen" : $choose = "Choose";
     $output = "<div id='room_selection_div'>";
     $output .= "<select name='rooms' id='room_selection' class='room_selection'>";
     for($i = 1;$i<=$num_rooms;$i++){
       $output .= "<option value='$i'>$room $i</option>";
     }
     $output .= "</select>";
-    $output .= "<button id='btn_select_room' class='btn'>$choose</button>";
+    //$output .= "<button id='btn_select_room' class='btn'>$choose</button>";
     $output .= "</div>";
     return $output;
   }

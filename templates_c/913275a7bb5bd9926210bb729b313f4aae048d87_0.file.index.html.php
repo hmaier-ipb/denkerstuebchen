@@ -1,18 +1,18 @@
 <?php
-/* Smarty version 3.1.36, created on 2021-02-17 06:59:58
+/* Smarty version 3.1.36, created on 2021-02-20 12:46:27
   from 'D:\inetpub\www\06\templates\index.html' */
 
 /* @var Smarty_Internal_Template $_smarty_tpl */
 if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   'version' => '3.1.36',
-  'unifunc' => 'content_602cbeeeb51412_44249188',
+  'unifunc' => 'content_603104a3157ea8_27238238',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
     '913275a7bb5bd9926210bb729b313f4aae048d87' => 
     array (
       0 => 'D:\\inetpub\\www\\06\\templates\\index.html',
-      1 => 1613545197,
+      1 => 1613825182,
       2 => 'file',
     ),
   ),
@@ -20,13 +20,15 @@ if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   array (
   ),
 ),false)) {
-function content_602cbeeeb51412_44249188 (Smarty_Internal_Template $_smarty_tpl) {
+function content_603104a3157ea8_27238238 (Smarty_Internal_Template $_smarty_tpl) {
 ?><!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <link rel="stylesheet" href="include/css/style_main.css" type="text/css">
   <link rel="stylesheet" href="include/css/order_info_style.css" type="text/css">
   <link rel="stylesheet" href="include/css/calender_container_style.css" type="text/css">
+  <!--<link rel="stylesheet" href="include/css/selected_dates_style.css" type="text/css">-->
   <?php echo '<script'; ?>
  src="include/js/ajax.js"><?php echo '</script'; ?>
 >
@@ -41,15 +43,32 @@ function content_602cbeeeb51412_44249188 (Smarty_Internal_Template $_smarty_tpl)
 </h3><br>
   <div class="instruction"><?php echo $_smarty_tpl->tpl_vars['instruction']->value;?>
 </div>
-  <?php echo $_smarty_tpl->tpl_vars['room_selection']->value;?>
-
-
 
   <div class="calender_container">
+    <?php echo $_smarty_tpl->tpl_vars['room_selection']->value;?>
+
+    <div id='room_month_year'>
+      <?php echo $_smarty_tpl->tpl_vars['room_month_year']->value;?>
+
+    </div>
+    <?php echo $_smarty_tpl->tpl_vars['month_buttons']->value;?>
+
     <div id="calender">
       <?php echo $_smarty_tpl->tpl_vars['calender']->value;?>
 
     </div>
+    <div id="start_date"></div>
+    <div id="end_date"></div>
+    <input style='display: none;' id="user_search">
+      <datalist>
+
+      </datalist>
+    </input>
+  </div>
+
+  <div class="selected_dates">
+
+    <div id="date_error"></div>
   </div>
 
   <div class="order-info">
@@ -100,11 +119,7 @@ function content_602cbeeeb51412_44249188 (Smarty_Internal_Template $_smarty_tpl)
 
     </div>
 
-    <div class="selected_dates">
-      <div id="start_date"></div><br>
-      <div id="end_date"></div><br>
-      <div id="date_error"></div>
-    </div>
+
 
     <div id="output" style="display:none"><?php echo $_smarty_tpl->tpl_vars['output']->value;?>
 </div><br>

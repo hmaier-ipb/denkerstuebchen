@@ -1,0 +1,13 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box; /*bestimmt worauf sich Abmessungen beziehen*/
+}
+
+body{
+  padding: 0 2rem 0 2rem;
+}
+
+
+
+

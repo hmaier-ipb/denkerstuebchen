@@ -13,6 +13,25 @@ class calender extends control_db
   public array $monate;
 
 
+  public function __construct()
+  {
+    parent::__construct();
+    $this->monate = [
+      "Januar",
+      "Februar",
+      "März",
+      "April",
+      "Mai",
+      "Juni",
+      "Juli",
+      "August",
+      "September",
+      "Oktober",
+      "November",
+      "Dezember"
+    ];
+  }
+
   function first_weekday_month($weekday_today, $monthday_today): int
   {
     // $weekday_today = date("N") -> numeric representation from 1(Mo) to 7(So)
@@ -49,7 +68,6 @@ class calender extends control_db
     $occupied_days = $control_db->get_occupied_dates("tr_$room_number");
     //error_log(json_encode($occupied_days));
 
-
     $prev_month = strtotime("-1 Month",$current_time); //unix timestamp for the previous month from today
     $next_month = strtotime("+1 Month",$current_time); //unix timestamp for the next month from today
 
@@ -75,20 +93,7 @@ class calender extends control_db
       ["Saturday","Samstag"],
       ["Sunday","Sonntag"]
     ];
-    $this->monate = [
-      "Januar",
-      "Februar",
-      "März",
-      "April",
-      "Mai",
-      "Juni",
-      "Juli",
-      "August",
-      "September",
-      "Oktober",
-      "November",
-      "Dezember"
-    ];
+
 
     $used_language = [];
 
@@ -102,15 +107,13 @@ class calender extends control_db
       }
     }
 
-    $language == "de" ? $room_name = "Denkerstübchen" : $room_name = "Thinkersroom";
 
-    $language == "de" ? $current_month = $this->monate[date("n",$current_time)-1] : $current_month = date("F",$current_time);
 
     //**********************
     //STRING CREATION BEGINS
     //**********************
-    $calender_string = "<p id='room_month_year'><b>" . $room_name . " " . $room_number . " </b> <i> " . $current_month. " " .date("Y",$current_time) . "</i></p> "; //current month
-    $calender_string .= "<table id='calender_table'>"; // calender string which contains the HTML
+
+    $calender_string = "<table id='calender_table'>"; // calender string which contains the HTML
 
     //WEEKDAYS HEADER
     $calender_string .= "<tr>";
@@ -147,15 +150,20 @@ class calender extends control_db
         $calender_string .= "<tr>"; //open a row
       }
 
+      if($iterated_date == date("d.m.Y",time())){
+        $border = "2px double black";
+      }else{
+        $border = "none";
+      }
 
-       if($validate->is_occupied($iterated_date,$occupied_days) == true){
+       if($validate->is_date_occupied($iterated_date,$occupied_days) == true){
         //red colored, class "occupied"
          $color = "#FF2635";
-         $calender_string .= "<td class='current_month occupied' id='$iterated_date' style='background-color: $color'>$i</td>";
+         $calender_string .= "<td class='current_month occupied' id='$iterated_date' style='background-color: $color;border: $border'>$i</td>";
       }else{
         //green colored, class "free"
-         $color = "#12B323";
-         $calender_string .= "<td class='current_month free' id='$iterated_date' style='background-color: $color'>$i</td>";
+         $color = "#CACACA";
+         $calender_string .= "<td class='current_month free' id='$iterated_date' style='background-color: $color;border: $border'>$i</td>";
       }
       $weekday_count += 1;
 //      $color = "#12B323";
@@ -175,24 +183,44 @@ class calender extends control_db
     }
     $calender_string .= "</table>";//closing the table
 
-    $calender_string .= $this->month_buttons($language);//append the month buttons to the calender
+    //$calender_string .= $this->month_buttons();//append the month buttons to the calender
 
     return $calender_string."<br>";
   }
 
 
 
-  function month_buttons($lang){
-    $lang == "de" ? $prev = "Vorheriger Monat" : $prev = "Previous Month";
-    $lang == "de" ? $current_month = "Aktueller Monat" : $current_month = "Current Month";
-    $lang == "de" ? $next = "Nächster Monat" : $next = "Next Month";
+  function month_buttons(){
+    //$lang == "de" ? $prev = "Vorheriger Monat" : $prev = "Previous Month";
+    //$lang == "de" ? $current_month = "Aktueller Monat" : $current_month = "Current Month";
+    //$lang == "de" ? $next = "Nächster Monat" : $next = "Next Month";
 
-    $output = "<button id='prev_month' class='btn calender_btn'>$prev</button><br>";
-    $output .= "<button id='current_month' class='btn calender_btn'>$current_month</button><br>";
-    $output .= "<button id='next_month' class='btn calender_btn'>$next</button>";
+    $prev = "&larr;";
+    $next = "&rarr;";
+
+    $output = "<button id='prev_month' class='btn calender_btn' style='font-size: 1.2rem;'>$prev</button><br>";
+    //$output .= "<button id='current_month' class='btn calender_btn'>$current_month</button><br>";
+    $output .= "<button id='next_month' class='btn calender_btn' style='font-size: 1.2rem;'>$next</button>";
 
     return $output;
   }
+
+  function room_month_year($current_time ){
+    $language = $_SESSION["lang"];
+    $room_number = $_SESSION["room_number"];
+
+
+    /*error_log($language);
+    error_log($room_number);
+    error_log($current_time);*/
+
+    $language == "de" ? $room_name = "Denkerstübchen" : $room_name = "Thinkersroom";
+    $language == "de" ? $current_month = $this->monate[date("n",$current_time)-1] : $current_month = date("F",$current_time);
+
+    return "<p '><b>" . $room_name . " " . $room_number . " </b> <i> " . $current_month. " " .date("Y",$current_time) . "</i></p> "; //current month
+  }
+
+
 
 
 }
