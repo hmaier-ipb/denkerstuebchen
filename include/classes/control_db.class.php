@@ -14,8 +14,7 @@ class control_db extends easy_pdo_db
   {
     $response = [];
 
-    $name = $_POST["name"];
-    $surname = $_POST["surname"];
+    $full_name = $_POST["full_name"];
     $phone = $_POST["phone"];
     $email = $_POST["email"];
     $department = $_POST["department"];
@@ -26,8 +25,8 @@ class control_db extends easy_pdo_db
     $room_number = $_POST["room_number"];
 
 
-    $cols_user =  "firstname,surname,phone,email,department,status";
-    $vars_array_user = [$name,$surname,$phone,$email,$department,$status];
+    $cols_user =  "full_name,phone,email,department,status";
+    $vars_array_user = [$full_name,$phone,$email,$department,$status];
 
     $user_id = $this->is_user_existing($email,$cols_user,$vars_array_user);
     $reservation_status = $this->has_user_reservations($user_id);

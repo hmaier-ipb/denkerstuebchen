@@ -150,20 +150,20 @@ class calender extends control_db
         $calender_string .= "<tr>"; //open a row
       }
 
-      if($iterated_date == date("d.m.Y",time())){
-        $border = "2px double black";
-      }else{
-        $border = "none";
-      }
+//      if($iterated_date == date("d.m.Y",time())){
+//        $border = "2px double black";
+//      }else{
+//        $border = "2px solid white";
+//      }
 
        if($validate->is_date_occupied($iterated_date,$occupied_days) == true){
         //red colored, class "occupied"
          $color = "#FF2635";
-         $calender_string .= "<td class='current_month occupied' id='$iterated_date' style='background-color: $color;border: $border'>$i</td>";
+         $calender_string .= "<td class='current_month occupied' id='$iterated_date' style='background-color: $color;'>$i</td>";
       }else{
         //green colored, class "free"
          $color = "#CACACA";
-         $calender_string .= "<td class='current_month free' id='$iterated_date' style='background-color: $color;border: $border'>$i</td>";
+         $calender_string .= "<td class='current_month free' id='$iterated_date' style='background-color: $color;'>$i</td>";
       }
       $weekday_count += 1;
 //      $color = "#12B323";
@@ -219,6 +219,9 @@ class calender extends control_db
 
     return "<p '><b>" . $room_name . " " . $room_number . " </b> <i> " . $current_month. " " .date("Y",$current_time) . "</i></p> "; //current month
   }
+
+
+
 
 
 

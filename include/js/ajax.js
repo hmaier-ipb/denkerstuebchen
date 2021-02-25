@@ -11,8 +11,7 @@ var json_response;
 
 
 var send_btn;
-var firstname;
-var surname;
+var full_name;
 var phone;
 var email;
 var department;
@@ -24,26 +23,30 @@ var selected_room;
 var calender;
 var start_date;
 var end_date;
-var start_date_output;
-var end_date_output;
 var room_selection;
 var room_number;
 var room_month_year;
+var user_search;
+var uid;
+var user_data;
 
 function init(){
   send_btn = $$("send_btn");
-  firstname = $("name-input");
-  surname = $("surname-input");
+  full_name = $("name-input");
   phone = $("phone-input");
   email = $("email-input");
+  department = $("department-input");
   output = $("output");
   calender = $("calender");
-  start_date_output = $("start_date");
-  end_date_output = $("end_date");
+  start_date = $("start_date");
+  end_date = $("end_date");
+  // console.log(start_date.value);
+  // console.log(end_date.value);
   room_selection = $("room_selection");
   room_month_year = $("room_month_year");
-  action = "get-lang";
-  send_info("action="+action);
+  user_search = $("user_search");
+  // action = "get-lang";
+  // send_info("action="+action);
   initEventListeners();
 }
 
@@ -55,6 +58,21 @@ function validate(input,pattern){
 
 function initEventListeners(){
 
+  user_search.addEventListener("input", e =>{
+    action = "user_search";
+    uid = user_search.value;
+    params = "action="+action+"&uid="+uid;
+    send_info(params);
+    //console.log(uid);
+    //console.log(params);
+    })
+  // user_search.addEventListener("keyup", e =>{
+  //   if(e.key === "Enter") {
+  //
+  //   }
+  // })
+
+
   send_btn[0].addEventListener("click", function (){
     action = "form-data";
     department = $("department-input").value;
@@ -64,76 +82,71 @@ function initEventListeners(){
 
     params =
       "action="+action+
-      "&name="+firstname.value+
-      "&surname="+surname.value+
+      "&full_name="+name.value+
+      //"&surname="+surname.value+
       "&phone="+phone.value+
       "&email="+email.value+
       "&department="+department+
       "&status="+status_input+
-      "&start_date="+start_date+
-      "&end_date="+end_date+
+      "&start_date="+start_date.value+
+      "&end_date="+end_date.value+
       "&room_number="+room_number;
 
     //****************************
     //SENDING OUT THE RESERVATION
     //****************************
+
     send_info(params);
     console.log("form data send to php");
     console.log(params);
     })
 
 
-  //checking the input of the firstname on keyup
-  $("name-input").addEventListener("keyup",function (){
-    //name
-    if(validate(firstname,/^[A-Za-z]{2,}$/)){
-      $("img1").style.display = "flex";
-      }else{
-      $("img1").style.display = "none";
-    }
-  })
-
-  //checking the input of the surname on keyup
-  $("surname-input").addEventListener("keyup",function () {
-    //name
-    if(validate(surname,/^[A-Za-z]{2,}$/)){
-      $("img2").style.display = "flex";
-    }else{
-      $("img2").style.display = "none";
-    }
-  })
-
- //checking the input of the phone number
-  $("phone-input").addEventListener("keyup", function(){
-    //phone
-    if(validate(phone,/^\d{4,}$/)){
-      $("img3").style.display = "flex";
-    }else{
-      $("img3").style.display = "none";
-    }
-  })
-
-  //checking the email input on keyup
-  $("email-input").addEventListener("keyup",function (){
-    //email
-    if(validate(email,/(\w+|\w+.\w+){3,}@(ipb-halle.de)/)){
-      $("img4").style.display = "flex";
-    }else{
-      $("img4").style.display = "none";
-    }
-  })
-
-  //set the cursor at position 0 when focusing the email input
-  $("email-input").addEventListener("focus", function (c){
-    var input = $("email-input");
-    if (input.setSelectionRange){
-      input.focus();
-      input.setSelectionRange(0,0);
-    }
-  })
   td_listener();
   room_selection_listener();
   month_buttons_listener();
+
+
+  //checking the input of the firstname on keyup
+  // $("name-input").addEventListener("keyup",function (){
+  //   //name
+  //   if(validate(firstname,/^[A-Za-z]{2,}$/)){
+  //     $("img1").style.display = "flex";
+  //     }else{
+  //     $("img1").style.display = "none";
+  //   }
+  // })
+
+  //checking the input of the surname on keyup
+  // $("surname-input").addEventListener("keyup",function () {
+  //   //name
+  //   if(validate(surname,/^[A-Za-z]{2,}$/)){
+  //     $("img2").style.display = "flex";
+  //   }else{
+  //     $("img2").style.display = "none";
+  //   }
+  // })
+
+ //checking the input of the phone number
+ //  $("phone-input").addEventListener("keyup", function(){
+ //    //phone
+ //    if(validate(phone,/^\d{4,}$/)){
+ //      $("img3").style.display = "flex";
+ //    }else{
+ //      $("img3").style.display = "none";
+ //    }
+ //  })
+
+  //checking the email input on keyup
+  // $("email-input").addEventListener("keyup",function (){
+  //   //email
+  //   if(validate(email,/(\w+|\w+.\w+){3,}@(ipb-halle.de)/)){
+  //     $("img4").style.display = "flex";
+  //   }else{
+  //     $("img4").style.display = "none";
+  //   }
+  // })
+
 }
 
 function td_listener(){ // EVENT LISTENER FOR SINGLE TABLE CELLS
@@ -173,52 +186,26 @@ function month_buttons_listener(){
 
   room_selection_listener();
 }
-
 function load_calender_listeners(){
   td_listener();
-
 }
 
+
 function set_dates(e){
-  if(typeof start_date !== typeof undefined && typeof end_date !== typeof undefined){ //when both vars are defined
-    start_date = undefined;
-    end_date = undefined;
+  // console.log(start_date);
+  // console.log(end_date);
+  if( start_date.value !== "" &&  end_date.value !== ""){ //when both vars are defined
+    start_date.value = "";
+    end_date.value = "";
   }
-
-  if(typeof start_date === typeof undefined){
-    start_date = e.target.id;
-
-    switch (lang){
-      case "de":
-        start_date_output.innerHTML = "Ausgewähltes Startdatum: ";
-        break;
-      default:
-        start_date_output.innerHTML = "Selected Start Date: ";
-    }
-    $("date_error").innerHTML = "";
-    start_date_output.innerHTML += start_date;
-
-    end_date_output.innerHTML = "";
-
-
+  if(start_date.value === ""){
+    start_date.value = e.target.id;
   }else{
-    end_date = e.target.id;
-
-    switch (lang){
-      case "de":
-        end_date_output.innerHTML = "Ausgewähltes Enddatum: ";
-        break;
-      default:
-        end_date_output.innerHTML = "Selected End Date: ";
-    }
-    end_date_output.innerHTML += end_date;
-
+    end_date.value = e.target.id;
   }
   action = "submit_dates";
-  params = "action="+action+"&start_date="+start_date+"&end_date="+end_date;
+  params = "action="+action+"&start_date="+start_date.value+"&end_date="+end_date.value;
   send_info(params);//is start_date > end_date?
-
-
 }
 
 function reset_input_values(){
@@ -294,7 +281,7 @@ function setOutput() {
           output.style.display = "block";
           break;
         case "get-lang":
-          lang = json_response;
+          //lang = json_response;
           //console.log(lang);
           break;
         case "room_select":
@@ -323,12 +310,32 @@ function setOutput() {
           break;
         case "submit_dates":
           action = "";
-          calender.innerHTML = json_response[0];
-          if(typeof json_response[1] !== typeof null){
-            $("start_date").innerHTML = "";
-            $("end_date").innerHTML = "";
+          //calender.innerHTML = json_response[0];
+          if(typeof json_response[0] !== typeof null){
+            start_date.value = "";
+            end_date.value = "";
           }
-          load_calender_listeners();
+          //load_calender_listeners();
+          break;
+        case "user_search":
+          //$("suggestions").innerHTML = json_response[0]
+          user_data = json_response;
+          console.log(json_response)
+          // full_name.value = user_data[0];
+          // phone.value = user_data[2];
+          // email.value = user_data[3];
+          // department.value = user_data[4];
+
+            full_name.value = user_data[0];
+            phone.value = user_data[2];
+            email.value = user_data[3];
+            department.value = user_data[4];
+
+            // full_name.value = "";
+            // phone.value =  "";
+            // email.value =  "@ipb-halle.de";
+            // department.value =  "";
+
           break;
         default:
           output.innerHTML = "INVALID ACTION";

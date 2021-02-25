@@ -3,31 +3,27 @@
 
 class validation
 {
+  protected control_ldap $ldap;
+
+  function __construct(){
+    $this->ldap = new control_ldap();
+  }
+
   function regex_form_data(){
     $response = [];
-    $name = $_POST["name"];
-    $surname = $_POST["surname"];
-    $phone = $_POST["phone"];
-    $email = $_POST["email"];
+    $name = $_POST["full_name"];
     $start_date = $_POST["start_date"];
     $end_date = $_POST["end_date"];
-    if(preg_match("/^[A-Za-z]{2,}$/",$name) == false){
+    //error_log(json_encode($_POST));
+
+    if(preg_match("/^[A-Za-z]{2,}, [A-Za-z]{2,}$/",$name) == false){
       $response[] = 0;
     }
-    if(preg_match("/^[A-Za-z]{2,}$/",$surname) == false){
+    if($start_date == ""){
       $response[] = 1;
     }
-    if(preg_match("/^\d{4,}$/",$phone) == false){
+    if($end_date == ""){
       $response[] = 2;
-    }
-    if(preg_match("/(\w+|\w+.\w+){3,}@(ipb-halle.de)/",$email) == false){
-      $response[] = 3;
-    }
-    if($start_date == "undefined"){
-      $response[] = 4;
-    }
-    if($end_date == "undefined"){
-      $response[] = 5;
     }
 
     return $response;
@@ -75,12 +71,12 @@ class validation
       $end_db = $value[1];
       if($start_date < $start_db && $end_date > $end_db){
         $response = ["occupation_in_period"];
-
       }
     }
     error_log(json_encode($response));
     return $response;
   }
+
 
 
 

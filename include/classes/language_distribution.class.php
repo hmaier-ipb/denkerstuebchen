@@ -27,16 +27,20 @@ class language_distribution
     $this->lang_array = [
       ["Gast","Guest"],
       ["Mitarbeiter", "Employee"],
-      ["Vorname","Name"],
+      ["Nachname, Vorname","Lastname, Firstname"],
       ["Nachname","Surname"],
       ["hausinterne Telefonnummer","in-house Telephone Number"],
-      ["hausinterne Email (die kurze)","in-house Email (the short one)"],
+      ["Email","Email"],
       ["Abteilung","Department"],
       ["Abschicken","Send"],
       ["Denkerstübchen Reservierung", "Thinkers-Room Reservation"],
       ["Geben Sie ihre Daten, ein um ein Denkerstübchen zu reservieren","Enter your credentials to reserve a thinkers-room"],
       ["Ungültige Eingabe", "Invalid Input!"],
-      ["de","eng"]
+      ["de","eng"],
+      ["Geben Sie Ihren Usernamen ein","Type in your username"],
+      ["Zeitraum","Time-Period"],
+      ["Beginn: ","Start: "],
+      ["Ende: ","End: "]
     ];
   }
 
@@ -231,6 +235,7 @@ class language_distribution
       }
       $response[] = $message;
       $response[] = False;
+      error_log(json_encode($response));
       return $response;
     }
   }

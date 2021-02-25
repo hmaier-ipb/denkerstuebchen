@@ -10,19 +10,20 @@ body{
   padding-top: 2rem;
   width: 100%;
   display: grid;
-  grid-template-columns: 1fr 1.95fr 0.05fr;
-  grid-template-rows: 2em 2em 2em 2em 2em 2em 2em 2em 2em;
+  grid-template-columns: 1fr ;
+  grid-template-rows: 2em 2em 2em 2em 2em 2em 2em 2em 2em 2em;
   gap: 10px 20px;
   grid-template-areas:
-    "name name-input img1"
-    "surname surname-input img2"
-    "tel tel-input img3"
-    "email email-input img4"
-    "dep dep-input ."
-    "status status-input ."
-    "selected-dates btn ."
-    ". output ."
+    "time "
+    "name-input"
+    "tel-input "
+    "email-input "
+    "dep-input "
+    " status-input "
+    " btn "
+    " output "
     ;
+
 }
 
 
@@ -36,6 +37,7 @@ body{
 .btn{grid-area:btn}
 .selected_dates{grid-area:selected-dates}
 #output{grid-area:output;text-align: center;padding: 2rem;}
+.period{grid-area:period}
 
 
 /*inputs*/
@@ -46,11 +48,13 @@ body{
 #department-input{grid-area:dep-input}
 #status-input{grid-area:status-input}
 #btn{grid-area:btn}
+#time{grid-area:time}
 
 
 .input{
   border: 2px solid #eee;
   border-radius: 10px;
+  height: 1.5rem;
 }
 
 select{

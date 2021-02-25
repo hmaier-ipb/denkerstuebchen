@@ -34,18 +34,18 @@
     display: grid;
     align-items: center;
     padding-top: 1rem;
-    grid-template-columns: 1fr 0.5fr 2fr 2fr;
+    grid-template-columns:   2fr 2fr;
     grid-template-rows:  2.5rem 2rem 1.5fr 1.5fr ;
     gap: 5px 5px;
     grid-template-areas:
-    " . room-selection prev-btn next-btn"
-    " .  . room-month-year room-month-year"
-    " user-search start-date cal-table cal-table"
-    " .  end-date cal-table cal-table";
+    "prev-btn next-btn"
+    " room-month-year room-month-year"
+    " cal-table cal-table"
+    " cal-table cal-table";
 }
 
-#prev_month{grid-area:prev-btn}/*previous month button*/
-#next_month{grid-area:next-btn}/*next month button*/
+#prev_month{grid-area:prev-btn;}/*previous month button*/
+#next_month{grid-area:next-btn;}/*next month button*/
 #start_date{grid-area: start-date;text-align: center;}
 #end_date{grid-area: end-date;text-align: center;}
 #user_search{grid-area: user-search}
@@ -69,3 +69,4 @@
 .occupied{
     pointer-events: none;
 }
+

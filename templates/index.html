@@ -12,10 +12,12 @@
 </head>
 <body>
   <h3><!--{$title}--></h3><br>
-  <div class="instruction"><!--{$instruction}--></div>
+
+
+  <!--{$room_selection}-->
 
   <div class="calender_container">
-    <!--{$room_selection}-->
+
     <div id='room_month_year'>
       <!--{$room_month_year}-->
     </div>
@@ -23,57 +25,42 @@
     <div id="calender">
       <!--{$calender}-->
     </div>
-    <div id="start_date"></div>
-    <div id="end_date"></div>
-    <input style='display: none;' id="user_search">
-      <datalist>
 
-      </datalist>
-    </input>
   </div>
-
-  <div class="selected_dates">
-
-    <div id="date_error"></div>
+  <br>
+  <div id="uid_div">
+  <label for="user_search"><!--{$search_prompt}--></label>
+  <input list="suggestions" id="user_search" class="input">
+  <datalist id="suggestions"><!--{$suggestion_html}--></datalist>
   </div>
+  <br>
 
   <div class="order-info">
 
-    <span class="name"><!--{$name}-->:</span> <input placeholder="<!--{$name}-->" type="text" class="input" id="name-input">
-    <img class="img" style="display: none;" id="img1" src="include/media/green_check.png" alt="no pic">
+    <div id="time">
+      <!--{$start_date}--><input value="" class="input" id="start_date" placeholder="dd.mm.yyyy">
+      <!--{$end_date}--><input value=""  class="input" id="end_date" placeholder="dd.mm.yyyy">
+    </div>
 
-    <span class="surname"><!--{$surname}-->:</span> <input placeholder="<!--{$surname}-->"  type="text"  class="input" id="surname-input">
-    <img class="img" style="display: none;" id="img2" src="include/media/green_check.png" alt="no pic">
+    <input disabled placeholder="<!--{$name}-->" type="text" class="input" id="name-input">
 
-    <span class="phone"><!--{$phone}-->:</span> <input placeholder="<!--{$phone}-->" type="text"  class="input" id="phone-input">
-    <img class="img" style="display: none;" id="img3" src="include/media/green_check.png" alt="no pic">
+    <input disabled placeholder="<!--{$phone}-->" type="text"  class="input" id="phone-input">
 
-    <span class="email"><!--{$email}-->:</span> <input type="text" class="input" id="email-input" value="@ipb-halle.de">
-    <img class="img" style="display: none;" id="img4" src="include/media/green_check.png" alt="no pic">
+    <input disabled type="text" class="input" id="email-input" placeholder="@ipb-halle.de">
 
-    <span class="dep"><!--{$department}-->:</span>
+    <input disabled class="input" id="department-input" name="department" placeholder="<!--{$department}-->">
 
-    <select id="department-input" name="department">
-      <!--{$departments}-->
-    </select>
-
-    <span class="status">Status:</span>
-
-    <button class="send_btn btn" id="btn"><b><!--{$button}--></b></button>
 
     <div id="status-input">
-
       <input type="radio" id="employee" name="status" value="employee" checked>
       <label for="employee"><!--{$employee}--></label>
       <br>
-
       <input type="radio" id="guest" name="status" value="guest">
       <label for="guest"><!--{$guest}--></label>
       <br>
-
     </div>
 
-
+    <button class="send_btn btn" id="btn"><b><!--{$button}--></b></button>
 
     <div id="output" style="display:none"><!--{$output}--></div><br>
 
