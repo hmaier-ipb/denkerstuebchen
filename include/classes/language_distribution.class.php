@@ -32,7 +32,7 @@ class language_distribution
       ["hausinterne Telefonnummer","in-house Telephone Number"],
       ["Email","Email"],
       ["Abteilung","Department"],
-      ["Abschicken","Send"],
+      ["Reservierung einreichen","Make Reservation"],
       ["Denkerstübchen Reservierung", "Thinkers-Room Reservation"],
       ["Geben Sie ihre Daten, ein um ein Denkerstübchen zu reservieren","Enter your credentials to reserve a thinkers-room"],
       ["Ungültige Eingabe", "Invalid Input!"],
@@ -40,7 +40,11 @@ class language_distribution
       ["Geben Sie Ihren Usernamen ein","Type in your username"],
       ["Zeitraum","Time-Period"],
       ["Beginn: ","Start: "],
-      ["Ende: ","End: "]
+      ["Ende: ","End: "],
+      ["Geben Sie einen Reservierungszeitraum ein.","Type in a period in which you want to reserve a thinker's-room."],
+      ["Beginn - Ende [dd.mm.yyyy]","Start - End [dd.mm.yyyy]"],
+      ["Nach nächsten verfügbaren Zeitraum suchen. Wochenanzahl","Search for next available time period. Number of Weeks"],
+      ["Prüfen","Check"]
     ];
   }
 
@@ -61,90 +65,71 @@ class language_distribution
     return $used_lang;
   }
 
-  function departments(){
-    $departments_array = [
-      "AdmIN",
-      "BPI",
-      "MSV",
-      "NWC",
-      "SZB",
-      "UNG Voiniciuc",
-      "UNG Weissenborn",
-      "FG BASDA",
-      "FG Proteome Analytics"
-    ];
-
-    $output = "";
-    foreach($departments_array as $index){
-      $output .= "<option value='$index'>$index</option>";
-    }
-    return $output;
-  }
+//  function departments(){
+//    $departments_array = [
+//      "AdmIN",
+//      "BPI",
+//      "MSV",
+//      "NWC",
+//      "SZB",
+//      "UNG Voiniciuc",
+//      "UNG Weissenborn",
+//      "FG BASDA",
+//      "FG Proteome Analytics"
+//    ];
+//
+//    $output = "";
+//    foreach($departments_array as $index){
+//      $output .= "<option value='$index'>$index</option>";
+//    }
+//    return $output;
+//  }
 
   function send_email(){
-    $name = $_POST["name"];
-    $surname = $_POST["surname"];
-    $phone = $_POST["phone"];
+    $full_name = $_POST["full_name"];
     $email = $_POST["email"];
-    $department = $_POST["department"];
-    //start date & end date
-    //room number
-    $_POST["status"] == "guest"? $status = "Gast": $status = "Mitarbeiter";
+    $start_date = $_POST["start_date"];
+    $room_number = $_POST["room_number"];
+    $end_date = $_POST["end_date"];
     //$receiver = "bibliothek@ipb-halle.de,$email";
     $receiver = "hmaier@ipb-halle.de,$email";
-    $subject = "Denkerstuebchen Reservierung";
+    $subject = "THINKERS-ROOM RESERVATION";
 
     $m = "<html>";
     $m .= "<head>";
     $m .= "<style> tr,td{border: solid 2px #666666;border-collapse: collapse}</style>";
     $m .= "</head>";
     $m .= "<body>";
-    $m .= "<table  style='border: solid 2px #666;' >";
 
+    $m .= "";
+
+    $m .= "<table  style='border: solid 2px #666;' >";
     $m .= "<tr style='padding: 10px;'>";
     $m .= "<td><b>Name</b></td>";
-    $m .= "<td>$name</td>";
+    $m .= "<td>$full_name</td>";
     $m .= "</tr>";
 
     $m .= "<tr style='padding: 10px;'>";
-    $m .= "<td><b>Nachname</b></td>";
-    $m .= "<td>$surname</td>";
+    $m .= "<td><b>Room Number</b></td>";
+    $m .= "<td>$room_number</td>";
     $m .= "</tr>";
 
     $m .= "<tr style='padding: 10px;'>";
-    $m .= "<td><b>Telefon</b></td>";
-    $m .= "<td>$phone</td>";
+    $m .= "<td><b>Start Date</b></td>";
+    $m .= "<td>$start_date</td>";
     $m .= "</tr>";
 
     $m .= "<tr style='padding: 10px;'>";
-    $m .= "<td><b>Email</b></td>";
-    $m .= "<td>$email</td>";
+    $m .= "<td><b>End Date</b></td>";
+    $m .= "<td>$end_date</td>";
     $m .= "</tr>";
 
-    $m .= "<tr style='padding: 10px;'>";
-    $m .= "<td><b>Abteilung</b></td>";
-    $m .= "<td>$department</td>";
-    $m .= "</tr>";
-
-    $m .= "<tr style='padding: 10px;'>";
-    $m .= "<td><b>Status</b></td>";
-    $m .= "<td>$status</td>";
-    $m .= "</tr>";
     $m .= "";
     $m .= "";
     $m .= "</table>";
     $m .= "</body>";
     $m .= "</html>";
 
-
-//    $message = "
-//      Name: " . $surname . "\r\n
-//      Vorame: " . $name . "\r\n
-//      hausinterne Telefonnummer: " . $phone . "\r\n
-//      hausinterne Email: " . $email . " \r\n
-//      Abteilung: " . $department . "\r\n
-//      Status: " . $status . "\r\n
-//      ";
 
     $headers = "From: " . "noreply@ipb-halle.de" . "\r\n";
     $headers .= "Reply-To: ". "hmaier@ipb-halle.de" . "\r\n";
@@ -159,86 +144,59 @@ class language_distribution
 
   }
 
-  function input_response(){//called when send button clicked
+  function check_for_errors(){//called when send button clicked, returns ["response_message",TRUE/FALSE]
     $message = "";
-    $response = [];
     $error = [];
 
-    switch ($_SESSION["lang"]){
-      case "de":
-        for($i=2;$i<6;$i++){$used_lang[]= $this->lang_array[$i][0];}
-        $used_lang[] = "Start Datum";
-        $used_lang[] = "End Datum";
-        break;
-      default:
-        for($i=2;$i<6;$i++){$used_lang[]= $this->lang_array[$i][1];}
-        $used_lang[] = "Start Date";
-        $used_lang[] = "End Date";
-        break;
-    }
-    $form_data_validation = $this->validate->regex_form_data();//checking inputs with regex
+    $error_codes = $this->validate->check_form_data();
 
-    foreach($form_data_validation as $value){$error[] = $used_lang[$value];}
-    $error_length = count($error);
-
-
-    if($error_length == 0){//regex is ok, data can be send to the database
-
+    if(count($error_codes)==0){
       return $this->database_response();
-
-    }else{//generating error message because some regex failed
-
-    switch ($_SESSION["lang"]){//choosing the language
-      case "de"://german
-
-        switch ($error_length){//building response depending length of error
-          case 1:
-            $message .= "Der Punkt <b>". $error[0]."</b> wurde nicht/falsch angegeben.";
+    }else{//generating error messages
+     switch ($_SESSION["lang"]){
+       case "de":
+         if(in_array(0,$error_codes)){$error[] = "Benutzername";}//username error
+         if(in_array(1,$error_codes)){$error[] = "Startdatum";}//start_date error
+         if(in_array(2,$error_codes)){$error[] = "Enddatum";}//end_date error
+         $l_error = count($error);
+         $message .= "Bitte geben Sie ein/en ";
+         switch($l_error){
+           case 1:
+             $message .=  $error[0] ." an.";
+             break;
+           case 2:
+             $message .= $error[0] . "und ". $error[1] ." an.";
+             break;
+           case 3:
+             $message .= $error[0] .", ". $error[1]. " und ".$error[2] . " an.";
+         }
+         break;
+       case "eng":
+         if(in_array(0,$error_codes)){$error[] = "Username";}//username error
+         if(in_array(1,$error_codes)){$error[] = "Start Date";}//start_date error
+         if(in_array(2,$error_codes)){$error[] = "End Date";}//end_date error
+         $l_error = count($error);
+         $message .= "Please provide ";
+         switch($l_error){
+           case 1:
+            $message .=  $error[0] .".";
             break;
-          case 2:
-            $message .= "Die Punkte <b>". $error[0]. "</b> und <b>". $error[1] . "</b> wurden nicht/falsch angegeben.";
-            break;
-          default:// 3 or more errors
-            $message .= "Die Punkte ";
-            for($i=0;$i<$error_length;$i++){
-              if($i==$error_length-1){
-                $message .= "und <b>".$error[$i]."</b>";
-              }else{
-                $message .= "<b>". $error[$i] . "</b>, ";
-              }
-            }
-            $message .= " wurden nicht/falsch angegeben.";
-            break;
-        }
-      break;//closing german case
-        default:// opening english case
-          switch ($error_length){//building response depending number of error
-            case 1:
-              $message .= "The point <b>". $error[0]."</b> has not/falsely been specified.";
-              break;
-            case 2:
-              $message .= "The points <b>". $error[0]. "</b> and <b>". $error[1] . "</b> have not/falsely been specified.";
-              break;
-            default:// 3 or more errors
-              $message .= "The points ";
-              for($i=0;$i<$error_length;$i++){
-                if($i==$error_length-1){
-                  $message .= "and <b>".$error[$i]."</b>";
-                }else{
-                  $message .= "<b>". $error[$i] . "</b>, ";
-                }
-              }
-              $message .= " have not/falsely been specified.";
-              break;
-          }
-        break;//closing english case
-      }
+           case 2:
+             $message .= $error[0] . "and ". $error[1];
+             break;
+           case 3:
+             $message .= $error[0] .", ". $error[1]. " and ".$error[2] . ".";
+         }
+         break;
+     }
+
       $response[] = $message;
       $response[] = False;
-      error_log(json_encode($response));
       return $response;
     }
+
   }
+
 
 /*  function compare_dates($start_date,$end_date){
     $vali = $this->validate->start_smaller_end($start_date,$end_date);
@@ -251,38 +209,40 @@ class language_distribution
     return $output;
   }*/
 
-  function room_select(){
-    $num_rooms = 5;
-    $_SESSION["lang"] == "de" ? $room = "Denkerstübchen" : $room = "Thinkersroom";
-    //$_SESSION["lang"] == "de" ? $choose = "Auswählen" : $choose = "Choose";
-    $output = "<div id='room_selection_div'>";
-    $output .= "<select name='rooms' id='room_selection' class='room_selection'>";
-    for($i = 1;$i<=$num_rooms;$i++){
-      $output .= "<option value='$i'>$room $i</option>";
-    }
-    $output .= "</select>";
-    //$output .= "<button id='btn_select_room' class='btn'>$choose</button>";
-    $output .= "</div>";
-    return $output;
-  }
+//  function room_select(){
+//    $num_rooms = 5;
+//    $_SESSION["lang"] == "de" ? $room = "Denkerstübchen" : $room = "Thinkersroom";
+//    //$_SESSION["lang"] == "de" ? $choose = "Auswählen" : $choose = "Choose";
+//    $output = "<div id='room_selection_div'>";
+//    $output .= "<select name='rooms' id='room_selection' class='room_selection'>";
+//    for($i = 1;$i<=$num_rooms;$i++){
+//      $output .= "<option value='$i'>$room $i</option>";
+//    }
+//    $output .= "</select>";
+//    //$output .= "<button id='btn_select_room' class='btn'>$choose</button>";
+//    $output .= "</div>";
+//    return $output;
+//  }
 
   function database_response(){
     //error_log("Database called!");
     $db_call = $this->control_db->new_reservation();
-    //error_log($db_call);
-    if($db_call == "success"){//calling database validation
-      $_SESSION["lang"] == "de" ? $response[] = "Anfrage erfolgreich!" : $response[]= "Sucessful query!" ;
+    //error_log(json_encode("db call"));
+    //error_log(json_encode($db_call));
+    if($db_call[0] == "success"){//calling database validation
+      $_SESSION["lang"] == "de" ? $response[] = "Anfrage erfolgreich!" : $response[] = "Sucessful query!" ;
       $response[] = True;
+      //$this->send_email();
     }else{
-      //$_SESSION["lang"] == "de" ? $response[] = "Anfrage nicht erfolgreich! :-(": $response[] = "Unsucessful query! :-(";
       //$response[] = $this->control_db->new_reservation();
-      $response[] = $this->process_db_errors($db_call);
+      $response[] = $_SESSION["lang"] == "de" ? $response[] = "Anfrage nicht erfolgreich! :-(": $response[] = "Unsucessful query! :-(";
       $response[] = False;
     }
     return $response;
   }
 
   function process_db_errors($db_response){
+    //error_log(json_encode($db_response));
     switch($db_response[0]){
       case "already_exists_in_user":
         return $_SESSION["lang"] == "de" ? "Benutzer schon bekannt." : "User already know.";
@@ -298,6 +258,41 @@ class language_distribution
 
   }
 
+//  function process_date_errors($start_date,$end_date){
+//    $lang = $_SESSION["lang"];
+//    $validate = new validation();
+//    $date_validation_response = $validate->date_validation($start_date,$end_date);
+//
+//    error_log(json_encode($date_validation_response));
+//
+//    switch($date_validation_response[0]) {
+//      case "start_bigger_end":
+//        $message =  $lang == "de" ? "Enddatum kann nicht kleiner als Startdatum sein.": "End date cannot be smaller than start date.";
+//        break;
+//      case "occupation_in_period":
+//        $message =  $lang == "de" ? "Im ausgewählten Zeitraum befindet sich schon eine Reservierung. Bitte wählen Sie einen anderen Zeitraum.": "There is a occupation in the corresponding period. Please select a different time period.";
+//        break;
+//      case "period_greater_than_four_months":
+//        $message =  $lang == "de" ? "Laut Direktoriumsbeschluss vom 23.09.2019 ist die Belegung des Denkerstübchen auf einen Zeitraum von <b>vier Monaten</b> beschränkt.": "A thinker's room can be booked for a maximum of <b>4 months</b>.";
+//        break;
+//      case "start_date_in_past":
+//        $message =   $lang == "de" ? "Beginn der Reservierung kann nicht in der Vergangenheit liegen.": "Start Date cannot be in the past.";
+//        break;
+//      default:
+//        $message = 0;
+//    }
+//    return $message;
+//    if($date_validation_response[0] == 0){
+//      return 0;
+//    }elseif ($date_validation_response[0] == "start_bigger_end"){
+//      return $lang == "de" ? "Enddatum kann nicht kleiner als Startdatum sein.": "End date cannot be smaller than start date.";
+//    }elseif ($date_validation_response[0] == "occupation_in_period"){
+//      return $lang == "de" ? "Im ausgewählten Zeitraum befindet sich schon eine Reservierung. Bitte wählen Sie einen anderen Zeitraum.": "There is a occupation in the corresponding period. Please select a different time period.";
+//    }elseif ($date_validation_response[0] == "period_greater_than_four_months"){
+//      return $lang == "de" ? "Laut Direktoriumsbeschluss vom 23.09.2019 ist die Belegung des Denkerstübchen auf einen Zeitraum von <b>vier Monaten</b> beschränkt.": "A thinker's room can be booked for a maximum of <b>4 months</b>.";
+//    }elseif ($date_validation_response[0] == "start_date_in_past"){
+//      return $lang == "de" ? "Beginn der Reservierung kann nicht in der Vergangenheit liegen.": "Start Date cannot be in the past.";
+//    }
 
 
 

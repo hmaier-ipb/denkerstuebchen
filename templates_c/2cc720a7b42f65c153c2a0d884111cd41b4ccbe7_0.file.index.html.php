@@ -1,18 +1,18 @@
 <?php
-/* Smarty version 3.1.34-dev-7, created on 2021-02-25 13:01:51
+/* Smarty version 3.1.34-dev-7, created on 2021-03-16 14:26:27
   from 'D:\inetpub\www\denkerstuebchen\templates\index.html' */
 
 /* @var Smarty_Internal_Template $_smarty_tpl */
 if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   'version' => '3.1.34-dev-7',
-  'unifunc' => 'content_60379fbf2b8271_26024090',
+  'unifunc' => 'content_6050c013be2d53_37534133',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
     '2cc720a7b42f65c153c2a0d884111cd41b4ccbe7' => 
     array (
       0 => 'D:\\inetpub\\www\\denkerstuebchen\\templates\\index.html',
-      1 => 1614258049,
+      1 => 1615904726,
       2 => 'file',
     ),
   ),
@@ -20,7 +20,7 @@ if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   array (
   ),
 ),false)) {
-function content_60379fbf2b8271_26024090 (Smarty_Internal_Template $_smarty_tpl) {
+function content_6050c013be2d53_37534133 (Smarty_Internal_Template $_smarty_tpl) {
 ?><!DOCTYPE html>
 <html lang="en">
 <head>
@@ -42,12 +42,7 @@ function content_60379fbf2b8271_26024090 (Smarty_Internal_Template $_smarty_tpl)
   <h3><?php echo $_smarty_tpl->tpl_vars['title']->value;?>
 </h3><br>
 
-
-  <?php echo $_smarty_tpl->tpl_vars['room_selection']->value;?>
-
-
   <div class="calender_container">
-
     <div id='room_month_year'>
       <?php echo $_smarty_tpl->tpl_vars['room_month_year']->value;?>
 
@@ -58,26 +53,47 @@ function content_60379fbf2b8271_26024090 (Smarty_Internal_Template $_smarty_tpl)
       <?php echo $_smarty_tpl->tpl_vars['calender']->value;?>
 
     </div>
+  </div>
+
+  <br>
+
+  <div id="search_time_period">
+    <?php echo $_smarty_tpl->tpl_vars['time_period_search_text']->value;?>
+
+    <input type="number" value="1"  step="1" min="1" max="17">
+    <button id="search_period_button"><?php echo $_smarty_tpl->tpl_vars['search_period_button_text']->value;?>
+</button>
+    <div id="search_period_output"></div>
+  </div>
+
+  <br>
+
+  <div id="date_search_div">
+      <?php echo $_smarty_tpl->tpl_vars['date_search_term']->value;?>
+
+      <br>
+      <br>
+    <p>
+      <?php echo $_smarty_tpl->tpl_vars['start_date']->value;?>
+  <input          id="start_date_search" placeholder="[dd.mm.yyyy]" class="input date_search" tabindex="1">
+      <?php echo $_smarty_tpl->tpl_vars['end_date']->value;?>
+    <input disabled id="end_date_search" placeholder="[dd.mm.yyyy]" class="input date_search" tabindex="2">
+    </p>
+    <br>
 
   </div>
-  <br>
+
   <div id="uid_div">
-  <label for="user_search"><?php echo $_smarty_tpl->tpl_vars['search_prompt']->value;?>
+    <label for="user_search"><?php echo $_smarty_tpl->tpl_vars['user_search_prompt']->value;?>
 </label>
-  <input list="suggestions" id="user_search" class="input">
-  <datalist id="suggestions"><?php echo $_smarty_tpl->tpl_vars['suggestion_html']->value;?>
+    <input disabled list="suggestions" id="user_search" class="input" tabindex="3">
+    <datalist id="suggestions"><?php echo $_smarty_tpl->tpl_vars['suggestion_html']->value;?>
 </datalist>
   </div>
-  <br>
+
+  <p id="search_response" style="display: none;"></p>
 
   <div class="order-info">
-
-    <div id="time">
-      <?php echo $_smarty_tpl->tpl_vars['start_date']->value;?>
-<input value="" class="input" id="start_date" placeholder="dd.mm.yyyy">
-      <?php echo $_smarty_tpl->tpl_vars['end_date']->value;?>
-<input value=""  class="input" id="end_date" placeholder="dd.mm.yyyy">
-    </div>
 
     <input disabled placeholder="<?php echo $_smarty_tpl->tpl_vars['name']->value;?>
 " type="text" class="input" id="name-input">
@@ -102,12 +118,10 @@ function content_60379fbf2b8271_26024090 (Smarty_Internal_Template $_smarty_tpl)
       <br>
     </div>
 
-    <button class="send_btn btn" id="btn"><b><?php echo $_smarty_tpl->tpl_vars['button']->value;?>
+    <button class="send_btn btn" id="btn" tabindex="-1"><b><?php echo $_smarty_tpl->tpl_vars['button']->value;?>
 </b></button>
 
-    <div id="output" style="display:none"><?php echo $_smarty_tpl->tpl_vars['output']->value;?>
-</div><br>
-
+    <div id="output"></div><br>
 
   </div>
 </body>

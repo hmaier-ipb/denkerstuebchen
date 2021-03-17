@@ -5,7 +5,6 @@ function $$ (class_name) {return document.getElementsByClassName(class_name);}
 var params;
 var ajaxObj;
 var action;
-var url;
 var output;
 var json_response;
 
@@ -19,7 +18,7 @@ var status_input;
 var radio_buttons;
 var lang;
 var img;
-var selected_room;
+//var selected_room;
 var calender;
 var start_date;
 var end_date;
@@ -29,6 +28,10 @@ var room_month_year;
 var user_search;
 var uid;
 var user_data;
+//var date_search;
+var start_date_search;
+var end_date_search;
+var search_response;
 
 function init(){
   send_btn = $$("send_btn");
@@ -42,18 +45,20 @@ function init(){
   end_date = $("end_date");
   // console.log(start_date.value);
   // console.log(end_date.value);
-  room_selection = $("room_selection");
+  //room_selection = $("room_selection");
   room_month_year = $("room_month_year");
   user_search = $("user_search");
+  //date_search = $("date_search");
+  start_date_search = $("start_date_search");
+  end_date_search = $("end_date_search");
+  search_response = $("search_response");
   // action = "get-lang";
   // send_info("action="+action);
   initEventListeners();
+  start_date_search.focus();//on page load: focus start_date input field
+  //console.log(Date.now())
 }
 
-function validate(input,pattern){
-  let reg = new RegExp(pattern);
-  return reg.test(input.value);
-}
 
 
 function initEventListeners(){
@@ -66,30 +71,24 @@ function initEventListeners(){
     //console.log(uid);
     //console.log(params);
     })
-  // user_search.addEventListener("keyup", e =>{
-  //   if(e.key === "Enter") {
-  //
-  //   }
-  // })
-
 
   send_btn[0].addEventListener("click", function (){
     action = "form-data";
-    department = $("department-input").value;
-    room_number = room_selection.options[room_selection.selectedIndex].value;
+    //room_number = room_selection.options[room_selection.selectedIndex].value;
+    // room_number gets set by ajax
+    start_date = start_date_search.value;
+    end_date = end_date_search.value;
     radio_buttons = document.getElementsByName("status");
     for(let i = 0;i<radio_buttons.length;i++){if(radio_buttons[i].checked){status_input = radio_buttons[i].value;}}
-
     params =
       "action="+action+
-      "&full_name="+name.value+
-      //"&surname="+surname.value+
+      "&full_name="+full_name.value+
       "&phone="+phone.value+
       "&email="+email.value+
-      "&department="+department+
+      "&department="+department.value+
       "&status="+status_input+
-      "&start_date="+start_date.value+
-      "&end_date="+end_date.value+
+      "&start_date="+start_date+
+      "&end_date="+end_date+
       "&room_number="+room_number;
 
     //****************************
@@ -97,71 +96,21 @@ function initEventListeners(){
     //****************************
 
     send_info(params);
-    console.log("form data send to php");
-    console.log(params);
+    // console.log("form data send to php");
+    // console.log(params);
     })
-
-
-  td_listener();
-  room_selection_listener();
+  //td_listener();
+  //room_selection_listener();
   month_buttons_listener();
-
-
-  //checking the input of the firstname on keyup
-  // $("name-input").addEventListener("keyup",function (){
-  //   //name
-  //   if(validate(firstname,/^[A-Za-z]{2,}$/)){
-  //     $("img1").style.display = "flex";
-  //     }else{
-  //     $("img1").style.display = "none";
-  //   }
-  // })
-
-  //checking the input of the surname on keyup
-  // $("surname-input").addEventListener("keyup",function () {
-  //   //name
-  //   if(validate(surname,/^[A-Za-z]{2,}$/)){
-  //     $("img2").style.display = "flex";
-  //   }else{
-  //     $("img2").style.display = "none";
-  //   }
-  // })
-
- //checking the input of the phone number
- //  $("phone-input").addEventListener("keyup", function(){
- //    //phone
- //    if(validate(phone,/^\d{4,}$/)){
- //      $("img3").style.display = "flex";
- //    }else{
- //      $("img3").style.display = "none";
- //    }
- //  })
-
-  //checking the email input on keyup
-  // $("email-input").addEventListener("keyup",function (){
-  //   //email
-  //   if(validate(email,/(\w+|\w+.\w+){3,}@(ipb-halle.de)/)){
-  //     $("img4").style.display = "flex";
-  //   }else{
-  //     $("img4").style.display = "none";
-  //   }
-  // })
-
+  date_input_listeners();
 }
 
-function td_listener(){ // EVENT LISTENER FOR SINGLE TABLE CELLS
-  for(var i = 0;i<$$("current_month").length;i++){ //current_month -> table cells this month
-    $$("current_month")[i].addEventListener("click", set_dates)
-  }
-}
-function room_selection_listener(){
-  $("room_selection").addEventListener("click", e => {
-    selected_room = $("room_selection").value;
-    action = "room_select";
-    params ="action="+action+"&room="+selected_room;
-    send_info(params);
-  })
-}
+// function td_listener(){ // EVENT LISTENER FOR SINGLE TABLE CELLS
+//   for(var i = 0;i<$$("current_month").length;i++){ //current_month -> table cells this month
+//     $$("current_month")[i].addEventListener("click", set_dates)
+//   }
+// }
+
 function month_buttons_listener(){
   $("prev_month").addEventListener("click",e => {
     action = "prev_month";
@@ -176,50 +125,90 @@ function month_buttons_listener(){
     send_info(params);
     //console.log("next_month pressed")
   })
-
- /* $("current_month").addEventListener("click",e => {
-    action = "current_month";
-    params = "action="+action;
-    send_info(params);
-    //console.log("current_month pressed")
-  })*/
-
-  room_selection_listener();
-}
-function load_calender_listeners(){
-  td_listener();
 }
 
+function date_input_listeners(){
 
-function set_dates(e){
-  // console.log(start_date);
-  // console.log(end_date);
-  if( start_date.value !== "" &&  end_date.value !== ""){ //when both vars are defined
-    start_date.value = "";
-    end_date.value = "";
+  start_date_search.addEventListener("keyup", e =>{
+    //console.log(e.target.value)
+    //console.log(get_date(e.target.value))
+    start_date = e.target.value;
+    if(get_date(e.target.value)){
+      action = "date_search"
+      params = "action="+action+"&start_date="+e.target.value
+      send_info(params)
+      console.log(params)
+    }else{
+      end_date_search.disabled = true;
+    }
+  })
+
+  end_date_search.addEventListener("keyup",e =>{
+    //console.log(get_date(e.target.value))
+    search_response.style.display = "none";
+
+    end_date = e.target.value;
+    if(get_date(e.target.value)){
+      action = "date_search"
+      params = "action="+action+"&end_date="+end_date
+      send_info(params)
+      console.log(params)
+    }
+
+  })
+
+}
+
+function validate(input,pattern){
+  let reg = new RegExp(pattern);
+  return reg[Symbol.match](input);
+}
+
+function get_date(input){
+  //var date_pattern =  /(\d|\d{2})\.(\d|\d{2})\.(\d{4}|\d{2})/g
+  console.log(input)
+  var pattern =  /(\d{2})\.(\d{2})\.(\d{4})/g
+  var regex = validate(input,pattern)
+  console.log(regex)
+  if(regex !== null){
+    return regex;
   }
-  if(start_date.value === ""){
-    start_date.value = e.target.id;
-  }else{
-    end_date.value = e.target.id;
-  }
-  action = "submit_dates";
-  params = "action="+action+"&start_date="+start_date.value+"&end_date="+end_date.value;
-  send_info(params);//is start_date > end_date?
 }
+
+
+// function load_calender_listeners(){
+//   td_listener();
+// }
+//
+//
+// function set_dates(e){
+//   // console.log(start_date);
+//   // console.log(end_date);
+//   if( start_date.value !== "" &&  end_date.value !== ""){ //when both vars are defined
+//     start_date.value = "";
+//     end_date.value = "";
+//   }
+//   if(start_date.value === ""){
+//     start_date.value = e.target.id;
+//   }else{
+//     end_date.value = e.target.id;
+//   }
+//   action = "submit_dates";
+//   params = "action="+action+"&start_date="+start_date.value+"&end_date="+end_date.value;
+//   send_info(params);//is start_date > end_date?
+//   console.log(params)
+// }
 
 function reset_input_values(){
   img = $$("img");
   for(let i = 0;i<img.length;i++){img[i].style.display = "none";} // disappearing green checks
-  firstname.value = null;
-  surname.value = null;
-  phone.value = null;
+  full_name.value = "";
+  phone.value = "";
   email.value = "@ipb-halle.de";
   //resetting
-  start_date = "";
-  end_date = "";
-  $("start_date").innerHTML = "";
-  $("end_date").innerHTML = "";
+  start_date.value = "";
+  end_date.value = "";
+
 }
 
 
@@ -251,98 +240,141 @@ function send_info(parameters) {
 
 function setOutput() {
   //receiving output form php as json
-  if (ajaxObj.readyState === 4) {
-    //console.log(ajaxObj.responseText);
-    if (ajaxObj.status === 200) {
-      try {
-        json_response = JSON.parse(ajaxObj.responseText);
-      } catch (e) {
-        console.log("Ungültige Daten. Kein JSON String!");
-        console.log(ajaxObj.responseText);
-        return false;
+  if (ajaxObj.readyState !== 4) {
+    return;
+  }
+  if (ajaxObj.status !== 200) {
+    return;
+  }
+  try {
+    json_response = JSON.parse(ajaxObj.responseText);
+  } catch (e) {
+    console.log("Ungültige Daten. Kein JSON String!");
+    console.log(ajaxObj.responseText);
+    return false;
+  }
+  switch (action) {
+    case "form-data":
+      //console.log("form-data received from php")
+      //console.log(json_response);
+      action = "";
+
+      if (json_response[0][1] !== true) {// validation found errors
+        output.style.color = "#DF171E";
+        $("output").innerHTML = json_response[0][0];
+      } else {                        // validation found no errors
+        reset_input_values();
+        output.style.color = "#277e34";
+        $("output").innerHTML = json_response[0][0];
+        calender.innerHTML = json_response[1];
+        //load_calender_listeners();
+        //room_selection_listener();
       }
-      switch (action) {
-        case "form-data":
-          //console.log("form-data received from php")
-          console.log(json_response);
-          action = "";
-          if(json_response[1] === false){// validation found errors
-            output.style.color = "#DF171E";
-            $("output").innerHTML = json_response[0];
-          }else{                        // validation found no errors
-            reset_input_values();
-            output.style.color = "#277e34";
-            $("output").innerHTML = json_response[0];
-            calender.innerHTML = json_response[2];
-            load_calender_listeners();
-            room_selection_listener();
-          }
 
-          output.style.display = "block";
-          break;
-        case "get-lang":
-          //lang = json_response;
-          //console.log(lang);
-          break;
-        case "room_select":
-          action = "";
-          room_month_year.innerHTML = json_response[0]
-          calender.innerHTML = json_response[1]; // the DIV surrounding the calender
-          load_calender_listeners();
-          room_selection_listener();
-          break;
-        case "prev_month":
-          action = "";
-          room_month_year.innerHTML = json_response[0];
-          calender.innerHTML = json_response[1]; // the DIV surrounding the calender
-          load_calender_listeners();
-          break;
-       /* case "current_month":
-          action = "";
-          calender.innerHTML = json_response; // the DIV surrounding the calender
-          load_calender_listeners();
-          break;*/
-        case "next_month":
-          action = "";
-          room_month_year.innerHTML = json_response[0];
-          calender.innerHTML = json_response[1]; // the DIV surrounding the calender
-          load_calender_listeners();
-          break;
-        case "submit_dates":
-          action = "";
-          //calender.innerHTML = json_response[0];
-          if(typeof json_response[0] !== typeof null){
-            start_date.value = "";
-            end_date.value = "";
-          }
-          //load_calender_listeners();
-          break;
-        case "user_search":
-          //$("suggestions").innerHTML = json_response[0]
-          user_data = json_response;
-          console.log(json_response)
-          // full_name.value = user_data[0];
-          // phone.value = user_data[2];
-          // email.value = user_data[3];
-          // department.value = user_data[4];
+      output.style.display = "block";
+      break;
+    // case "get-lang":
+    //   //lang = json_response;
+    //   //console.log(lang);
+    //   break;
+    // case "room_select":
+    //   action = "";
+    //   room_month_year.innerHTML = json_response[0]
+    //   calender.innerHTML = json_response[1]; // the DIV surrounding the calender
+    //   //load_calender_listeners();
+    //   //room_selection_listener();
+    //   break;
+    case "prev_month":
+      action = "";
+      room_month_year.innerHTML = json_response[0];
+      calender.innerHTML = json_response[1]; // the DIV surrounding the calender
+      //load_calender_listeners();
+      break;
+    /* case "current_month":
+       action = "";
+       calender.innerHTML = json_response; // the DIV surrounding the calender
+       load_calender_listeners();
+       break;*/
+    case "next_month":
+      action = "";
+      room_month_year.innerHTML = json_response[0];
+      calender.innerHTML = json_response[1]; // the DIV surrounding the calender
+      //load_calender_listeners();
+      break;
+    case "submit_dates":
+      action = "";
+      //console.log(json_response)
+      if (json_response === 0) {
+        output.style.color = "#277e34";
+        output.innerHTML = "";
+      } else { // an error has occurred
+        output.style.color = "#DF171E";
+        start_date.value = "";
+        end_date.value = "";
+        output.innerHTML = json_response
+      }
+      //load_calender_listeners();
+      break;
+    case "user_search":
+      //$("suggestions").innerHTML = json_response[0]
+        //console.log(json_response);
 
-            full_name.value = user_data[0];
-            phone.value = user_data[2];
-            email.value = user_data[3];
-            department.value = user_data[4];
+      if(json_response[5] === "existing_reservation"){
+        search_response.style.display = "block";
+        search_response.innerHTML = json_response[6];
+      }else{
+        user_data = json_response;
+        //console.log(json_response)
+        search_response.innerHTML = "";
+        if (user_data.length !== 0) {
+          full_name.value = user_data[0];
+          phone.value = user_data[2];
+          email.value = user_data[3];
+          department.value = user_data[4];
+        } else {
+          full_name.value = null;
+          phone.value = null;
+          email.value = null;
+          department.value = null;
+        }
 
-            // full_name.value = "";
-            // phone.value =  "";
-            // email.value =  "@ipb-halle.de";
-            // department.value =  "";
-
+      }
+      break;
+    case "date_search":
+      //console.log(json_response);
+      switch (json_response[0]){
+        case "enable":
+          end_date_search.disabled = false;
+          end_date_search.focus();
+          break;
+        case "do_not_enable":
+          end_date_search.disabled = true;
+          break;
+        case "end_earlier_start":
+          search_response.style.display = "block";
+          search_response.innerHTML = json_response[1];
+          break;
+        case "period_greater_than_four_months":
+          search_response.style.display = "block";
+          search_response.innerHTML = json_response[1];
+          break;
+        case "free_room":
+          user_search.disabled = false;
+          user_search.focus();
+          console.log(json_response[1][0])
+          room_number = json_response[1]
+          break;
+        case "no_free_room":
+          search_response.style.display = "block";
+          search_response.innerHTML = json_response[1];
           break;
         default:
-          output.innerHTML = "INVALID ACTION";
           break;
       }
 
-    }
-
+      break;
+    default:
+      output.innerHTML = "INVALID ACTION";
+      break;
   }
 }

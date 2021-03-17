@@ -64,20 +64,27 @@ class easy_pdo_db
     return $result["id"];
   }
 
-  function get_row_by_id($table,$search_id){
+  function get_row_by_id($table,$search_id){// fetch row by a certain id
     $query = "SELECT * FROM $table WHERE id = :id";
-    try{
-      $statement = $this->pdo->prepare($query);
-      $statement->bindValue(":id",$search_id);
-      $statement->execute();
-      $result = $statement->fetch();
-    }catch (\Exception $e){
-      error_log(json_encode($e));
+    $num_rows = $this->count_rows($table);
+    if ($num_rows !== 0){
+      try{
+        $statement = $this->pdo->prepare($query);
+        $statement->bindValue(":id",$search_id);
+        $statement->execute();
+        $result = $statement->fetch();
+      }catch (\Exception $e){
+        error_log(json_encode($e));
+      }
+      return $result;
+    }else{
+      return null;
     }
-    return $result;
+    //error_log(json_encode($result));
+
   }
 
-  function get_columns($table,$cols_string){
+  function get_columns($table,$cols_string){// certain cols of a table
     $query = "SELECT $cols_string FROM $table";
     try{
       $statement = $this->pdo->prepare($query);
@@ -89,7 +96,7 @@ class easy_pdo_db
     return $result; //$col_value =  $result["colum"]
   }
 
-  function count_rows($table){
+  function count_rows($table){// count rows of a table
     $query = "SELECT COUNT(*) FROM $table";
     try{
       $statement = $this->pdo->prepare($query);
@@ -99,6 +106,47 @@ class easy_pdo_db
       error_log(json_encode($e));
     }
     return $result["COUNT(*)"];
+  }
+
+  function get_tables(){
+      $table = function ($table){return "[$table]";};
+      $query = "SHOW TABLES";
+      try{
+          $statement = $this->pdo->prepare($query);
+          $statement->execute();
+          $result = $statement->fetchAll(PDO::FETCH_FUNC,$table);
+      }catch (\Exception $e){
+          error_log(json_encode($e));
+      }
+      //error_log(json_encode($result));
+      return $result;
+  }
+
+  function update_row($table,$columns_array,$vars_array,$id){
+    $columns = "";
+    $num_rows = $this->count_rows($table);
+    if($num_rows !== 0){
+      foreach($columns_array as $col){$columns .= "$col=?,";}
+      $columns = substr($columns, 0, -1);
+      $query = "UPDATE $table SET $columns WHERE id=$id";
+      try{
+        $stmt= $this->pdo->prepare($query);
+        $stmt->execute($vars_array);
+      }catch (\Exception $e){
+        error_log(json_encode($e));
+      }
+    }
+  }
+
+  function delete_row($table,$id){
+    $query = "DELETE FROM $table WHERE id=:id";
+    try{
+      $statement = $this->pdo->prepare($query);
+      $statement->bindValue(":id",$id);
+      $statement->execute();
+    }catch (\Exception $e){
+      error_log(json_encode($e));
+    }
   }
 
 

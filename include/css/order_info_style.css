@@ -7,14 +7,14 @@ body{
 .order-info{
   font-size: 1rem;
   font-family: Arial, serif;
-  padding-top: 2rem;
+  padding-top: 1rem;
   width: 100%;
   display: grid;
   grid-template-columns: 1fr ;
-  grid-template-rows: 2em 2em 2em 2em 2em 2em 2em 2em 2em 2em;
+  grid-template-rows: 1em 2em 2em 2em 2em 2em 2em 2em 2em 2em;
   gap: 10px 20px;
   grid-template-areas:
-    "time "
+    ". "
     "name-input"
     "tel-input "
     "email-input "
@@ -29,26 +29,23 @@ body{
 
 /*terms*/
 .name{grid-area:name}
-.surname{grid-area:surname}
 .dep{grid-area:dep}
 .phone{grid-area:tel}
 .email{grid-area:email}
 .status{grid-area:status}
 .btn{grid-area:btn}
-.selected_dates{grid-area:selected-dates}
 #output{grid-area:output;text-align: center;padding: 2rem;}
-.period{grid-area:period}
+
 
 
 /*inputs*/
 #name-input{grid-area:name-input}
-#surname-input{grid-area:surname-input}
 #phone-input{grid-area:tel-input}
 #email-input{grid-area:email-input}
 #department-input{grid-area:dep-input}
 #status-input{grid-area:status-input}
 #btn{grid-area:btn}
-#time{grid-area:time}
+
 
 
 .input{
@@ -94,6 +91,18 @@ select{
 .send_btn{
   background-color: #45928e;
 }
+
+#time{
+  height: 100%;
+  font-weight: bold;
+}
+
+#time input{
+  height: 100%;
+  font-size: 1rem
+}
+
+
 
 
 

@@ -15,7 +15,7 @@ class control_ldap
 
   function connect(){
     $this->con = ldap_connect(SERVER,PORT)//connecting to ldap server
-    or die(error_log("connection error"));
+    or die(error_log("ldap connection error"));
     //error_log("connect");
     ldap_set_option($this->con, LDAP_OPT_PROTOCOL_VERSION, 3);
     return ldap_bind($this->con,USER,PWD);//logging in into ldap server
@@ -45,7 +45,7 @@ class control_ldap
     $filter = "(uid=$user_id*)";
     $search_users = ldap_search($this->con,$base_dsn,$filter,$attributes);//asterisks for getting all occurrences
     $response = ldap_get_entries($this->con,$search_users);
-    error_log(json_encode($response));
+    //error_log(json_encode($response));
     return $response; // all attributes of a person
   }
 

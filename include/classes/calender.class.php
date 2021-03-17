@@ -69,7 +69,7 @@ class calender extends control_db
     //error_log(json_encode($occupied_days));
 
     $prev_month = strtotime("-1 Month",$current_time); //unix timestamp for the previous month from today
-    $next_month = strtotime("+1 Month",$current_time); //unix timestamp for the next month from today
+    //$next_month = strtotime("+1 Month",$current_time); //unix timestamp for the next month from today
 
     $days_prev_month = date("t",$prev_month); // number of days in previous month
 
@@ -107,8 +107,6 @@ class calender extends control_db
       }
     }
 
-
-
     //**********************
     //STRING CREATION BEGINS
     //**********************
@@ -131,7 +129,7 @@ class calender extends control_db
       for($i=($days_prev_month-$days_to_fill)+1;$i<=$days_prev_month;$i++){ // the + 1 has to be added because a for loop start at index zero [0], so a additional day would be added
 
         $weekday_count += 1;
-        $calender_string .= "<td class='prev_month' style='background-color: #666666'>$i</td>";//table cells
+        $calender_string .= "<td class='prev_month not_current_month' style='background-color: #666666'>$i</td>";//table cells
       }
     }
 
@@ -176,7 +174,7 @@ class calender extends control_db
     if($last_weekday_month !== 7){
       $days_next_month = 1; // helper-var to set days of next month
       for($i = $last_weekday_month;$i<7;$i++){
-        $calender_string .= "<td class='next_month' style='background-color: #666666'>$days_next_month</td>";//table cells
+        $calender_string .= "<td class='next_month not_current_month' style='background-color: #666666'>$days_next_month</td>";//table cells
         $days_next_month +=1;
       }
       $calender_string .= "</tr>";//closing the last row
@@ -198,9 +196,9 @@ class calender extends control_db
     $prev = "&larr;";
     $next = "&rarr;";
 
-    $output = "<button id='prev_month' class='btn calender_btn' style='font-size: 1.2rem;'>$prev</button><br>";
+    $output = "<button id='prev_month' class='btn calender_btn' >$prev</button><br>";
     //$output .= "<button id='current_month' class='btn calender_btn'>$current_month</button><br>";
-    $output .= "<button id='next_month' class='btn calender_btn' style='font-size: 1.2rem;'>$next</button>";
+    $output .= "<button id='next_month' class='btn calender_btn' >$next</button>";
 
     return $output;
   }
