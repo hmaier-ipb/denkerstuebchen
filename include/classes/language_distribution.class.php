@@ -43,8 +43,8 @@ class language_distribution
       ["Ende: ","End: "],
       ["Geben Sie einen Reservierungszeitraum ein.","Type in a period in which you want to reserve a thinker's-room."],
       ["Beginn - Ende [dd.mm.yyyy]","Start - End [dd.mm.yyyy]"],
-      ["Nach nächsten verfügbaren Zeitraum suchen. Wochenanzahl","Search for next available time period. Number of Weeks"],
-      ["Prüfen","Check"]
+      ["Nach nächsten verfügbaren Zeitraum suchen. (4 Monate = 17 Wochen)Wochenanzahl","Search for next available time period. (4 Months = 17 Weeks)Number of Weeks"],
+      ["Prüfen","Check"],
     ];
   }
 
@@ -241,22 +241,23 @@ class language_distribution
     return $response;
   }
 
-  function process_db_errors($db_response){
-    //error_log(json_encode($db_response));
-    switch($db_response[0]){
-      case "already_exists_in_user":
-        return $_SESSION["lang"] == "de" ? "Benutzer schon bekannt." : "User already know.";
-      case "existing_reservation":
-        $start_date = $db_response[1]["start_date"];
-        $end_date = $db_response[1]["end_date"];
-        return $_SESSION["lang"] == "de" ? "Eine Reservierung vom Denkerstübchen $db_response[2] ab dem $start_date bis zum $end_date ist schon vorhanden. " : "A reservation for thinkers-room $db_response[2] from the $start_date to the $end_date is already existing .";
-      case "occupation_in_period":
-        return $_SESSION["lang"] == "de" ? "Belegung im ausgewählten Zeitraum, bitte wählen Sie einen anderen Raum/Zeitraum für Ihre Reservierung." : "Occupation in selected period, please choose a different room/period for your reservation";
-      default:
-        return $_SESSION["lang"] == "de" ? "Etwas seltsames ist geschehen..." : "Something weird happened...";
-    }
 
-  }
+//  function process_db_errors($db_response){
+//    //error_log(json_encode($db_response));
+//    switch($db_response[0]){
+//      case "already_exists_in_user":
+//        return $_SESSION["lang"] == "de" ? "Benutzer schon bekannt." : "User already know.";
+//      case "existing_reservation":
+//        $start_date = $db_response[1]["start_date"];
+//        $end_date = $db_response[1]["end_date"];
+//        return $_SESSION["lang"] == "de" ? "Eine Reservierung vom Denkerstübchen $db_response[2] ab dem $start_date bis zum $end_date ist schon vorhanden. " : "A reservation for thinkers-room $db_response[2] from the $start_date to the $end_date is already existing .";
+//      case "occupation_in_period":
+//        return $_SESSION["lang"] == "de" ? "Belegung im ausgewählten Zeitraum, bitte wählen Sie einen anderen Raum/Zeitraum für Ihre Reservierung." : "Occupation in selected period, please choose a different room/period for your reservation";
+//      default:
+//        return $_SESSION["lang"] == "de" ? "Etwas seltsames ist geschehen..." : "Something weird happened...";
+//    }
+//
+//  }
 
 //  function process_date_errors($start_date,$end_date){
 //    $lang = $_SESSION["lang"];

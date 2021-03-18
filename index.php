@@ -36,6 +36,13 @@ if (isset($_GET["lang"])) {
   $all_users = $ldap->get_ad_data("");//empty string searches for all users
   $_SESSION["all_users"] = $all_users;
 
+//  $count = 0;
+//  foreach($all_users as $user){
+//    print(json_encode($user));
+//    print("<br>");
+//    $count += 1;
+//  }
+//  error_log(json_encode($count));
   error_log(json_encode($all_users));
 
   // CLEAN UP THE DATABASE
@@ -236,10 +243,15 @@ if (isset($_POST["action"])) switch ($_POST["action"]) {
           }
           print(json_encode($message));
         }
-        break;
-      default:
-        print("invalid action");
     }
+    break;
+  case "period_search";
+    $week_num = $_POST["week_num"];
+    $response[] = $control_db->next_free_period($week_num);
+    print(json_encode($response));
+    break;
+  default:
+    print("invalid action");
 
 
 }

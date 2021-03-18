@@ -91,15 +91,17 @@ class control_db extends easy_pdo_db
       $num_rows = $this->count_rows("tr_$r");
       //error_log($num_rows);
       $tr_dates = [];
+      if($num_rows !== 0)
+      {
         for ($x = 1; $x <= $num_rows; $x++)
         {
           $row = $this->get_row_by_id("tr_$r", $x);
-          if($row !== null){
-            $tr_dates[] = [$row["start_date"], $row["end_date"]];
-          }else{
-            $tr_dates = [[0, 0]];
-          }
+          $tr_dates[] = [$row["start_date"], $row["end_date"]];
         }
+      }else{
+        $tr_dates = [[0, 0]];
+      }
+
       $occupied_dates[] = $tr_dates;
     }
 //    error_log("from get occupied dates();");
@@ -161,7 +163,61 @@ class control_db extends easy_pdo_db
     }
   }
 
+  function next_free_period($weeks){
+    $response = "<ul id='periods_list'>";
 
+    $all_dates = $this->get_occupied_dates();
+    $today_ts = strtotime("00:00:00",time());
+    $today_date = date("d.m.Y",time());
+
+    //error_log(json_encode($all_dates));
+    $room_text = $_SESSION["lang"] == "de" ? "Raum:" : "Room:";
+
+    foreach($all_dates as $index => $room){
+      //error_log(json_encode($room));
+      $room_number = $index+1;
+      if($room[0][0] !== 0 && $room[0][1] !== 0){// wenn es belegungen gibt
+
+        //foreach through ONE ROOM
+        foreach($room as $x => $res){ // überprüfe die zeit zwischen zwei reservierungen in einem raum
+          error_log(json_encode($res));
+          error_log(json_encode(count($room)));
+          $end_date = $res[1];
+          if($x !== count($room)-1){
+            $next_start_date = $room[$x+1][0]; //next start date
+            $ts_end = strtotime($end_date); //current iterations end date
+            $ts_next_start = strtotime($next_start_date);
+
+            $weeks_ts = strtotime("+$weeks Week",$ts_end);
+
+            $new_start_date = date("d.m.Y",$ts_end+86400); //last end date plus one day -> 86400 Seconds/days
+            $new_end_date = date("d.m.Y",$weeks_ts);
+            if($weeks_ts < $ts_next_start){
+              $response .= "<li class='res_sug'><b>$room_text $room_number</b> $new_start_date - $new_end_date</li>";
+              break; //take earliest available period
+            }
+
+          }else{
+            $ts_end = strtotime($end_date);
+            $new_start_date = date("d.m.Y",$ts_end+86400);
+            $weeks_ts = strtotime("+$weeks Week",$ts_end);
+            $new_end_date = date("d.m.Y",$weeks_ts);
+            $response .= "<li class='res_sug'><b>$room_text $room_number</b> $new_start_date - $new_end_date</li>";
+          }
+
+        }//end foreach through ONE ROOM take next room
+
+      }else{// called when no reservations are placed -> ["0","0"]
+        //from today plus $weeks
+        $weeks_ts = strtotime("+$weeks Week",$today_ts);
+        $date_x_weeks = date("d.m.Y",$weeks_ts);
+        $response .= "<li class='res_sug'><b>$room_text $room_number</b> $today_date - $date_x_weeks</li>";
+      }
+    }
+    $response .= "</ul>";
+    return $response;
+  }
 
 
 }
+

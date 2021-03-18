@@ -32,6 +32,13 @@ var user_data;
 var start_date_search;
 var end_date_search;
 var search_response;
+var search_period_output;
+var search_period_button;
+var week_num;
+var res_sug;
+var start_sug;
+var end_sug;
+var dates;
 
 function init(){
   send_btn = $$("send_btn");
@@ -43,8 +50,8 @@ function init(){
   calender = $("calender");
   start_date = $("start_date");
   end_date = $("end_date");
-  // console.log(start_date.value);
-  // console.log(end_date.value);
+  start_date.value = "";
+  end_date.value = "";
   //room_selection = $("room_selection");
   room_month_year = $("room_month_year");
   user_search = $("user_search");
@@ -52,16 +59,28 @@ function init(){
   start_date_search = $("start_date_search");
   end_date_search = $("end_date_search");
   search_response = $("search_response");
+  search_period_output = $("search_period_output");
+  search_period_button = $("search_period_button");
+  week_num = $("week_num");
+  res_sug = $$("res_sug"); //reservation suggestion
+
   // action = "get-lang";
   // send_info("action="+action);
   initEventListeners();
-  start_date_search.focus();//on page load: focus start_date input field
   //console.log(Date.now())
 }
 
-
-
 function initEventListeners(){
+
+  search_period_button.addEventListener("click", e =>{
+    if(week_num.value >= 1 && week_num.value <= 17){
+      action = "period_search";
+      params = "action="+action+"&week_num="+week_num.value;
+      send_info(params);
+    }else{
+      search_period_output.innerHTML = "";
+    }
+  })
 
   user_search.addEventListener("input", e =>{
     action = "user_search";
@@ -76,8 +95,6 @@ function initEventListeners(){
     action = "form-data";
     //room_number = room_selection.options[room_selection.selectedIndex].value;
     // room_number gets set by ajax
-    start_date = start_date_search.value;
-    end_date = end_date_search.value;
     radio_buttons = document.getElementsByName("status");
     for(let i = 0;i<radio_buttons.length;i++){if(radio_buttons[i].checked){status_input = radio_buttons[i].value;}}
     params =
@@ -87,8 +104,8 @@ function initEventListeners(){
       "&email="+email.value+
       "&department="+department.value+
       "&status="+status_input+
-      "&start_date="+start_date+
-      "&end_date="+end_date+
+      "&start_date="+start_date.value+
+      "&end_date="+end_date.value+
       "&room_number="+room_number;
 
     //****************************
@@ -102,7 +119,6 @@ function initEventListeners(){
   //td_listener();
   //room_selection_listener();
   month_buttons_listener();
-  date_input_listeners();
 }
 
 // function td_listener(){ // EVENT LISTENER FOR SINGLE TABLE CELLS
@@ -127,37 +143,37 @@ function month_buttons_listener(){
   })
 }
 
-function date_input_listeners(){
-
-  start_date_search.addEventListener("keyup", e =>{
-    //console.log(e.target.value)
-    //console.log(get_date(e.target.value))
-    start_date = e.target.value;
-    if(get_date(e.target.value)){
-      action = "date_search"
-      params = "action="+action+"&start_date="+e.target.value
-      send_info(params)
-      console.log(params)
-    }else{
-      end_date_search.disabled = true;
-    }
-  })
-
-  end_date_search.addEventListener("keyup",e =>{
-    //console.log(get_date(e.target.value))
-    search_response.style.display = "none";
-
-    end_date = e.target.value;
-    if(get_date(e.target.value)){
-      action = "date_search"
-      params = "action="+action+"&end_date="+end_date
-      send_info(params)
-      console.log(params)
-    }
-
-  })
-
-}
+// function date_input_listeners(){
+//
+//   start_date_search.addEventListener("keyup", e =>{
+//     //console.log(e.target.value)
+//     //console.log(get_date(e.target.value))
+//     start_date = e.target.value;
+//     if(get_date(e.target.value)){
+//       action = "date_search"
+//       params = "action="+action+"&start_date="+e.target.value
+//       send_info(params)
+//       console.log(params)
+//     }else{
+//       end_date_search.disabled = true;
+//     }
+//   })
+//
+//   end_date_search.addEventListener("keyup",e =>{
+//     //console.log(get_date(e.target.value))
+//     search_response.style.display = "none";
+//
+//     end_date = e.target.value;
+//     if(get_date(e.target.value)){
+//       action = "date_search"
+//       params = "action="+action+"&end_date="+end_date
+//       send_info(params)
+//       console.log(params)
+//     }
+//
+//   })
+//
+// }
 
 function validate(input,pattern){
   let reg = new RegExp(pattern);
@@ -166,10 +182,10 @@ function validate(input,pattern){
 
 function get_date(input){
   //var date_pattern =  /(\d|\d{2})\.(\d|\d{2})\.(\d{4}|\d{2})/g
-  console.log(input)
+  //console.log(input)
   var pattern =  /(\d{2})\.(\d{2})\.(\d{4})/g
   var regex = validate(input,pattern)
-  console.log(regex)
+  //console.log(regex)
   if(regex !== null){
     return regex;
   }
@@ -209,6 +225,21 @@ function reset_input_values(){
   start_date.value = "";
   end_date.value = "";
 
+}
+
+function init_list_listeners(){
+  //console.log(res_sug.length)
+  for(var x = 0; x<res_sug.length;x++){
+    res_sug[x].addEventListener("click", e => {
+      dates = get_date(e.target.innerHTML);
+      start_sug = dates[0];
+      end_sug = dates[1];
+      // console.log(start_sug)
+      // console.log(end_sug)
+      start_date.value = start_sug;
+      end_date.value = end_sug;
+    })
+  }
 }
 
 
@@ -340,39 +371,42 @@ function setOutput() {
 
       }
       break;
-    case "date_search":
-      //console.log(json_response);
-      switch (json_response[0]){
-        case "enable":
-          end_date_search.disabled = false;
-          end_date_search.focus();
-          break;
-        case "do_not_enable":
-          end_date_search.disabled = true;
-          break;
-        case "end_earlier_start":
-          search_response.style.display = "block";
-          search_response.innerHTML = json_response[1];
-          break;
-        case "period_greater_than_four_months":
-          search_response.style.display = "block";
-          search_response.innerHTML = json_response[1];
-          break;
-        case "free_room":
-          user_search.disabled = false;
-          user_search.focus();
-          console.log(json_response[1][0])
-          room_number = json_response[1]
-          break;
-        case "no_free_room":
-          search_response.style.display = "block";
-          search_response.innerHTML = json_response[1];
-          break;
-        default:
-          break;
-      }
-
+    // case "date_search":
+    //   //console.log(json_response);
+    //   switch (json_response[0]){
+    //     case "enable":
+    //       end_date_search.disabled = false;
+    //       end_date_search.focus();
+    //       break;
+    //     case "do_not_enable":
+    //       end_date_search.disabled = true;
+    //       break;
+    //     case "end_earlier_start":
+    //       search_response.style.display = "block";
+    //       search_response.innerHTML = json_response[1];
+    //       break;
+    //     case "period_greater_than_four_months":
+    //       search_response.style.display = "block";
+    //       search_response.innerHTML = json_response[1];
+    //       break;
+    //     case "free_room":
+    //       user_search.disabled = false;
+    //       user_search.focus();
+    //       console.log(json_response[1][0])
+    //       room_number = json_response[1]
+    //       break;
+    //     case "no_free_room":
+    //       search_response.style.display = "block";
+    //       search_response.innerHTML = json_response[1];
+    //       break;
+    //     default:
+    //       break;
+    //   }
+    case "period_search":
+      search_period_output.innerHTML = json_response[0];
+      init_list_listeners();
       break;
+
     default:
       output.innerHTML = "INVALID ACTION";
       break;

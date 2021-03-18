@@ -27,34 +27,28 @@
 
   <div id="search_time_period">
     <!--{$time_period_search_text}-->
-    <input type="number" value="1"  step="1" min="1" max="17">
+    <input id="week_num" type="number" value="1"  step="1" min="1" max="17">
     <button id="search_period_button"><!--{$search_period_button_text}--></button>
     <div id="search_period_output"></div>
   </div>
 
   <br>
 
-  <div id="date_search_div">
-      <!--{$date_search_term}-->
-      <br>
-      <br>
-    <p>
-      <!--{$start_date}-->  <input          id="start_date_search" placeholder="[dd.mm.yyyy]" class="input date_search" tabindex="1">
-      <!--{$end_date}-->    <input disabled id="end_date_search" placeholder="[dd.mm.yyyy]" class="input date_search" tabindex="2">
-    </p>
-    <br>
-
-  </div>
 
   <div id="uid_div">
     <label for="user_search"><!--{$user_search_prompt}--></label>
-    <input disabled list="suggestions" id="user_search" class="input" tabindex="3">
+    <input list="suggestions" id="user_search" class="input">
     <datalist id="suggestions"><!--{$suggestion_html}--></datalist>
   </div>
 
   <p id="search_response" style="display: none;"></p>
 
   <div class="order-info">
+
+    <div id="dates">
+    <!--{$start_date}-->  <input disabled id="start_date" class="input date-field">
+    <!--{$end_date}-->    <input disabled id="end_date" class="input date-field">
+    </div>
 
     <input disabled placeholder="<!--{$name}-->" type="text" class="input" id="name-input">
 

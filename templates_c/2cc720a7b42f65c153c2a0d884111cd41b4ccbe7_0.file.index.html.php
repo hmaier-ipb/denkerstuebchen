@@ -1,18 +1,18 @@
 <?php
-/* Smarty version 3.1.34-dev-7, created on 2021-03-16 14:26:27
+/* Smarty version 3.1.34-dev-7, created on 2021-03-18 12:45:52
   from 'D:\inetpub\www\denkerstuebchen\templates\index.html' */
 
 /* @var Smarty_Internal_Template $_smarty_tpl */
 if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   'version' => '3.1.34-dev-7',
-  'unifunc' => 'content_6050c013be2d53_37534133',
+  'unifunc' => 'content_60534b80525900_82438385',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
     '2cc720a7b42f65c153c2a0d884111cd41b4ccbe7' => 
     array (
       0 => 'D:\\inetpub\\www\\denkerstuebchen\\templates\\index.html',
-      1 => 1615904726,
+      1 => 1616071550,
       2 => 'file',
     ),
   ),
@@ -20,7 +20,7 @@ if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   array (
   ),
 ),false)) {
-function content_6050c013be2d53_37534133 (Smarty_Internal_Template $_smarty_tpl) {
+function content_60534b80525900_82438385 (Smarty_Internal_Template $_smarty_tpl) {
 ?><!DOCTYPE html>
 <html lang="en">
 <head>
@@ -60,7 +60,7 @@ function content_6050c013be2d53_37534133 (Smarty_Internal_Template $_smarty_tpl)
   <div id="search_time_period">
     <?php echo $_smarty_tpl->tpl_vars['time_period_search_text']->value;?>
 
-    <input type="number" value="1"  step="1" min="1" max="17">
+    <input id="week_num" type="number" value="1"  step="1" min="1" max="17">
     <button id="search_period_button"><?php echo $_smarty_tpl->tpl_vars['search_period_button_text']->value;?>
 </button>
     <div id="search_period_output"></div>
@@ -68,25 +68,11 @@ function content_6050c013be2d53_37534133 (Smarty_Internal_Template $_smarty_tpl)
 
   <br>
 
-  <div id="date_search_div">
-      <?php echo $_smarty_tpl->tpl_vars['date_search_term']->value;?>
-
-      <br>
-      <br>
-    <p>
-      <?php echo $_smarty_tpl->tpl_vars['start_date']->value;?>
-  <input          id="start_date_search" placeholder="[dd.mm.yyyy]" class="input date_search" tabindex="1">
-      <?php echo $_smarty_tpl->tpl_vars['end_date']->value;?>
-    <input disabled id="end_date_search" placeholder="[dd.mm.yyyy]" class="input date_search" tabindex="2">
-    </p>
-    <br>
-
-  </div>
 
   <div id="uid_div">
     <label for="user_search"><?php echo $_smarty_tpl->tpl_vars['user_search_prompt']->value;?>
 </label>
-    <input disabled list="suggestions" id="user_search" class="input" tabindex="3">
+    <input list="suggestions" id="user_search" class="input">
     <datalist id="suggestions"><?php echo $_smarty_tpl->tpl_vars['suggestion_html']->value;?>
 </datalist>
   </div>
@@ -94,6 +80,13 @@ function content_6050c013be2d53_37534133 (Smarty_Internal_Template $_smarty_tpl)
   <p id="search_response" style="display: none;"></p>
 
   <div class="order-info">
+
+    <div id="dates">
+    <?php echo $_smarty_tpl->tpl_vars['start_date']->value;?>
+  <input disabled id="start_date" class="input date-field">
+    <?php echo $_smarty_tpl->tpl_vars['end_date']->value;?>
+    <input disabled id="end_date" class="input date-field">
+    </div>
 
     <input disabled placeholder="<?php echo $_smarty_tpl->tpl_vars['name']->value;?>
 " type="text" class="input" id="name-input">
