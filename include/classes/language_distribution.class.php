@@ -43,7 +43,7 @@ class language_distribution
       ["Ende: ","End: "],
       ["Geben Sie einen Reservierungszeitraum ein.","Type in a period in which you want to reserve a thinker's-room."],
       ["Beginn - Ende [dd.mm.yyyy]","Start - End [dd.mm.yyyy]"],
-      ["Nach nächsten verfügbaren Zeitraum suchen. (4 Monate = 17 Wochen)Wochenanzahl","Search for next available time period. (4 Months = 17 Weeks)Number of Weeks"],
+      ["Nach nächsten verfügbaren Zeitraum suchen. <br>(4 Monate = 17 Wochen)Wochenanzahl","Search for next available time period. <br> (4 Months = 17 Weeks)Number of Weeks"],
       ["Prüfen","Check"],
     ];
   }

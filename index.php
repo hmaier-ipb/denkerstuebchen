@@ -33,8 +33,12 @@ if (isset($_GET["lang"])) {
 
   $lang_array = $lang_dist->language($_SESSION["lang"]);
 
-  $all_users = $ldap->get_ad_data("");//empty string searches for all users
-  $_SESSION["all_users"] = $all_users;
+  //GET ALL USERS FROM LDAP SERVER
+//  $all_users = $ldap->get_ad_data("");//empty string searches for all users
+//  $_SESSION["all_users"] = $all_users;
+
+  //GET ALL USERS FROM AT HOME
+  $all_users = [];//$ldap->get_all_users();
 
 //  $count = 0;
 //  foreach($all_users as $user){
@@ -43,14 +47,10 @@ if (isset($_GET["lang"])) {
 //    $count += 1;
 //  }
 //  error_log(json_encode($count));
-  error_log(json_encode($all_users));
+//  error_log(json_encode($all_users));
 
   // CLEAN UP THE DATABASE
   $control_db->delete_old_reservations();
-
-//  print "<pre>";
-//  print_r($all_users);
-//  print "</pre>";
 
   //**********************
   //CREATING THE CALENDER

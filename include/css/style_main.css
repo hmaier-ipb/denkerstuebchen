@@ -8,7 +8,25 @@ body{
   padding: 0 2rem 0 2rem;
   font-size: 1rem;
   font-family: Arial, serif;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 0.3fr 2fr 0.5fr 1fr 1fr;
+  gap: 0px 0px;
+  grid-template-areas:
+    "h h"
+    "cal cal"
+    "sp uid"
+    "sug oi"
+    "dt oi";
+
 }
+h3{grid-area: h}
+.calender_container{grid-area: cal}
+#search_time_period{grid-area: sp}
+#search_period_sug{grid-area: sug}
+#dates{grid-area: dt}
+#uid_div{grid-area: uid}
+.order-info{grid-area: oi}
 
 #date_search_div{
   text-align: center;
@@ -30,9 +48,50 @@ body{
   text-align: center;
 }
 
-#search_period_output{
-  height: 100px;
+#date_search{
+  height: 100%;
+  display: grid;
 }
+
+#search_time_period{
+  text-align: center;
+  display: flex;
+  flex-flow: column wrap;
+  justify-content: center;
+  align-items: center;
+}
+
+#search_period_sug{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  user-select: none;
+
+}
+
+.res_sug{
+  cursor: pointer;
+  padding: 0.1rem;
+}
+
+.res_sug:hover{
+  transition: 0.3s;
+  background-color: #45928e;
+}
+
+#dates{
+  padding-top: 2rem;
+  text-align: center;
+}
+
+.date-field{
+  text-align: center;
+}
+
+
+
+
 
 
 

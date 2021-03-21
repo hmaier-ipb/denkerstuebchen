@@ -29,7 +29,7 @@ class calender_02 extends control_db
     //MAIN LOOP
     $calender_string = "<table id='calender_table'>";
 
-    $calender_string .= "<th></th>";
+    //$calender_string .= "<th></th>";
 
     //WEEKDAYS HEADER
     for($z = 1; $z<= $days_this_month;$z++){
@@ -40,10 +40,10 @@ class calender_02 extends control_db
 
     $occupied_days = $this->control_db->get_occupied_dates();// get occupied dates for the iterated thinkers-room
 
-    $_SESSION["lang"] == "de" ? $tr_name = "[DENKERSTÜBCHEN]" : $tr_name = "[THINKER'S-ROOM]";
+    //$_SESSION["lang"] == "de" ? $tr_name = "[DENKERSTÜBCHEN]" : $tr_name = "[THINKER'S-ROOM]";
 
     $calender_string .= "<tr>";
-    $calender_string .= "<td style='background-color: #45928e;'><b>$tr_name</b></td>";
+    //$calender_string .= "<td style='background-color: #45928e;'><b>$tr_name</b></td>";
 
     for($y = 1; $y <= $days_this_month;$y++){
       $color = "#CACACA";
@@ -58,7 +58,8 @@ class calender_02 extends control_db
       //$occupied_days = $all_occupied_days[$x-1];
       //error_log(json_encode($occupied_days[$x-1]));
       //$_SESSION["lang"] == "de" ? $room_name = "Denkerstübchen" : $room_name = "Thinkersroom";
-      $calender_string .= "<td style='background-color: #45928e;'><b>[$x]</b></td>";
+
+      //$calender_string .= "<td style='background-color: #45928e;'><b>[$x]</b></td>";
 //            error_log(json_encode("THINKERS-ROOM $x"));
 
       //TABLE CELLS FOR CELLS DAYS THIS MONTH

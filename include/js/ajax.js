@@ -59,7 +59,7 @@ function init(){
   start_date_search = $("start_date_search");
   end_date_search = $("end_date_search");
   search_response = $("search_response");
-  search_period_output = $("search_period_output");
+  search_period_output = $("search_period_sug");
   search_period_button = $("search_period_button");
   week_num = $("week_num");
   res_sug = $$("res_sug"); //reservation suggestion

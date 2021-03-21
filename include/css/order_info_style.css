@@ -7,14 +7,12 @@ body{
 .order-info{
   font-size: 1rem;
   font-family: Arial, serif;
-  padding-top: 1rem;
   width: 100%;
   display: grid;
   grid-template-columns: 1fr ;
-  grid-template-rows: 3em 2em 2em 2em 2em 2em 2em 2em 2em 2em;
+  grid-template-rows: 2em 2em 2em 2em 2em 2em 2em 2em 2em;
   gap: 10px 20px;
   grid-template-areas:
-    "dates "
     "name-input"
     "tel-input "
     "email-input "
@@ -45,7 +43,7 @@ body{
 #department-input{grid-area:dep-input}
 #status-input{grid-area:status-input}
 #btn{grid-area:btn}
-#dates{grid-area: dates}
+
 
 
 
@@ -103,11 +101,7 @@ select{
   font-size: 1rem
 }
 
-.date-field{
-  height: 100%;
-  text-align: center;
-  font-size: 2rem;
-}
+
 
 
 
