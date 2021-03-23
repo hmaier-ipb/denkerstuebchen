@@ -1,0 +1,79 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box; /*bestimmt worauf sich Abmessungen beziehen*/
+}
+
+
+.calender_container{
+    user-select: none;
+    width: 100%;
+}
+#calender table{
+    width: 100%;
+}
+#calender table tr{ /*defining the height in the row*/
+    height: 2rem;
+}
+
+#calender table th{ /*defining the width in the header*/
+    width: 3.03%;
+}
+/*styling table cells*/
+#calender table td{
+    width:  3.125%;
+    text-align: center;
+    transition: opacity 0.3s;
+
+}
+
+.occupied{
+    /*SOURCE: https://stackoverflow.com/questions/30376886/is-it-possible-to-cross-out-cells-in-an-html-table*/
+    background: linear-gradient(to bottom, transparent calc(55% - 2px), black, transparent calc(50% + 2px));
+}
+
+/*INTERNAL CALENDER STYLING*/
+.calender_container{
+    display: grid;
+    align-items: center;
+    padding-top: 1rem;
+    grid-template-columns:   2fr 2fr;
+    grid-template-rows:  2.5rem 2rem 1.5fr 1.5fr ;
+    gap: 5px 5px;
+    grid-template-areas:
+    "prev-btn next-btn"
+    " room-month-year room-month-year"
+    " cal-table cal-table"
+    " cal-table cal-table";
+}
+
+#prev_month{/*previous month button*/
+    grid-area:prev-btn;
+}
+#next_month{/*next month button*/
+    grid-area:next-btn;
+}
+
+#room_month_year{
+    grid-area:room-month-year;
+    text-align: center;
+}
+#calender{grid-area: cal-table}
+
+.calender_btn{
+    display: flex;
+    background-color: #45928e;
+    height: 100%;
+    align-items: center;
+    justify-content: center;
+    font-size: 3rem;
+}
+
+.occupied{
+    pointer-events: none;
+}
+
+
+
+
+

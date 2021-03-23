@@ -1,0 +1,110 @@
+
+
+body{
+  padding: 0 2rem 0 2rem;
+}
+
+.order-info{
+  font-size: 1rem;
+  font-family: Arial, serif;
+  width: 100%;
+  display: grid;
+  grid-template-columns: 1fr ;
+  grid-template-rows: 2em 2em 2em 2em 2em 2em 2em 2em 2em;
+  gap: 10px 20px;
+  grid-template-areas:
+    "name-input"
+    "tel-input "
+    "email-input "
+    "dep-input "
+    " status-input "
+    " btn "
+    " output "
+    ;
+
+}
+
+
+/*terms*/
+.name{grid-area:name}
+.dep{grid-area:dep}
+.phone{grid-area:tel}
+.email{grid-area:email}
+.status{grid-area:status}
+.btn{grid-area:btn}
+#output{grid-area:output;text-align: center;padding: 2rem;}
+
+
+
+/*inputs*/
+#name-input{grid-area:name-input}
+#phone-input{grid-area:tel-input}
+#email-input{grid-area:email-input}
+#department-input{grid-area:dep-input}
+#status-input{grid-area:status-input}
+#btn{grid-area:btn}
+
+
+
+
+
+
+select{
+  border: 2px solid #e2e2e2;
+  /*border-radius: 10px;*/
+  /*border-bottom-right-radius: unset;*/
+  /*border-top-right-radius: unset;*/
+  border-radius: 10px 0 0 10px;
+}
+
+.btn{
+  border: 2px solid #eeeeee;
+  border-radius: 10px;
+  transition: 0.3s;
+}
+.btn:hover{
+  border: 2px solid #817D7D;
+}
+
+.btn:active{
+  transition: unset;
+  background-color: #192139;
+  color: #eee;
+}
+
+/*green checkmarks*/
+.order-info img{
+  justify-items: center;
+  align-self: center;
+  width: 25px;
+}
+#img1{grid-area:img1}
+#img2{grid-area:img2}
+#img3{grid-area:img3}
+#img4{grid-area:img4}
+
+.send_btn{
+  background-color: #45928e;
+}
+
+#time{
+  height: 100%;
+  font-weight: bold;
+}
+
+#time input{
+  height: 100%;
+  font-size: 1rem
+}
+
+
+
+
+
+
+
+
+
+
+
+

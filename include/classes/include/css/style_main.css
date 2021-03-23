@@ -1,0 +1,136 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box; /*bestimmt worauf sich Abmessungen beziehen*/
+}
+
+body{
+  padding: 0 2rem 0 2rem;
+  font-size: 1rem;
+  font-family: Arial, serif;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 0.3fr 2fr 0.5fr 1fr 1fr;
+  gap: 0px 0px;
+  grid-template-areas:
+    "h sl"
+    "cal cal"
+    "sug_p uid"
+    "sug oi"
+    "dt oi";
+
+}
+
+
+
+.confirm_reservation{
+  z-index: 2;
+  width: 100%;
+  height: 100%;
+  border: 2px solid black;
+  background-color: #817D7D;
+  opacity: 0.95;
+}
+
+.confirm_reservation{
+  grid-area: sug_p / sug_p / oi / oi;
+}
+
+
+h3{grid-area: h}
+.staff_login{grid-area:sl;}
+.calender_container{grid-area: cal}
+#search_time_period{grid-area: sug_p}
+#search_period_sug{grid-area: sug}
+#dates{grid-area: dt}
+#uid_div{grid-area: uid}
+.order-info{grid-area: oi}
+
+.staff_login{
+  display: block;
+  float: right;
+  padding-left: 47%;
+}
+
+
+
+#search_response{
+  color: #DF171E;
+  text-align: center;
+}
+
+#uid_div{
+  padding: 1rem 1rem 1rem 1rem;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+#uid_div *{
+  padding: 5px;
+  margin: 5px;
+}
+
+
+
+#search_time_period{
+  text-align: center;
+  display: flex;
+  flex-flow: column wrap;
+  justify-content: center;
+  align-items: center;
+}
+#search_time_period *{
+  padding: 5px;
+  margin: 5px;
+}
+
+#week_num{
+  text-align: center;
+  font-weight: bolder;
+}
+
+#search_period_sug{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  user-select: none;
+
+}
+
+.res_sug{
+  cursor: pointer;
+  padding: 0.1rem;
+}
+
+.res_sug:hover{
+  transition: 0.3s;
+  background-color: #45928e;
+}
+
+#dates{
+  padding-top: 2rem;
+  text-align: center;
+}
+
+.date-field{
+  text-align: center;
+}
+
+.search_btn{
+  padding: 5px;
+  background-color: #45928e;
+}
+
+.input{
+  border: 2px solid #eee;
+  border-radius: 10px;
+  height: 1.5rem;
+}
+
+.active-input{
+  border: solid 1px black;
+}
+
+
