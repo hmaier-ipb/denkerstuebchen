@@ -1,6 +1,7 @@
 <?php
 
 require_once("easy_pdo_db.class.php");
+require_once("control_ldap.class.php");
 
 class validation
 {
@@ -53,10 +54,11 @@ class validation
     //$occupied_dates -> [[start,end],[start,end]]
   // checks the occupation just for one room
     foreach ($occupied_dates as $value){
-      $start_date = $value[0];
-      $end_date = $value[1];
+      $start_date = $value[2];
+      $end_date = $value[3];
+      $res_status = $value[4];
       if($this->is_in_between($start_date,$end_date,$date)==true){
-        return true;
+        return $res_status;
       }
     }
     return false;
@@ -144,6 +146,11 @@ class validation
     return ["no_error"];
   }
 
+
+  function staff_login($user,$pwd){
+    $ldap = new control_ldap();
+    return $ldap->auth_user($user,$pwd);
+  }
 
 
 

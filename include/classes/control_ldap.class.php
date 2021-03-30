@@ -13,12 +13,18 @@ class control_ldap
    */
   protected $con;
 
+  function __construct(){
+    $this->con = ldap_connect(SERVER,PORT)or die(error_log("ldap connection error"));
+  }
+
   function connect(){
-    $this->con = ldap_connect(SERVER,PORT)//connecting to ldap server
-    or die(error_log("ldap connection error"));
-    //error_log("connect");
     ldap_set_option($this->con, LDAP_OPT_PROTOCOL_VERSION, 3);
+    ldap_set_option($this->con, LDAP_OPT_REFERRALS, 0);
     return ldap_bind($this->con,USER,PWD);//logging in into ldap server
+  }
+
+  function auth_user($user,$pwd){
+    return ldap_bind($this->con,$user . "@ipb-halle.de",$pwd);
   }
 
   function get_ad_data($user_id){//querys to "user" and "nwc", to merge them into one array

@@ -43,8 +43,11 @@ class language_distribution
       ["Ende: ","End: "],
       ["Geben Sie einen Reservierungszeitraum ein.","Type in a period in which you want to reserve a thinker's-room."],
       ["Beginn - Ende [dd.mm.yyyy]","Start - End [dd.mm.yyyy]"],
-      ["Nach nächsten verfügbaren Zeitraum suchen. <br>(4 Monate = 17 Wochen)Wochenanzahl","Search for next available time period. <br> (4 Months = 17 Weeks)Number of Weeks"],
-      ["Prüfen","Check"],
+      ["Nach nächsten verfügbaren Zeitraum suchen.","Search for next available time period."],
+      ["Wochenanzahl prüfen","Check number of weeks"],
+      ["Benutzername","Username"],
+      ["Passwort","Password"],
+      ["Anmelden","Login"]
     ];
   }
 
@@ -295,6 +298,14 @@ class language_distribution
 //      return $lang == "de" ? "Beginn der Reservierung kann nicht in der Vergangenheit liegen.": "Start Date cannot be in the past.";
 //    }
 
+  function pre_list($num_tables){
+    $list_string = "";
+    $room_text = $_SESSION["lang"] == "de" ? "Raum" : "Room";
+    for($i=1;$i<=$num_tables;$i++){
+      $list_string .= "<li><b>$room_text $i:</b></li>";
+    }
+    return $list_string;
+  }
 
 
 }

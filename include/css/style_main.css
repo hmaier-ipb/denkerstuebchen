@@ -13,30 +13,23 @@ body{
   grid-template-rows: 0.3fr 2fr 0.5fr 1fr 1fr;
   gap: 0px 0px;
   grid-template-areas:
-    "h h"
+    "h sl"
     "cal cal"
-    "sp uid"
+    "sug_p uid"
     "sug oi"
     "dt oi";
 
 }
+
 h3{grid-area: h}
+.staff_login{grid-area:sl;}
 .calender_container{grid-area: cal}
-#search_time_period{grid-area: sp}
+#search_time_period{grid-area: sug_p}
 #search_period_sug{grid-area: sug}
 #dates{grid-area: dt}
 #uid_div{grid-area: uid}
 .order-info{grid-area: oi}
-
-#date_search_div{
-  text-align: center;
-  padding: 0.5rem;
-}
-
-.date_search{
-  width: 7.5rem;
-  text-align: center;
-}
+.confirm_reservation_div{grid-area: sug_p / sug_p / oi / oi;}
 
 #search_response{
   color: #DF171E;
@@ -46,12 +39,16 @@ h3{grid-area: h}
 #uid_div{
   padding: 1rem 1rem 1rem 1rem;
   text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+#uid_div *{
+  padding: 5px;
+  margin: 5px;
 }
 
-#date_search{
-  height: 100%;
-  display: grid;
-}
+
 
 #search_time_period{
   text-align: center;
@@ -59,6 +56,15 @@ h3{grid-area: h}
   flex-flow: column wrap;
   justify-content: center;
   align-items: center;
+}
+#search_time_period *{
+  padding: 5px;
+  margin: 5px;
+}
+
+#week_num{
+  text-align: center;
+  font-weight: bolder;
 }
 
 #search_period_sug{
@@ -89,10 +95,19 @@ h3{grid-area: h}
   text-align: center;
 }
 
+.search_btn{
+  padding: 5px;
+  background-color: #45928e;
+}
 
+.input{
+  border: 2px solid #eee;
+  border-radius: 10px;
+  height: 1.5rem;
+}
 
-
-
-
+.active-input{
+  border: solid 1px black;
+}
 
 

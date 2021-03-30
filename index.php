@@ -16,10 +16,10 @@ $ldap = new control_ldap();
 $validate = new validation();
 $control_db = new control_db();
 $cal_02 = new calender_02();
+$res_admin = new res_admin();
 spl_autoload_unregister('__autoloadMyClasses');
 #include("include/classes/language_distribution.class.php");
 #include("include/classes/calender.class.php");
-
 
 
 //PAGE GETS LOADED FOR THE FIRST TIME
@@ -34,11 +34,11 @@ if (isset($_GET["lang"])) {
   $lang_array = $lang_dist->language($_SESSION["lang"]);
 
   //GET ALL USERS FROM LDAP SERVER
-//  $all_users = $ldap->get_ad_data("");//empty string searches for all users
-//  $_SESSION["all_users"] = $all_users;
+  $all_users = $ldap->get_ad_data("");//empty string searches for all users
+  $_SESSION["all_users"] = $all_users;
 
   //GET ALL USERS FROM AT HOME
-  $all_users = [];//$ldap->get_all_users();
+  //$all_users = [];//$ldap->get_all_users();
 
 //  $count = 0;
 //  foreach($all_users as $user){
@@ -88,7 +88,12 @@ if (isset($_GET["lang"])) {
     "date_search_term" => $lang_array[16],
     //"date_search_placeholder" => $lang_array[17]
     "time_period_search_text" => $lang_array[18],
-    "search_period_button_text" => $lang_array[19]
+    "search_period_button_text" => $lang_array[19],
+    "pre_list" => $lang_dist->pre_list($control_db->count_num_tr()),
+    "res_list" => $res_admin->html_res_list(),
+    "uname" => $lang_array[20],
+    "pwd" => $lang_array[21],
+    "login" => $lang_array[22]
 
   ];
   
@@ -143,26 +148,6 @@ if (isset($_POST["action"])) switch ($_POST["action"]) {
     $_SESSION["global_current_time"] = $next_month;//$setting a new current time
     break;
 
-//    case "room_select"://
-//      $room = $_POST["room"];
-//      $_SESSION["room_number"] = $room;
-//      $response[] = $cal_02->room_month_year($_SESSION["global_current_time"]);
-//      $response[] = $cal_02->create_calender($_SESSION["global_current_time"]);
-//      //$output = json_encode($cal->create_calender($_SESSION["global_current_time"],$_SESSION["lang"]));
-//      print(json_encode($response));
-//      break;
-
-//    case "submit_dates":
-//      $start_date = $_POST["start_date"];
-//      $end_date = $_POST["end_date"];
-//
-//      //$message[] = $cal->create_calender($_SESSION["global_current_time"], $_SESSION["lang"]);
-////      $date_response = $validate->date_validation($start_date, $end_date);
-////      error_log(json_encode($date_response));
-//      $message = $lang_dist->process_date_errors($start_date, $end_date);
-//      //error_log(json_encode($message));
-//      print(json_encode($message));
-//      break;
   case "user_search":
     $all_users = $_SESSION["all_users"];
     $uid = $_POST["uid"];
@@ -177,8 +162,8 @@ if (isset($_POST["action"])) switch ($_POST["action"]) {
     }
     if(isset($email)){
       $res_check = $control_db->has_email_reservation($email);
-      error_log("Res_check");
-      error_log(json_encode($res_check));
+//      error_log("Res_check");
+//      error_log(json_encode($res_check));
       if($res_check !== false){
        $selected_user[] =  $res_check[0];
        $start_date = $res_check[1]["start_date"];
@@ -189,6 +174,9 @@ if (isset($_POST["action"])) switch ($_POST["action"]) {
     //error_log(json_encode($selected_user));
     print(json_encode($selected_user));
     break;
+
+  //USER SEARCH END
+
   case "date_search":
     //validating the dates
     //testing if there is a free room
@@ -250,6 +238,57 @@ if (isset($_POST["action"])) switch ($_POST["action"]) {
     $response[] = $control_db->next_free_period($week_num);
     print(json_encode($response));
     break;
+  case "staff_login":
+    $user = $_POST["staff_uname"];
+    $pwd = $_POST["staff_pwd"];
+    $validusers = ["hmaier","hbartz","tkoerner","mlanglho","tabe","rscheller","pzuber"];
+    $response = 0;
+    foreach($validusers as $index){
+//      error_log($index);
+//      error_log($user);
+      if($user == $index && $pwd !== ""){
+        $response = $ldap->auth_user($user,$pwd);
+        print($response);
+        break;
+      }
+    }
+    error_log("Response:");
+    error_log(json_encode($response));
+
+    break;
+  case "get_user_data":
+    $user_id = $_POST["user_id"];
+    $user_data = $_SESSION["_$user_id"];
+    $current_time = strtotime($user_data[7]);
+
+    //jump to date
+    $user_data[] = $cal_02->create_calender($current_time);
+    $_SESSION["active_user_id"] = $user_id;
+    $_SESSION["global_current_time"] = $current_time;
+    print(json_encode($user_data));
+    break;
+  case "reservation_response":
+    $uid = $_SESSION["active_user_id"];
+    $user_data = $_SESSION["_$uid"];
+//  error_log(json_encode($user_data));
+    $response = $_POST["response"];
+
+//  [$user_id,$full_name,$phone,$email,$department,$status,$room_num,$start,$end]
+    if($response == "accept"){
+      //change reservation status
+      $res_admin->accept_reservation($uid,$user_data[6]);
+
+    }else{
+      //delete reservation
+      $res_admin->decline_reservation($uid,$user_data[6]);
+    }
+    $html = [];
+    $html[] = $cal_02->create_calender($_SESSION["global_current_time"]);
+    $html[] = $res_admin->html_res_list();
+    error_log(json_encode($html));
+    print(json_encode($html));
+    break;
+
   default:
     print("invalid action");
 

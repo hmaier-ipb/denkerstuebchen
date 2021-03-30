@@ -70,8 +70,11 @@ class easy_pdo_db
     if ($num_rows !== 0){
       try{
         $statement = $this->pdo->prepare($query);
+        //error_log(json_encode($statement));
         $statement->bindValue(":id",$search_id);
+        //error_log(json_encode($statement));
         $statement->execute();
+        //error_log(json_encode($statement));
         $result = $statement->fetch();
       }catch (\Exception $e){
         error_log(json_encode($e));
@@ -143,6 +146,32 @@ class easy_pdo_db
     try{
       $statement = $this->pdo->prepare($query);
       $statement->bindValue(":id",$id);
+      $statement->execute();
+    }catch (\Exception $e){
+      error_log(json_encode($e));
+    }
+  }
+
+  function where_col_equals_var($table,$col_name,$search_var){// get row where col equals var
+
+    $query = "SELECT * FROM $table WHERE $col_name=:search_var";
+    try{
+      $statement = $this->pdo->prepare($query);
+      $statement->bindValue(":search_var",$search_var);
+      $statement->execute();
+      $result = $statement->fetchAll();
+    }catch (\Exception $e){
+      error_log(json_encode($e));
+    }
+    return $result;
+  }
+
+  function set_autoincrement($table){
+    $rows_num = $this->count_rows($table);
+    $x = $rows_num+1;
+    $query = "ALTER TABLE $table AUTO_INCREMENT=$x";
+    try{
+      $statement = $this->pdo->prepare($query);
       $statement->execute();
     }catch (\Exception $e){
       error_log(json_encode($e));

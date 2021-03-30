@@ -5,6 +5,7 @@
   <link rel="stylesheet" href="include/css/style_main.css" type="text/css">
   <link rel="stylesheet" href="include/css/order_info_style.css" type="text/css">
   <link rel="stylesheet" href="include/css/calender_container_style.css" type="text/css">
+  <link rel="stylesheet" href="include/css/confirm_res_style.css" type="text/css">
   <!--<link rel="stylesheet" href="include/css/selected_dates_style.css" type="text/css">-->
   <script src="include/js/ajax.js"></script>
   <script>document.addEventListener("DOMContentLoaded", function(){init()})</script>
@@ -12,6 +13,15 @@
 </head>
 <body>
   <h3><!--{$title}--></h3><br>
+
+
+  <div class="staff_login">
+    <label><!--{$uname}-->:</label>
+    <input type="text" id="staff_user_name">
+    <label><!--{$pwd}-->:</label>
+    <input type="password" id="staff_user_password">
+    <button id="staff_login_btn" title="Anzeigen von Sachbearbeiter Interface"><!--{$login}--></button>
+  </div>
 
   <div class="calender_container">
     <div id='room_month_year'>
@@ -26,16 +36,24 @@
 
 
     <div id="search_time_period">
-      <!--{$time_period_search_text}-->
-      <input id="week_num" type="number" value="1"  step="1" min="1" max="17">
-      <button id="search_period_button"><!--{$search_period_button_text}--></button>
+      <label for="week_num"><!--{$time_period_search_text}--></label>
+      <input id="week_num" class="input active-input" type="number" value="1"  step="1" min="1" max="17">
+      <button id="search_period_button" class="search_btn btn"><b><!--{$search_period_button_text}--></b></button>
     </div>
 
-    <div id="search_period_sug"></div>
+    <div id="search_period_sug">
+
+      <ul>
+        <!--{$pre_list}-->
+      </ul>
+
+    </div>
 
     <div id="dates">
-      <!--{$start_date}--> <input disabled id="start_date" class="input date-field">
-      <!--{$end_date}--> <input disabled id="end_date" class="input date-field">
+      <label for="start_date"><!--{$start_date}--></label>
+      <input disabled id="start_date" class="input date-field">
+      <label for="end_date"><!--{$end_date}--></label>
+      <input disabled id="end_date" class="input date-field">
     </div>
 
 
@@ -43,15 +61,14 @@
 
   <div id="uid_div">
     <label for="user_search"><!--{$user_search_prompt}--></label>
-    <br>
-    <input list="suggestions" id="user_search" class="input">
+    <input list="suggestions" id="user_search" class="input active-input">
     <datalist id="suggestions"><!--{$suggestion_html}--></datalist>
+    <p id="search_response" style="display: block; height: 2rem;"></p>
   </div>
 
   <!--<p id="search_response" style="display: none;"></p>-->
 
   <div class="order-info">
-
 
     <input disabled placeholder="<!--{$name}-->" type="text" class="input" id="name-input">
 
@@ -76,5 +93,29 @@
     <div id="output"></div><br>
 
   </div>
+
+  <div class="confirm_reservation_div" style="display:grid;">
+    <button id="close_res_btn"><b>X</b></button>
+    <div class="res_list"><!--{$res_list}--></div>
+    <div class="user_info">
+
+        <p class="ui_key"><b>Raum-Nummer:</b></p>          <p class="ui_value"></p>
+        <p class="ui_key"><b>Beginn:</b></p>              <p class="ui_value"></p>
+        <p class="ui_key"><b>Ende:</b></p>                <p class="ui_value"></p>
+        <p class="ui_key"><b>Nachname, Vorname:</b></p>   <p class="ui_value"></p>
+        <p class="ui_key"><b>Telefonnummer:</b></p>       <p class="ui_value"></p>
+        <p class="ui_key"><b>Email:</b></p>               <p class="ui_value"></p>
+        <p class="ui_key"><b>Abteilung:</b></p>           <p class="ui_value"></p>
+        <p class="ui_key"><b>Status:</b></p>              <p class="ui_value"></p>
+
+    </div>
+
+    <div class="opt_btn">
+      <button  id="accept_btn">Annehmen</button>
+      <button  id="decline_btn">Ablehnen</button>
+    </div>
+
+  </div>
+
 </body>
 </html>

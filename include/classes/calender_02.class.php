@@ -69,12 +69,24 @@ class calender_02 extends control_db
         $i < 10 ? $iterated_date = "0" . $i . "." . $month . "." . $year . "" : $iterated_date = "" . $i . "." . $month . "." . $year . ""; //string of iterated date
         //error_log(json_encode($occupied_days[$x-1]));
         // $x-1 is the index for occupied dates for a thinkers-room
-        if ($this->validate->is_date_occupied($iterated_date, $occupied_days[$x - 1]) == true) {
+        $date_status = $this->validate->is_date_occupied($iterated_date, $occupied_days[$x - 1]);
+        if ($date_status !== false) {
           //red colored, class "occupied"
           if($weekday == "Sat" || $weekday == "Sun"){
             $color = "#7A7A7A";
           }else{
-            $color = "#FF2635";
+            switch($date_status){
+              case 0:
+                $color = "#EEE409"; //yellow
+                break;
+              case 1:
+                $color = "#FF2635";//red
+                break;
+              default:
+                $color = "#EEE409";
+                break;
+            }
+
           }
           $calender_string .= "<td class='day_cell occupied tr_$x' id='$iterated_date' style='background-color: $color;'>$i</td>";
         } else {

@@ -74,8 +74,8 @@ class control_db extends easy_pdo_db
 
   function make_reservation($user_id, $start_date, $end_date, $room_number)
   {
-    $cols_string = "user_id, start_date, end_date";
-    $vars = [$user_id, $start_date, $end_date];
+    $cols_string = "user_id, start_date, end_date, res_status";
+    $vars = [$user_id, $start_date, $end_date, "0"];
     $this->insert_into("tr_$room_number", $cols_string, $vars);
     $response = ["success"];
 
@@ -96,10 +96,12 @@ class control_db extends easy_pdo_db
         for ($x = 1; $x <= $num_rows; $x++)
         {
           $row = $this->get_row_by_id("tr_$r", $x);
-          $tr_dates[] = [$row["start_date"], $row["end_date"]];
+          //error_log(json_encode($row));
+          $tr_dates[] = [$row["id"],$row["user_id"],$row["start_date"], $row["end_date"],$row["res_status"]];
+
         }
       }else{
-        $tr_dates = [[0, 0]];
+        $tr_dates = [[0, 0, 0, 0, 0]];
       }
 
       $occupied_dates[] = $tr_dates;
@@ -146,9 +148,10 @@ class control_db extends easy_pdo_db
     foreach($all_dates as $room){
       $room_num++;
       for($i = 1;$i<=count($room);$i++){
-        $start_date = $room[$i-1][0];
-        //$end_date = $room[$i-1][1];
-        if(strtotime($start_date)<$today_ts && $start_date !== 0){// updating the start_date in the database
+        $start_date = $room[$i-1][2];
+        //$end_date = $room[$i-1][3];
+        $start_ts = strtotime($start_date);
+        if($start_ts<$today_ts && $start_ts !== 0 && $start_ts !== false){// updating the start_date in the database
           $this->update_row("tr_$room_num",["start_date"],[$today_date],$i);
         }
         $row =  $this->get_row_by_id("tr_$room_num",$i);
@@ -156,7 +159,10 @@ class control_db extends easy_pdo_db
           $start_date = $row["start_date"];
           $end_date = $row["end_date"];
           if(strtotime($end_date)<strtotime($start_date)){// deleting then date if reservation period is over
+            $row = $this->get_row_by_id("tr_$room_num",$i);
+            $user_id = $row["user_id"];
             $this->delete_row("tr_$room_num",$i);
+            $this->delete_row("user",$user_id);
           }
         }
       }
@@ -170,21 +176,24 @@ class control_db extends easy_pdo_db
     $today_ts = strtotime("00:00:00",time());
     $today_date = date("d.m.Y",time());
 
-    //error_log(json_encode($all_dates));
+//    error_log(json_encode($all_dates));
     $room_text = $_SESSION["lang"] == "de" ? "Raum:" : "Room:";
+
+//    All Dates Array
+//    ["id","user_id","start_date","end_date","res_status"]
 
     foreach($all_dates as $index => $room){
       //error_log(json_encode($room));
       $room_number = $index+1;
-      if($room[0][0] !== 0 && $room[0][1] !== 0){// wenn es belegungen gibt
+      if($room[0][2] !== 0 && $room[0][3] !== 0){// wenn es belegungen gibt
 
         //foreach through ONE ROOM
         foreach($room as $x => $res){ // überprüfe die zeit zwischen zwei reservierungen in einem raum
-          error_log(json_encode($res));
-          error_log(json_encode(count($room)));
-          $end_date = $res[1];
+//          error_log(json_encode($res));
+//          error_log(json_encode(count($room)));
+          $end_date = $res[3];
           if($x !== count($room)-1){
-            $next_start_date = $room[$x+1][0]; //next start date
+            $next_start_date = $room[$x+1][2]; //next start date
             $ts_end = strtotime($end_date); //current iterations end date
             $ts_next_start = strtotime($next_start_date);
 
@@ -193,11 +202,14 @@ class control_db extends easy_pdo_db
             $new_start_date = date("d.m.Y",$ts_end+86400); //last end date plus one day -> 86400 Seconds/days
             $new_end_date = date("d.m.Y",$weeks_ts);
             if($weeks_ts < $ts_next_start){
+//              error_log("earliest");
               $response .= "<li class='res_sug'><b>$room_text $room_number</b> $new_start_date - $new_end_date</li>";
+//              error_log(json_encode($response));
               break; //take earliest available period
             }
 
           }else{
+
             $ts_end = strtotime($end_date);
             $new_start_date = date("d.m.Y",$ts_end+86400);
             $weeks_ts = strtotime("+$weeks Week",$ts_end);
@@ -207,9 +219,9 @@ class control_db extends easy_pdo_db
 
         }//end foreach through ONE ROOM take next room
 
-      }else{// called when no reservations are placed -> ["0","0"]
+      }else{// called when no reservations are placed -> ["0","0","0","0","0"]
         //from today plus $weeks
-        $weeks_ts = strtotime("+$weeks Week",$today_ts);
+        $weeks_ts = strtotime("+$weeks Week",$today_ts-86400); //today plus 7 would be 8 days -> 86400 secs for one day
         $date_x_weeks = date("d.m.Y",$weeks_ts);
         $response .= "<li class='res_sug'><b>$room_text $room_number</b> $today_date - $date_x_weeks</li>";
       }
@@ -217,6 +229,8 @@ class control_db extends easy_pdo_db
     $response .= "</ul>";
     return $response;
   }
+
+
 
 
 }
